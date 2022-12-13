@@ -15,12 +15,41 @@ a {
 pre{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     display: inline-block;
-    margin: 1rem auto 2rem 5rem;
-    line-height: 1.25rem;
+    margin: 1rem auto 1rem 1rem;
+    line-height: 1.2rem;
     color: white;
     background-color: #b75f4b;
-    padding: 1rem 2rem 2rem 1rem;
+    padding: 1rem 4rem 1rem 4rem;
 }
+
+pre h2{
+    font-size: 1.4rem;
+    margin: 0rem 0rem;
+    font-family: 'Carrois Gothic SC', sans-serif;
+    line-height: 1.2;
+    color: white;
+    padding: 0rem;
+
+}
+
+pre code{
+    background-color: black;
+    display: inline-block;
+    padding: 0rem 2rem;
+    margin: 2rem;
+    font-size: 1rem;
+    line-height: 1.6rem;
+}
+pre div{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: space-around;
+}
+pre li {
+    margin: 1rem auto 1rem 1rem;
+}
+
 .contenido {
     max-width: 1200px;
     margin: 5rem auto 0 auto;
@@ -36,7 +65,7 @@ pre{
         font-size: 0.7rem;
     }
 }
-h1 {
+h1, h2 {
     font-size: 1.5rem;
     margin-left: 2rem;
     font-family: 'Carrois Gothic SC', sans-serif;
