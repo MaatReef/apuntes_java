@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,100&display=swap');
 body {
     background: #b75f4b;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #481818, #b75f4b);  /* Chrome 10-25, Safari 5.1-6 */
@@ -5,7 +6,7 @@ body {
 }
 
 a {
-    font-family: 'Carrois Gothic SC', sans-serif;
+    font-family: 'Roboto', sans-serif;
     display: block;
     text-align: center;
     line-height: 1.2;
@@ -25,7 +26,7 @@ pre{
 pre h2{
     font-size: 1.4rem;
     margin: 0rem 0rem;
-    font-family: 'Carrois Gothic SC', sans-serif;
+    font-family: 'Roboto', sans-serif;
     line-height: 1.2;
     color: white;
     padding: 0rem;
@@ -55,7 +56,7 @@ pre li {
     margin: 5rem auto 0 auto;
     color: white;
     font-size: 3rem;
-    font-family: 'Carrois Gothic SC', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 @media (max-width:560px) {
     .contenido{
@@ -68,7 +69,7 @@ pre li {
 h1, h2 {
     font-size: 1.5rem;
     margin-left: 2rem;
-    font-family: 'Carrois Gothic SC', sans-serif;
+    font-family: 'Roboto', sans-serif;
     line-height: 1.2;
     color: white;
     padding: 0;
@@ -78,7 +79,7 @@ a {
 }
 p{
     font-size: 1.5rem;
-    font-family: 'Carrois Gothic SC', sans-serif;
+    font-family: 'Roboto', sans-serif;
     line-height: 1.2;
     margin-left: 2rem;
     color: white;

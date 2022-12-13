@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;1,100&display=swap');
+
 body {
     background: #b75f4b;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #481818, #b75f4b);  /* Chrome 10-25, Safari 5.1-6 */
@@ -5,7 +7,7 @@ body {
 }
 
 h1, p, a{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Roboto', sans-serif;
     display: inline-block;
     text-align: center;
     line-height:.8;
@@ -21,7 +23,7 @@ ul{
     text-decoration: none;
 }
 li{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Roboto', sans-serif;
     line-height:1.8rem;
     color: white;
 }
@@ -33,7 +35,7 @@ li{
     margin-bottom: 1rem;
     border-radius: 0.5rem;
     background-color: transparent;
-    font-family: 'Raleway', sans-serif;;
+    font-family: 'Roboto', sans-serif;;
     padding: 0.5rem;
 }
 pre{
@@ -49,7 +51,7 @@ pre{
     margin: 5rem auto 0 auto;
     color: white;
     font-size: 3rem;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 @media (max-width:560px) {
     .contenido{
@@ -65,7 +67,7 @@ h1 {
 h2{
     font-size: 2rem;
     text-decoration: underline;
-    font-family: 'Raleway', sans-serif;;
+    font-family: 'Roboto', sans-serif;;
     padding-left: 2.5rem;
     color: white;
 }
