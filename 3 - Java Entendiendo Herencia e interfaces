@@ -1,0 +1,1941 @@
+3 - Java Entendiendo Herencia e interfaces
+-----------------------------------------------------
+02 - Overview Java Parte 2
+
+-----------------------------------------------------
+03 - Clase Funcionario
+
+public class Funcionario {
+
+    private String nombre;
+    private String documento;
+    private Double salario;
+    
+    // Creamos el constructor
+    public Funcionario(){
+
+    }
+
+    // Declaramos los setter y getters
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+    
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setSalario(Double salario) {
+        this.salario = salario;
+    }
+
+    public Double getSalario() {
+        return salario;
+    }
+}
+
+Usamos el test para la clase Funcionario
+public class TestFuncionario {
+
+    public static void main(String[] args) {
+        Funcionario maat = new Funcionario ();
+        maat.setDocumento("2342");
+        maat.setSalario(2000.0);
+
+        System.out.println(maat.getSalario());
+        System.out.println(maat.getDocumento());
+    }
+}
+
+
+
+* Recordar:
+De las siguientes alternativas, ¿cuáles son verdaderas acerca de los constructores en Java?
+Los constructores por defecto (default) son aquellos que no reciben parámetros.
+Correcto. El constructor por defecto es aquel que no tiene ningún parámetro de entrada.
+
+El constructor es llamado en la inicialización del objeto.
+Correcto. Un constructor es llamado en la inicialización/creación del objeto.
+
+
+¿Cuáles fueron los problemas presentados en la implementación de la clase Funcionario?
+Código no muy expresivo
+Correcto. Por ejemplo, ¿cuál tipo de Funcionario representa el valor 0?.
+
+Código repetido
+Correcto. Es muy probable que tengamos que repetir el if en otros puntos del código.
+
+Muchos if que no paran de crecer
+Correcto. Para cada nuevo tipo de Funcionario es necesario agregar una nueva condición if.
+
+
+-----------------------------------------------------
+06 Gerente
+Para la situación del Gerente creamos lo mismo que hicimos para el funcionario, la salvedad, tendremos repetición de código.
+En esta ocasión validamos a través del tipo de usuario, si es 1, es gerente y si es 0, funcionario.
+
+
+public class Gerente {
+    private String nombre;
+    private String documento;
+    private Double salario;
+    private int tipo;
+    
+    // Creamos el constructor
+    public Gerente(){
+
+    }
+
+    // Declaramos los setter y getters
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+    
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setSalario(Double salario) {
+        this.salario = salario;
+    }
+
+    public Double getSalario() {
+        return salario;
+    }
+
+    public double getBonificacion (){
+        // si tipo 1 es gerente                     Validación según el tipo
+        // si tipo 0 es funcinoarnio
+        if ( this.tipo == 0){
+            return this.salario * 0.1;
+        }else if (this.tipo == 1){
+            return this.salario;
+        }else {
+            return 0;
+        }
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+    
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+}
+
+Al momento de testear el tipo de gerente
+
+public class TestGerente {
+    
+    public static void main(String[] args) {
+        // Gerente gerente = new Gerente();
+        // gerente.setSalario (5000);
+        Funcionario gerente = new Funcionario();
+        gerente.setSalario(5000.0);
+        gerente.setTipo(1);                             // Le asignamos el tipo 1
+
+        System.out.println(gerente.getBonificacion());  // Con el cual obtenemos una bonificacion distinta al tipo 0, funcionario
+    }
+}
+
+
+Si testeamos el funcionario, sucede lo mismo.. Funciona okey.
+public class TestFuncionario {
+
+    public static void main(String[] args) {
+        Funcionario maat = new Funcionario ();
+        maat.setDocumento("2342");
+        maat.setSalario(2000.0);
+        maat.setTipo(0);                                // Seteamos a 0 el tipo de funcionario.
+
+        System.out.println(maat.getDocumento());
+        System.out.println(maat.getSalario());
+        System.out.println(maat.getBonificacion());     // Obteniendo una bonificaicón distinta
+    }
+}
+
+
+-----------------------------------------------------
+07 - Herencia
+Entre más tipos de trabajadores, crecerían los tipos y los if serían inmesos, evitando escalar el código.
+De esta manera usamos la Herencia..
+
+Funcionario, el gerente también es un trabajador del banco.
+es un, es un, de esta manera identificamos los casos de herencia.
+
+//                  Extiende de
+public class Gerente extends Funcionario {
+    
+}
+
+Al quitar lo anterior el archivo TestFuncionario.java continua funcional
+
+De esta manera todo lo agregado en Gerente no afectará a la clase Funcionario
+//                 Extiende de
+public class Gerente extends Funcionario {
+ 
+    private String clave;
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public boolean iniciarSesion(String clave){
+        return clave == "Maat";
+    }
+
+}
+
+
+public class TestGerente {
+    
+    public static void main(String[] args) {
+        Gerente gerente = new Gerente();                    // Usamos directamente la clase de Gerente, evitando el uso de Funcionario
+        // gerente.setSalario (5000);
+        // Funcionario gerente = new Funcionario();         // Este no va
+        gerente.setSalario(5000.0);
+        gerente.setClave("Maat");                           // Entonces ahora si podremos usar los métodos de la clase Gerente que extiende de Funcionario
+        gerente.setTipo(1);                     
+
+        System.out.println(gerente.getBonificacion());
+        System.out.println(gerente.iniciarSesion("Maat"));
+    }
+}
+
+La clase Gerente, al extender la clase Funcionario.
+Es un Funcionario.
+Correcto. Al extender la clase Funcionario se puede decir que el Gerente es un Funcionario. Lo que significa que lo veremos con más detalles. ¡Espere!
+
+Hereda todas las características de la Funcionario.
+Correcto. La clase Gerente hereda todas las características de la clase Funcionario. Todos los atributos también forman parte de la clase Gerente.
+
+Hereda todo el comportamiento de clase Funcionario.
+Correcto. La clase Gerente hereda todo el comportamiento de la clase Funcionario. Significa que, todos los métodos públicos pueden ser utilizados en la clase Gerente.
+
+¿Cuál es la sintaxis correcta para extender una clase en Java?
+class Carro extends Vehiculo { }
+Correcto. En el mundo Java se usa la palabra llave extends. Solo por curiosidad, todas las otras afirmaciones son ejemplos de herencia en otros lenguajes
+
+Herencia en C#: class Carro : Vehiculo { }
+
+Herencia en Ruby: class Carro < Vehiculo
+
+Herencia en Python: class Carro (Vehiculo)
+
+
+-----------------------------------------------------
+02 Overview Aula 1
+
+Ahora consideramos la repetición de getBonificacion en ambas clases.
+
+-----------------------------------------------------
+03 Sobreescritura de metodo
+public double getBonificacion ()        -> Esto lo estamos repetiendo, misma firma de método
+
+
+public class Funcionario {
+
+    private String nombre;
+    private String documento;
+    private Double salario;
+    private int tipo;
+    
+    // Creamos el constructor
+    public Funcionario(){
+
+    }
+
+    // Declaramos los setter y getters
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+    
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setSalario(Double salario) {
+        this.salario = salario;
+    }
+
+    public Double getSalario() {
+        return salario;
+    }
+
+    public double getBonificacion (){
+        // si tipo 1 es gerente
+        // si tipo 0 es funcinoarnio
+        // if ( this.tipo == 0){
+        //     return this.salario * 0.05;
+        // }else if (this.tipo == 1){
+        //     return this.salario;
+        // }else {
+        //     return 0;
+        // }
+
+        return this.salario * 0.1;                      // De esta manera todo cambiamos que hagamos en la "fuente principal de verdad"
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+    
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+}
+
+
+//                 Extiende de
+public class Gerente extends Funcionario {
+ 
+    private String clave;
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public boolean iniciarSesion(String clave){
+        return clave == "Maat";
+    }
+
+    // Sobre escritura de metodo               , los cambios en la clase principal Funcionaio, lo podemos manipularlo respetando la principal
+    public double getBonificacion(){
+        // return super.getSalario() + (super.getSalario() * 0.1);  //  Accedemos al getBonificacion de Funcionario
+        System.out.println(super.getBonificacion());
+        System.out.println(super.getSalario());
+        return super.getSalario() + super.getBonificacion();  //  O también podemos decir, de esta manera obtenemos el original con la modificacion desde el original.
+
+    }
+}
+
+
+
+public class TestGerente {
+    
+    public static void main(String[] args) {
+        Gerente gerente = new Gerente();
+        // gerente.setSalario (5000);
+        // Funcionario gerente = new Funcionario();
+        gerente.setSalario(5000.0);
+        gerente.setClave("Maat");
+        gerente.setTipo(1);
+
+        System.out.println(gerente.getBonificacion());                  // Al obtener la bonificacion, veremos el resultado de acuerdo a lo modificado en la clase principal funcionario
+        System.out.println(gerente.iniciarSesion("Maat"));
+    }
+}
+
+-----------------------------------------------------
+Ejercicio:
+
+Vimos que la sobreescritura es un concepto importante de la herencia, porque permite redefinir un comportamiento previsto en la clase madre a través de la clase hija.
+Ahora vea la clase Vehiculo abajo.
+class Vehiculo {
+    public  void encender() {
+        // Alguna implementación
+    }
+}
+Y la clase Hija Carro:
+class Carro extends Vehiculo {
+    // ????
+}
+
+--- opcion correcta
+public void encender() {
+    // implementación
+}
+Correcto. Observe que el método posee la misma firma. Esto significa, una misma visibilidad, un mismo retorno, un mismo nombre y los mismo parámetros.
+
+--- opcion correcta
+Incorrecto
+public int encender() {
+    // implementación
+}
+Incorrecto. Pues alteramos el tipo de retorno Observe que el método en la clase Vehiculo tiene un retorno void.
+
+private void encender() {
+    // implementación
+}
+Incorrecto. Pues el método fue declarado como private. Como regla de oro, en la sobreescritura la visibilidad no puede disminuir, debe ser el mismo o mayor.
+
+-----------------------------------------------------
+05 Método Super
+No usar números al aire como..
+// si tipo 1 es gerente
+// si tipo 0 es funcinoarnio            Pesima práctica
+// if ( this.tipo == 0){
+//     return this.salario * 0.05;
+// }else if (this.tipo == 1){
+//     return this.salario;
+// }else {
+//     return 0;
+// }
+
+
+Ahora en el Funcionario..
+public class Funcionario {
+
+    private String nombre;
+    private String documento;
+    private Double salario;
+    private int tipo;
+    
+    // Creamos el constructor
+    public Funcionario(){
+
+    }
+
+    // Declaramos los setter y getters
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+    
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setSalario(Double salario) {
+        this.salario = salario;
+    }
+
+    public Double getSalario() {
+        return salario;
+    }
+
+    public double getBonificacion (){
+        return this.salario * 0.1;          // Nos queda aún más ordenado
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+    
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+}
+
+Y ahora en la clase Gerente accedemos a los metodos de la clase padre con el atributo super..
+
+//                 Extiende de
+public class Gerente extends Funcionario {
+ 
+    private String clave;
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public boolean iniciarSesion(String clave){
+        return clave == "Maat";
+    }
+
+    // Sobre escritura de metodo
+    public double getBonificacion(){
+        return super.getSalario() + super.getBonificacion();  //  De esta manera con super, accedemos a los métodos de la clase padre.
+    }
+}
+
+De esta manera, cada entidad va moldeando su propio comportamiento.
+---------------------------------------- Ejercicio
+- En relación con lo que ha aprendido hasta ahora, ¿cuál es el orden correcto de los modificadores de visibilidad, de menor a mayor visibilidad?
+
+private < protected < public
+Correcto. La palabra llave con menor visibilidad es private, después viene protected y después public.
+
+private - solo visible dentro de la clase.
+
+protected - visible dentro de la clase y también para las hijas.
+
+public - visible en todo lugar.
+
+También tenga en cuenta que protected está relacionado con la herencia.
+
+
+
+
+
+- ¿Cuál es la diferencia entre private y protected?
+Solo la propia clase en sí ve atributos/métodos private, mientras que protected es visto por la propia clase más las clases hijas.
+Correcto. Atributos y métodos protected pueden ser vistos por su propia clase y sus hijas. Sin embargo, con private solo la clase en sí ve los atributos/métodos.
+
+
+
+
+Sobre la herencia en Java, juzgue las siguientes declaraciones:
+Una clase puede tener varias hijas, pero solo una madre.
+
+Desde una instancia de una clase hija, podemos llamar a cualquier método público que haya sido declarado en la clase Madre.
+
+En la clase hija, podemos escoger que heredar de la clase madre.
+
+En el siguiente ejemplo, Perro también hereda todo de la clase Animal:
+class Animal {
+    // atributos y métodos
+}
+
+class Mamifero extends Animal {
+    // atributos y métodos
+}
+
+class Perro extends Mamifero {
+    // atributos y métodos
+}
+
+
+Solo las afirmaciones 1, 2 e 4 son correctas.
+Correcto. Se puede llamar a cualquier método de la clase madre. Una clase puede tener diversas “hijas y nietas” (que se heredan unos de otros) pero no podemos escoger lo que será heredado.
+
+
+Existe otro concepto en los lenguajes OO que se llama sobrecarga que es mucho más simple que la sobreescritura y no depende de la herencia.
+public class Gerente extends Funcionario {
+
+    private int contraseña;
+
+    public int getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(int contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public boolean autenticar(int contraseña) {
+        if (this.contraseña == contraseña) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Nuevo método, recibiendo dos parámetros
+    public boolean autenticar(String login, int contraseña) {
+        // implementación omitida
+    }
+
+    // Otros métodos omitidos
+}
+
+Observe que hemos creado una nueva versión del método autenticar. Ahora tenemos dos métodos de autenticar en la misma clase que varían en el número o tipo de parámetros. Esto se llama sobrecarga de métodos.
+La sobrecarga no tiene en cuenta la visibilidad o retorno del método, solo los parámetros y no depende de la herencia.
+
+En esta clase entramos más a fondo en la herencia. Aprendimos:
+
+que la clase madre es llamada de super o base class.
+que la clase hija también es llamada de sub class.
+como aumentar la visibilidad de un miembro (atributo, método) a través de protected.
+cómo acceder o llamar un miembro (atributo, método) a través de super.
+cómo redefinir un método a través de la sobreescritura. En la próxima clase veremos un nuevo beneficio de la herencia, el Polimorfismo. ¡Aguarda!
+-----------------------------------------------------
+02 Introducción a polimorfismo
+
+Herencia tiene 2 pilares:
+    - Reutilizar el código
+    - Polimorfismo 
+
+Como Gerente hereda de Funcionario, todo gerente es un funcionario.
+Por ende Funcionario es una clase genérica, y Gerente es una clase más específica.
+
+En java todo es una referencia
+
+
+
+public class TestReferencias {
+    public static void main(String[] args) {
+
+        // Elemento más generico (funcionario  ) puede ser adaptador
+        // Al elemento más específico (gerente)
+        Funcionario funcionario = new Gerente();
+        // funcionario no tiene el método de iniciar sesion, porque la referencia de Funcionario, no incluye ese metodo.. 
+        // El tipo más génerico si es posible inicializarlo como uno más específico. 
+        // Pero la referencia del objeto va a ser del tipo génerico.
+        funcionario.setNombre("Maat");
+
+        Gerente gerente = new Gerente();
+        gerente.setNombre("Jimena");
+
+        funcionario.setSalario(2000.0);
+        gerente.setSalario(10000.0);
+
+        // Accedemos a la clase que si tenga ese método
+        gerente.iniciarSesion("_ddd");
+    }
+}
+
+En el mundo orientado a objetos, el polimorfismo permite que:
+Las referencias de tipos de clases más genéricos referencian objetos más específicos.
+
+Empleado e = new Gerente();
+
+
+-----------------------------------------------------
+04 Aplicando polimorfismo
+
+Ahora en la clase ControlBonificacion.java.. De acuerdo a Funcionario o Gerente, calculamos la bonificacion
+public class ControlBonificacion {
+    
+    private double suma;
+
+    public double registrarSalario(Funcionario funcionario) {
+        this.suma = funcionario.getBonificacion() + this.suma;
+        System.out.println("Calculo Actual: " + this.suma);
+        return this.suma;
+    }
+    
+    public double registrarSalario(Gerente gerente) {
+        this.suma = gerente.getBonificacion() + this.suma;
+        System.out.println("Calculo Actual: " + this.suma);
+        return this.suma;
+    }
+}
+
+
+Testeamos en el siguiente archivo..
+public class TestControlBonificacion {
+
+    public static void main(String[] args) {
+        
+        Funcionario maat = new Funcionario();           // Funcionario
+        maat.setSalario(2000.0);
+
+        Gerente jimena = new Gerente();                 // Gerente
+        jimena.setSalario(10000.0);
+
+        ControlBonificacion controlBonificacion = new ControlBonificacion();
+        controlBonificacion.registrarSalario(maat);                             // Calculamos para Funcionario
+        controlBonificacion.registrarSalario(jimena);                           // Calculamos para el Gerente
+
+
+    }
+
+}
+---- Ejericio
+Empleado e = new Gerente();
+e.autenticar(1234);
+
+Según lo que aprendió en clase, ¿por qué no se compiló el código?
+Porque la referencia e* es de tipo *Empleado e la clase Empleado no tiene el método autenticar.
+Correcto. Quien define lo que podemos chamar es la referencia, que es del tipo Empleado, y es la clase Empleado el que realmente no tiene ese método.
+
+-- Incorrecto
+Porque la referencia e siempre necesita ser del mismo tipo de objeto.
+Incorrecto. El polimorfismo justamente dice que podemos referenciar un objeto a través del mismo tipo de referencia, al más genérico.
+
+
+-----------------------------------------------------
+06 Extends
+Cuando tenemos el mismo método pero que recibe diferentes argumentos, se llama sobre carga del método.
+
+// Para este caso usamos una única puerta de entrada para los funcionarios, de manera general.
+public class ControlBonificacion {
+    
+    private double suma;
+    
+    public double registrarSalario(Funcionario funcionario) {
+        this.suma = funcionario.getBonificacion() + this.suma;
+        System.out.println("Calculo Actual: " + this.suma);
+        return this.suma;
+    }
+    
+}
+
+// Tango el gerente, el contador, son funcionarios
+public class TestControlBonificacion {
+
+    public static void main(String[] args) {
+        
+        Funcionario maat = new Funcionario();
+        maat.setSalario(2000.0);
+
+        Gerente jimena = new Gerente();
+        jimena.setSalario(10000.0);
+
+        Contador alexis = new Contador();           // Con el contador, creamos un método para el control de la bonificación.
+        alexis.setSalario(5000.0);
+
+        ControlBonificacion controlBonificacion = new ControlBonificacion();
+        controlBonificacion.registrarSalario(maat);             // Tendremos el resultado, los 3 son funcionarios
+        controlBonificacion.registrarSalario(jimena);
+        controlBonificacion.registrarSalario(alexis);
+
+
+    }
+
+}
+
+// Por lo tanto esta es otra característica de polimorfismo.
+Todos entran por la misma puerta, todos son funcionarios, son aceptables para el parámetro..
+    public double registrarSalario(Funcionario funcionario) {
+
+
+--- Ejercicio
+Dada la clase Vehiculo:
+public class Vehiculo {
+    public void encender() {
+        System.out.println("Encendiendo vehículo");
+    }
+}
+
+La clase Carro:
+class Carro extends Vehiculo {
+    public void encender() {
+        System.out.println("Encendiendo Carro");
+    }
+}
+
+Y la clase Moto:
+class Moto extends Vehiculo {
+    public void encender() {
+        System.out.println("Encendiendo Moto");
+    }
+}
+
+Vea el código con el método main:
+public class Teste {
+    
+    public static void main(String[] args) {
+        
+        Vehiculo m = new Moto();
+        m.encender();
+        
+        Vehiculo c = new Carro();
+        c.encender();
+    }
+    
+}
+
+Cuando se ejecuta, ¿qué se imprimirá en la consola?
+Encendiendo Moto
+Encendiendo Carro
+
+Correcto. Siempre será llamado el método más específico, primero el método de Moto, después de Carro.
+
+--- Ejercicio
+Continuamos con el ejemplo Vehiculo, Moto y Carro:
+public class Vehiculo {
+    public void encender() {
+        System.out.println("Encendiendo vehiculo");
+    }
+}
+
+public class Carro extends Vehiculo {
+    public void encender() {
+        System.out.println("Encendiendo Carro");
+    }
+}
+
+public class Moto extends Vehiculo {
+    public void encender() {
+        System.out.println("Encendiendo Moto");
+    }
+}
+
+Y vea el código casi completo:
+public class Teste {
+
+    public static void main(String[] args) {
+
+        ???? v = new Carro();
+    }
+
+}
+
+¿Qué podemos insertar en lugar de ???? para compilar el código sin errores?
+Carro
+Correcto, siempre podemos usar el mismo tipo de referencia y objeto.
+
+Vehiculo
+Correcto, pues el carro es un Vehiculo.
+
+
+-----------------------------------------------------
+09 Resumen
+
+Sobre la sobreescritura de métodos, podemos aplicarlo en el lugar deseado..
+En esta situación no usamos el metodo getBonificacion() del padre, funcionario, sino que usamos la propia dentro de la clase Contador
+public class Contador extends Funcionario{
+    
+    @Override
+    public double getBonificacion() {
+        // return super.getBonificacion(); // No usaremos la bonitificacion del padre (funcionario)
+        System.out.println("Eejcutando desde Contador");
+        return 200;
+    }
+
+}
+
+Al momento de realizar el test..
+
+public class TestControlBonificacion {
+
+    public static void main(String[] args) {
+        
+        Funcionario maat = new Funcionario();
+        maat.setSalario(2000.0);
+
+        Gerente jimena = new Gerente();
+        jimena.setSalario(10000.0);
+
+        Contador alexis = new Contador();           // Con el contador, creamos un método para el control de la bonificación.
+        alexis.setSalario(5000.0);
+
+        ControlBonificacion controlBonificacion = new ControlBonificacion();
+        controlBonificacion.registrarSalario(maat);
+        controlBonificacion.registrarSalario(jimena);
+        controlBonificacion.registrarSalario(alexis);       // Obtenemos la bonificación a partir del método que empleamos dentro de la clase Contador.
+
+
+    }
+
+}
+
+En esta clase aprendimos que:
+
+los objetos no cambian de tipo;
+la referencia puede cambiar, y ahí es donde entra el polimorfismo;
+el polimorfismo permite utilizar referencias más genéricas para comunicarse con un objeto;
+el uso de referencias más genéricas permite desacoplar sistemas.
+En el siguiente vídeo, hablaremos sobre cómo se comportan los constructores en la herencia.
+
+-----------------------------------------------------
+02 Más sobre polimorfismo
+
+Ahora usaremos la clase Cuenta del ejercicio anterior..
+
+public class Cuenta{
+    private double saldo;
+    private int agencia;
+    private int numero;
+    Cliente titular = new Cliente();
+    
+    private static int total = 0;
+    
+
+
+    public Cuenta(int agencia, int numero) {            // Usando el constructor para CuentaAhorro y CuentaCorriente
+        this.agencia = agencia;
+        this.numero = numero;
+        
+        
+        Cuenta.total ++;
+    }
+
+    void depositar(double valor){
+        this.saldo += valor;
+    }
+
+    public boolean retirar(double valor){
+        if (this.saldo >= valor){
+            this.saldo -= valor;
+            return true;
+        } 
+        return false;
+    }
+
+    public boolean transferir(double valor, Cuenta cuenta){
+        if (this.saldo >= valor){
+            this.saldo = this.saldo - valor;
+            cuenta.depositar(valor);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public double getSaldo(){
+        return this.saldo;
+    }
+
+    public int getAgencia(){
+        return agencia;
+    }
+
+    public void setTitular(Cliente titular){
+        this.titular = titular;
+    }
+
+    public Cliente getTitular(){
+        return titular;
+    }
+
+    public static int getTotal(){
+        return Cuenta.total;
+    }
+}
+
+Armamaos las clases para CuentaAhorro y CuentaCorriente
+Las cuales extienden de nuestra clase Cuenta
+public class CuentaAhorro extends Cuenta {
+
+    public CuentaAhorro( int agencia, int numero) {
+        super(agencia, numero);
+    }
+}
+
+
+public class CuentaCorriente extends Cuenta{
+    
+    public CuentaCorriente(int agencia, int numero){
+        super(agencia, numero);
+    }
+
+}
+
+
+Con respecto a la herencia de clases, seleccione las afirmaciones verdaderas:
+-- Correctas
+Cuando una clase hereda de otra clase, también recibe sus métodos.
+Correcto. Heredamos los métodos.
+
+Cuando una clase hereda de otra clase, también recibe sus atributos.
+Correcto. Heredamos los atributos (el objeto se crea en base a todos los atributos de la jerarquía).
+
+-- InCorrectas
+Cuando una clase hereda de otra clase, también recibe sus constructores automáticamente.
+Incorrecto. Ya que solo recibe sus métodos y atributos. Recuerda que no tienes herencia de los constructores.
+
+
+-----------------------------------------------------
+04 Sobre escritura métodos
+
+Ahora para validar que todo está correcto armamos el Test..
+
+public class Cuenta{
+    private double saldo;
+    private int agencia;
+    private int numero;
+    Cliente titular = new Cliente();
+    
+    private static int total = 0;
+    
+
+
+    public Cuenta(int agencia, int numero) {
+        this.agencia = agencia;
+        this.numero = numero;
+
+        
+        Cuenta.total ++;
+    }
+
+    void deposita(double valor){
+        this.saldo += valor;
+    }
+
+    public boolean retirar(double valor){
+        if (this.saldo >= valor){
+            this.saldo -= valor;
+            return true;
+        } 
+        return false;
+    }
+
+    public boolean transfiere(double valor, Cuenta cuenta){
+        if (this.saldo >= valor){
+            // this.saldo = this.saldo - valor;
+            // cuenta.deposita(valor);
+            this.retirar(valor);                                // Modificamos el método de transferir
+            cuenta.deposita(valor);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public double getSaldo(){
+        return this.saldo;
+    }
+
+    public int getAgencia(){
+        return agencia;
+    }
+
+    public void setTitular(Cliente titular){
+        this.titular = titular;
+    }
+
+    public Cliente getTitular(){
+        return titular;
+    }
+
+    public static int getTotal(){
+        return Cuenta.total;
+    }
+}
+
+Con la CuentaAhorro
+public class CuentaAhorro extends Cuenta {
+
+    public CuentaAhorro( int agencia, int numero) {
+        super(agencia, numero);
+    }
+
+
+}
+
+
+Con la CuentaCorriente, sobreescribimos el método de la clase Cuenta
+public class CuentaCorriente extends Cuenta{
+    
+    public CuentaCorriente(int agencia, int numero){
+        super(agencia, numero);
+    }
+
+    // Rescribimos override, del padre, acá obtenemos el concepto de Polimorfismo
+    // Lo siguiente se le llama Firma, el nombre, los parametros, deben ser IGUALES.
+    @Override 
+    public boolean retirar(double valor) {          
+        double comision = 4.2;
+        System.out.println("Desde CuentaCorriente");            // Observamos además que accedemos a este método modificado del padre.
+        return super.retirar(valor + comision) ;
+    }
+}
+
+Por ultimo armamos el test..
+public class TestCuenta {
+
+    public static void main(String[] args) {
+        CuentaCorriente cc = new CuentaCorriente(1, 1);
+        CuentaAhorro ca = new CuentaAhorro(2, 3);
+
+        cc.deposita(5000);
+        cc.transfiere(1000, ca);
+                                                            // Verificamos
+        System.out.println(cc.getSaldo());                  // 3995.8
+        System.out.println(ca.getSaldo());                  // 1000.0
+        // System.out.println(ca);
+
+        // System.out.println(cc.horroAhorro());
+        // System.out.println(ca.horroAhorro());
+    }
+    
+}
+
+Aprendimos que la construcción de un objeto se basa en su(s) constructor(es).
+
+¿Cuál de las siguientes alternativas es correcta?
+El constructor por default de java deja de existir a partir del momento que alguno es declarado en la clase.
+Correcto. Tan pronto como creamos nuestro propio constructor, el constructor predeterminado (sin parámetros) deja de existir. Sin embargo, nada impide agregar explícitamente el constructor por default.
+
+
+En la última clase vimos sobre la anotación @Override. ¿Cuál es su propósito?
+Se utiliza para sobrescribir el método de la clase madre, lo que indica que se ha modificado el método original.
+¡Alternativa correcta!
+
+
+En esta clase, vimos:
+
+Conceptos de herencia, constructores y polimorfismo
+Usando la anotación @Override
+Los constructores no se heredan
+Se puede llamar a un constructor de clase madre mediante super()
+
+-----------------------------------------------------
+02 Clase abstracta
+
+Considerando que funcionario es un término general, pero no describe un concepto de clase, más bien un concepto Abstracto.
+Declaramos la abstracción..
+public abstract class Funcionario { }
+
+La clase al ser abstracta, no puede ser instanciada. No puede ser una representación física del objeto.
+
+public class TestFuncionario {
+
+    public static void main(String[] args) {
+        // Funcionario maat = new Funcionario ();       // Este no va, la clase abstracta no puede ser instanciada
+        Funcionario maat = new Contador ();             // Contador si puede ser instanciado
+        maat.setDocumento("2342");
+        maat.setSalario(6000.0);
+        maat.setTipo(0);
+
+        System.out.println(maat.getDocumento());
+        System.out.println(maat.getSalario());
+        System.out.println(maat.getBonificacion());
+    }
+}
+
+Lo mismo para el TestControlador
+
+public class TestControlBonificacion {
+
+    public static void main(String[] args) {
+        
+        // Funcionario maat = new Funcionario();        
+        Funcionario maat = new Contador();          // Apuntamos a la clase Abstracta
+        maat.setSalario(2000.0);
+
+        Gerente jimena = new Gerente();
+        jimena.setSalario(10000.0);
+
+        Contador alexis = new Contador();           
+        alexis.setSalario(5000.0);
+
+        ControlBonificacion controlBonificacion = new ControlBonificacion();
+        controlBonificacion.registrarSalario(maat);
+        controlBonificacion.registrarSalario(jimena);
+        controlBonificacion.registrarSalario(alexis);
+    }
+}
+
+Por lo tanto..
+¿Cuál de las siguientes afirmaciones es verdadera sobre las clases abstractas?
+No se pueden ser instanciadas. Para crear una instancia, primero debemos crear una clase hija no abstracta.
+Correcto. Una clase abstracta representa un concepto, algo abstracto, y el compilador no permite instanciar un objeto de esa clase. Para crear una instancia, es necesario crear primero una clase hija no abstracta.
+
+
+
+
+-----------------------------------------------------
+04 Método abstracto
+
+Todos los beneficios del polimorfismo lo tenemos disponible, aún.
+Cual es la razón de declarar una clase como abstracta.
+
+Todo método abstracto, DEBE ser implementado por la clase que lo está extendiendo, de lo contrario, tendremos un error.
+
+De esta manera la bonificacion dentro de la clase de Funcionario, será un método abstracto que será calculado por cada entidad, Contador o Gerente en nuestro ejemplo.
+
+public abstract class Funcionario {             // La clase será abstracta
+
+    private String nombre;
+    private String documento;
+    private Double salario;
+    private int tipo;
+    
+    // Creamos el constructor
+    public Funcionario(){
+
+    }
+
+    // Declaramos los setter y getters
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+    
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setSalario(Double salario) {
+        this.salario = salario;
+    }
+
+    public Double getSalario() {
+        return salario;
+    }
+
+    // public double getBonificacion (){    // No va, ya que cada clase lo hará por sí, y esta clase abstracta no la tendrá.
+                                            // Pero, lo debemos dejar para considerar el Control Bonificación
+        // return this.salario * 0.05;      // Pensamos otra manera de apuntar el incoveniente.
+        // Podemos definir metodo abstractos dentro de una clase abstracta.
+    // }
+
+    public abstract double getBonificacion();      // De esta manera declaramos un método abstracto, sin cuerpo, sin el {}.
+
+
+    public int getTipo() {
+        return tipo;
+    }
+    
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+}
+
+Con la implementación de este método de tipo abstracto, al dejarlo sin el cuerpo, cada entidad lo manejará dentro del cuerpo de su clase.
+
+
+¿Cuál de las siguientes afirmaciones es verdadera sobre los métodos abstractos?
+No tienen cuerpo (implementación), solo definen la firma.
+Correcto, un método abstracto define solo la firma (visibilidad, retorno, nombre del método y parámetros).
+
+-----------------------------------------------------
+06 Cuenta abstracta
+
+Como lo hicimos con la clase Funcionario, lo haremos con la Cuenta.
+Una clase abstracta puede tener constructores por defecto y constructores personalizados.
+También métodos reales, setters y getters también.
+Solo que ahora clase no puede ser instanciada por sí sola, debe ser instanciada a través de una clase hija que extienda de esta clase abstracta.
+
+De esta manera en el archivo cuenta la pasamos a clase Abstracta..
+public abstract class Cuenta{           // Agregamos la clase abstract
+    
+    protected double saldo;     // Lo pasamos a protected para que sea accesible desde las Cuentas hijas, ahorro y corriente.
+    private int agencia;
+    private int numero;
+    Cliente titular = new Cliente();
+    
+    private static int total = 0;
+    
+
+
+    public Cuenta(int agencia, int numero) {
+        this.agencia = agencia;
+        this.numero = numero;
+
+        
+        Cuenta.total ++;
+    }
+
+    // public abstract void deposita(double valor){     // Practicamos agregar abstracto este método
+    //     this.saldo += valor;
+    // }
+    public abstract void deposita(double valor);         //  Sin el cuerpo
+
+    public boolean retirar(double valor){
+        if (this.saldo >= valor){
+            this.saldo -= valor;
+            return true;
+        } 
+        return false;
+    }
+
+    public boolean transfiere(double valor, Cuenta cuenta){
+        if (this.saldo >= valor){
+            // this.saldo = this.saldo - valor;
+            // cuenta.deposita(valor);
+            this.retirar(valor);
+            cuenta.deposita(valor);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public double getSaldo(){
+        return this.saldo;
+    }
+
+    public int getAgencia(){
+        return agencia;
+    }
+
+    public void setTitular(Cliente titular){
+        this.titular = titular;
+    }
+
+    public Cliente getTitular(){
+        return titular;
+    }
+
+    public static int getTotal(){
+        return Cuenta.total;
+    }
+}
+
+Ahora las clases hijas como CuentaAhorro CuentaCorriente, debemos implementarse considerando a su padre como clase abstracta.
+
+
+public class CuentaAhorro extends Cuenta {
+
+    public CuentaAhorro( int agencia, int numero) {
+        super(agencia, numero);
+    }
+
+    @Override                                   // Reescribimos el método padre que usaremos en esta clase hija.
+    public void deposita(double valor) {
+        this.saldo += valor;                    // Entonces desde aquí accedemos al valor protected   
+    }
+
+}
+
+Las clases hijas que heredan de una clase abstracta padre, DEBEN SI O SI, implementar sus métodos abstractos.
+En el caso anteriro de CuentaAhorro y en este de CuentaCorriente, sobreescribimos los métodos a reutilizar.
+
+public class CuentaCorriente extends Cuenta{
+    
+    public CuentaCorriente(int agencia, int numero){
+        super(agencia, numero);
+    }
+
+    // Rescribimos override, del padre, acá obtenemos el concepto de Polimorfismo
+    // Lo siguiente se le llama Firma, el nombre, los parametros, deben ser IGUALES.
+    @Override 
+    public boolean retirar(double valor) {
+        double comision = 4.2;
+        System.out.println("Desde CuentaCorriente");
+        return super.retirar(valor + comision) ;
+    }
+
+    @Override                                   // Reescribimos el método padre que usaremos en esta clase hija.
+    public void deposita(double valor) {
+        this.saldo += valor;                    // Entonces desde aquí accedemos al valor protected   
+    }
+}
+
+Acerca de las clases y métodos abstractos, de las siguientes declaraciones, cuáles son verdaderas?
+Las clases abstractas son útiles cuando queremos utilizar comportamientos y atributos basados ​​en clases con comportamientos comunes.
+Correcto ¡Los beneficios de la herencia siguen siendo válidos!
+
+Usamos métodos abstractos cuando queremos "forzar" a un hijo concreto (clase concreta) a implementar un método.
+Correcto. Ese es el significado de los métodos abstractos, garantizar que el hijo implemente un comportamiento.
+
+
+
+¿Qué es cierto sobre las clases abstractas? Seleccione todas las declaraciones verdaderas:
+
+No se puede crear una instancia
+Correcto, porque lo abstracto (la clase) no puede volverse concreto (objeto). Por lo tanto, no podemos instanciar objetos de una clase abstracta.
+
+Puede tener métodos abstractos (sin implementación)
+Correcto, como vimos, una clase abstracta puede tener métodos sin implementación. Por lo tanto, obligamos a un hijo a implementar el método.
+
+Pueden tener atributos
+Correcto, podemos tener atributos Una clase abstracta es una clase normal, simplemente no puede instanciar y puede tener métodos abstractos. ¡El resto sigue siendo válido!
+
+Puede tener métodos concretos (con implementación)
+Correcto, como pueden tener atributos, ¡también pueden tener métodos concretos!
+
+En esta clase aprendimos:
+
+Qué son las clases abstractas
+Para qué sirven las clases abstractas
+Qué son los métodos abstractos
+Para qué sirven los métodos abstractos
+-----------------------------------------------------
+02 Herencia multiple
+            Extends  -> Gerente
+Funcionario
+            Extends  -> Contador
+            Extends  -> Administrador (Ahora lo agregamos)
+
+Ahora el admin y el gerente, podran hacer login.
+
+
+Vimos en la última clase que no hay herencia múltiple en Java. ¿Cómo podemos evitar la falta de ella?
+Podemos solucionar esta situación con el uso de interfaces.
+Correcto. Usando interfaces tenemos otra forma de lograr polimorfismo sin herencia.
+
+
+Creamos un archivo tipo SistemaInterno.java.. El cual se encarga de loguear o no
+public class SistemaInterno {
+ 
+    private String clave = "12345";
+
+    public boolean autentica(Gerente gerente){
+        boolean puedeIniciarSesion = gerente.iniciarSesion(clave);
+        if(puedeIniciarSesion){
+            System.out.println("Login exitoso");
+            return true;
+        }else { 
+            System.out.println("Error en Login");
+            return false;
+        }
+    }
+
+}
+
+
+
+
+-----------------------------------------------------
+04 Modificando la estructura
+
+Creamos un archivo como Funcionario autenticable, el cual dará herencia al Gerente y Administrador, no al contador
+public class FuncionarioAutenticable {
+    
+    private String clave;
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public boolean iniciarSesion(String clave){
+        return clave == "Maat";
+    }
+
+}
+
+En java no podemos extender de más de una clase.. HIJO de un solo padre.
+No podemos sacrificar funcionalidad para rescatar otra
+
+
+public class SistemaInterno {
+ 
+    private String clave = "Maat";
+
+    public boolean autentica(FuncionarioAutenticable gerente){
+        boolean puedeIniciarSesion = gerente.iniciarSesion(clave);
+        if(puedeIniciarSesion){
+            System.out.println("Login exitoso");
+            return true;
+        }else { 
+            System.out.println("Error en Login");
+            return false;
+        }
+    }
+
+}
+
+public class Admnistrador extends FuncionarioAutenticable {
+    
+    // private String clave;
+
+    // public void setClave(String clave) {
+    //     this.clave = clave;
+    // }
+
+    // public boolean iniciarSesion(String clave){
+    //     return clave == "Maat";
+    // }
+
+    // @Override, no sobreescribe, porque ahora tendremos nuestro propio método, no sobrescribimos el anterior de funcionario.
+    public double getBonificacion(){
+        return 0;
+    }
+
+}
+
+//                 Extiende de
+public class Gerente extends FuncionarioAutenticable {
+ 
+    // private String clave;
+
+    // public void setClave(String clave) {
+    //     this.clave = clave;
+    // }
+
+    // public boolean iniciarSesion(String clave){
+    //     return clave == "Maat";
+    // }
+
+    // Sobre escritura de metodo
+    public double getBonificacion(){
+        System.out.println("Eejcutando desde Gerente");
+        // return super.getSalario() + super.getBonificacion(); // Este no va..
+        // return super.getSalario() + this.getSalario() * 0.05;   //  De acuerdo a lo antedicho, debemos redefinir el método para obtener la bonificación.
+        return 2000;
+
+    }
+}
+
+public class FuncionarioAutenticable {
+    
+    private String clave;
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public boolean iniciarSesion(String clave){
+        return clave == "Maat";
+    }
+
+}
+
+Y ahora en el test test TestSistemaInterno.. Validamos correctamente el Login.
+
+public class TestSistemaInterno {
+
+    public static void main(String[] args) {
+        
+        SistemaInterno sistema = new SistemaInterno();
+        Gerente gerente1 = new Gerente();
+
+        Admnistrador admin = new Admnistrador();
+
+        sistema.autentica(gerente1);
+        sistema.autentica(admin);
+
+
+    }
+    
+}
+
+
+Funciona pero rompemos otra funcionalidad existente previamente.
+
+Con respecto a las interfaces, ¿cuál de las siguientes alternativas es la correcta?
+Es un contrato donde el que firma es responsable de implementar estos métodos (cumplir el contrato)
+¡Alternativa correcta!
+
+-----------------------------------------------------
+06 Interfaces
+
+Ahora con FuncionarioAutenticable, será el intermediario entre Gerente y Administrador con el funcionario.
+
+
+                -> Contador               
+Funcionario     -> FuncionarioAutenticable  -> Gerente 
+                                            -> Administ
+
+                                                
+Ahora agregamos el Cliente, ahora el cliente NO ES un Funcionario.. Salarios, y demás.
+Debemos pensar al cliente de manera conceptual de manera correcta.
+
+Escribimos código que sea entendible para otros.
+
+-----------------------------------------------------
+07 Separando dominios
+
+Autenticable es la llave (carnet), mientras que SistemaInterno es la puerta.
+Interfaz, como una clase.. Es muy parecido a lo que es una clase abstracta
+De esta manera pasamos una clase a una interface, estas NO DEBEN TENER métodos implementados, con cuerpo.
+
+public abstract interface Autenticable extends Funcionario {
+    
+    private String clave;
+
+    public void setClave(String clave);
+    // public void setClave(String clave) {
+    //     this.clave = clave;
+    // }
+
+    public abstract boolean iniciarSesion(String clave);
+    // public boolean iniciarSesion(String clave){
+    //     return clave == "Maat";
+    // }
+
+    // @Override
+    // public double getBonificacion(){
+    //     return 0;
+    // }
+}
+
+Acerca de las clases e interfaces abstractas, seleccione todas las declaraciones verdaderas:
+Podemos extender solo una clase abstracta, pero podemos implementar varias interfaces.
+¡Correcto! Solo existe una herencia simple en Java, pero podemos implementar tantas interfaces como queramos.
+
+Todos los métodos de una interfaz son abstractos, los de una clase abstracta pueden no serlo.
+Correcto, todos los métodos en la interfaz son siempre abstractos y siempre públicos.
+En una clase abstracta podemos tener métodos concretos y abstractos.
+
+-----------------------------------------------------
+09 Interfaces implementación
+
+Todos los métodos de un interfaz deben ser abstractos
+La interfaz es un rótulo, todo lo que tenga ese sello/etiqueta.. 
+
+Autenticable, le da la posibilidad a cada Funcionario de gestionar sus métodos.
+
+Alta cohesion, bajo acoplamiento.. El sistema puede escalar exponencialmente.
+
+
+Toda interfaz es abstracta, evitamos ponerle el abstract, porque se sobrenetiende que así es..
+
+Entonces tendremos la interfaz Autenticable, la cual declara la firma de los métodos, pero no los implementa, se lo deja a cada objeto que use la interfaz.
+public interface Autenticable {
+    
+    // private String clave;
+
+    public void setClave(String clave);
+    // public void setClave(String clave) {
+    //     this.clave = clave;
+    // }
+
+    public boolean iniciarSesion(String clave);
+    // public boolean iniciarSesion(String clave){
+    //     return clave == "Maat";
+    // }
+
+    // @Override
+    // public double getBonificacion(){
+    //     return 0;
+    // }
+}
+
+
+Por Ejemplo gerente uso la interfaz y exitende de funcionario, e implementa los métodos..
+//                 Extiende de
+public class Gerente extends Funcionario implements Autenticable {
+ 
+    // private String clave;
+
+    // public void setClave(String clave) {
+    //     this.clave = clave;
+    // }
+
+    // public boolean iniciarSesion(String clave){
+    //     return clave == "Maat";
+    // }
+
+    // Sobre escritura de metodo
+    public double getBonificacion(){
+        System.out.println("Eejcutando desde Gerente");
+        // return super.getSalario() + super.getBonificacion(); // Este no va..
+        // return super.getSalario() + this.getSalario() * 0.05;   //  De acuerdo a lo antedicho, debemos redefinir el método para obtener la bonificación.
+        return 2000;
+
+    }
+
+    @Override
+    public void setClave(String Clave) {
+        
+    }
+    
+    @Override
+    public boolean iniciarSesion(String Clave) {
+        return false;
+    }
+
+}
+
+Lo mismo hace el Administrador
+public class Admnistrador extends  Funcionario implements Autenticable {
+    
+    // private String clave;
+
+    // public void setClave(String clave) {
+    //     this.clave = clave;
+    // }
+
+    // public boolean iniciarSesion(String clave){
+    //     return clave == "Maat";
+    // }
+
+    // @Override, no sobreescribe, porque ahora tendremos nuestro propio método, no sobrescribimos el anterior de funcionario.
+    @Override
+    public double getBonificacion(){
+        return 0;
+    }
+
+    
+    @Override
+    public void setClave(String Clave) {
+        
+    }
+    
+    @Override
+    public boolean iniciarSesion(String Clave) {
+        return false;
+    }
+}
+
+Y también el cliente..
+
+public class Cliente implements Autenticable {
+    private String nombre;
+    private String documento;
+    private String telefono;
+    
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    
+    public String getDocumento() {
+        return documento;
+    }
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
+
+    public String getTelefono() {
+        return telefono;
+    }
+    public void setTelefono(String telefono) {  
+        this.telefono = telefono;
+    }
+
+    @Override
+    public void setClave(String Clave) {
+        
+    }
+    
+    @Override
+    public boolean iniciarSesion(String Clave) {
+        return false;
+    }
+
+}
+
+
+-----------------------------------------------------
+10 Resumen
+La interfaz, desacopla todo lo que es autenticable de lo que es Funcionario..
+Ya que el cliente no tiene nada que ver como funcionario.
+
+Interfaz, similar a una clase abstracta.. La interfaz no puede tener metodos implementados.
+
+La clase abstracta, puede tener..
+    - Atributos privados
+    - Puede tener constructor
+
+La intefaz..
+    - No tiene atributos privados
+    - No puede tener constructor, no es un objeto en sí, es un tipo o un rotulo
+    - No puede tener metodos implementados, solo la FIRMA, la implementación depende de cada objeto que implemente la interfaz.
+- No representa un nivel jerarquico, no hay una relación de padre a hijo.. Es como una etiqueta que le agregamos para darle una nota distintiva.
+La interfaz es algo común que comparten los objetos.. No representa una relación directa.
+
+
+En cuanto al concepto de polimorfismo, marque las alternativas correctas:
+Es la capacidad de un objeto de ser referenciado por varios tipos.
+Correcto. Podemos comunicarnos con un objeto a través de diferentes tipos de variables.
+Por ejemplo, si hay una clase Gerente que sea hija de Empleado. Un objeto de tipo Gerente puede ser referenciado como tipo Empleado también.
+
+
+Tenemos polimorfismo cuando una clase se extiende de otra o también cuando una clase implementa una interfaz.
+Correcto, tenemos polimorfismo por herencia o interfaz.
+
+En esta clase aprendimos que:
+
+No hay herencia múltiple en Java.
+Conceptos de interfaz.
+Diferencias entre clases abstractas e interfaces.
+Las interfaces son una alternativa a la herencia con respecto al polimorfismo
+
+-----------------------------------------------------
+02 Overview herencia
+
+Ahora para simplificar código, usamos utilidades que serán reutilizadas dentro de nuestro codigo..
+Por ejemplo.. AutenticacionUtil
+
+public class AutenticacionUtil {
+    private String clave;
+
+    public boolean iniciarSesion(String clave) {
+    
+        return this.clave == clave;
+    }
+
+    public void setClave(String clave){
+        this.clave = clave;
+    }
+}
+
+
+-----------------------------------------------------
+03 Uso herencia
+
+El Jdk, se basa en el concepto de herencia y poliformismo.. 
+El metodo de connect con la base de datos es una interface, y luego nosotros usamos el metodo para apuntar a mysql, oracle, etc.
+
+Como vimos durante el curso y revisamos durante este capítulo, ¿cuál de las siguientes afirmaciones describe una ventaja de usar la herencia?
+La herencia captura lo que es común y aísla lo que es diferente entre clases.
+Correcto.
+
+-- Incorrecto
+La herencia tiene un acoplamiento bajo, por lo que es fácil cambiar una clase madre sin causar problemas en las clases secundarias.
+Incorrecto. Y, todo lo contrario. Existe una fuerte conexión entre madre e hijo, por lo que es necesario tener mucho cuidado al utilizar la herencia.
+
+-------------------------------
+Como vimos durante el curso y revisamos durante este capítulo, ¿cuál de las siguientes afirmaciones describe una ventaja de usar interfaces?
+
+Garantiza que todos los métodos de clase que implementan una interfaz se puedan llamar de forma segura.
+¡Correcto! Esta es la idea del contrato, asegurar que la clase tenga un comportamiento, solo basta con firmar el contrato (implementar la interfaz).
+
+
+-- Incorrectas
+Cuando se extienden, generan un contrato entre la interfaz y la clase que llama.
+¡Incorrecto! De hecho, las interfaces se implementan, no extienden.
+
+Permite atributos y por tanto mejora la legibilidad del código.
+¡Incorrecto! Las interfaces no pueden tener atributos.
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------
+06 Aislando funcionalidad
+
+Este será nuestro archivo utilitario..
+public class AutenticacionUtil {
+    private String clave;
+
+    public boolean iniciarSesion(String clave) {
+    
+        return this.clave == clave;
+    }
+
+    public void setClave(String clave){
+        this.clave = clave;
+    }
+}
+
+Ahora nos traemos la urilida..
+public class Admnistrador extends  Funcionario implements Autenticable {
+    
+    // private String clave; No se usa
+    private AutenticacionUtil util;         // Nos traemos el AutenticacionUtil, util
+
+    public Admnistrador(){
+        this.util = new AutenticacionUtil();
+    }
+
+    // public void setClave(String clave) {
+    //     this.clave = clave;
+    // }
+
+    // public boolean iniciarSesion(String clave){
+    //     return clave == "Maat";
+    // }
+
+    // @Override, no sobreescribe, porque ahora tendremos nuestro propio método, no sobrescribimos el anterior de funcionario.
+    @Override
+    public double getBonificacion(){
+        return this.getSalario();
+    }
+
+    
+    @Override
+    public void setClave(String clave) {
+        // this.clave = clave;
+        this.util.setClave(clave);              // Implementamos el util
+    }
+    
+    @Override
+    public boolean iniciarSesion(String clave) {
+        
+        // if(this.clave == clave){
+        //     return true;
+        // }
+        // return this.clave == clave;
+        return this.util.iniciarSesion(clave);          // Implementamos el util
+    }
+}
+
+
+
+public class Cliente implements Autenticable {
+    
+    private String nombre;
+    private String documento;
+    private String telefono;
+
+    // Nos traemos la utilidad..
+    private AutenticacionUtil util;
+
+    // private String clave; Ahora la quitamos porque no se usa
+    
+    // Composición de objetos.. Lo metemos dentro del constructor
+    public Cliente(){
+        this.util = new AutenticacionUtil();
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    
+    public String getDocumento() {
+        return documento;
+    }
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
+
+    public String getTelefono() {
+        return telefono;
+    }
+    public void setTelefono(String telefono) {  
+        this.telefono = telefono;
+    }
+
+    @Override
+    public void setClave(String clave) {
+        // this.clave = clave;
+        this.util.setClave(clave);                  // Implementamos el util
+    }
+    
+    @Override
+    public boolean iniciarSesion(String clave) {
+        // if (this.clave == clave){
+        //     return true;
+        // }
+        // return this.clave == clave; No usamos esto, sino que nos apoyamos en la utilidad, del metodo que creamos en AutenticacionUtil
+        return this.util.iniciarSesion(clave);      // Implementamos el util
+    }
+
+}
+
+¿Cuál de las siguientes afirmaciones representa una ventaja de utilizar la composición y las interfaces sobre el uso de la herencia?
+Con composiciones e interfaces tendremos más flexibilidad con nuestro código, ya que no estaremos apegados al acoplamiento que propone la herencia.
+Correcto.
+
+
+-----------------------------------------------------
+08 Composición objetos
+
+En esta clase aprendemos:
+
+Más en profundidad sobre el uso de interfaces
+Trabajamos más profundamente con la herencia
+Vimos otras aplicaciones de herencia e interfaz
+
+-----------------------------------------------------
+Enums: Son tipo de datos especiales en donde una variable, puede tener el valor de un grupo de constantes predefinidas.
+
+package enums;
+
+public enum Dia {
+    LUNES, MARTES, MIERCOLES, JUEVES, VIERNES, SABADO, DOMINGO
+
+}
+
+package enums;
+
+public class principal {
+
+    public sttic void mian (String[] args){
+        for (Dia dia : Dia.values()){
+            System.out.println("El dia de la semana es: " + dia);
+        }
+        Dia domingo = Dia.DOMINO;
+        System.out.println(domingo.name());             // DOMINGO
+        System.out.println(domingo.ordinal());          // Posicion del index  6
+        System.out.println(domingo.toString());         // Para pasar de enum a string DOMINGO
+    }
+}
+
+Los enum se usan cuando queremos representar un grupo fijo de constantes, enumeraicon de tipo natural, como los planetas del sistema solar, y conjunto de datos donde se conoce el valor de los tipos de datos en tiempo de coleccion, opciones de un menu, los colores, o como en el ejemplo los dias.

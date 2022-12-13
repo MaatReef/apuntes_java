@@ -1,0 +1,98 @@
+body {
+    background: #b75f4b;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #481818, #b75f4b);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #481818, #b75f4b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+h1, p, a{
+    font-family: 'Raleway', sans-serif;
+    display: inline-block;
+    text-align: center;
+    line-height:.8;
+    color: white;
+    padding: 0rem;
+}
+.index{
+    font-size: 1.5rem;
+    margin-left: -1.5   rem;
+    text-decoration: underline;
+}
+ul{
+    text-decoration: none;
+}
+li{
+    font-family: 'Raleway', sans-serif;
+    line-height:1.8rem;
+    color: white;
+}
+.search {
+    display: inline-block;
+    font-size: 1.4rem;
+    margin-top: 1.5rem;
+    margin-left: 12rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    font-family: 'Raleway', sans-serif;;
+    padding: 0.5rem;
+}
+pre{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin-left: 20rem;
+    display: inline-block;
+    margin: 5rem auto 0 auto;
+    line-height: 1.25rem;
+    color: white;
+}
+.contenido {
+    max-width: 1200px;
+    margin: 5rem auto 0 auto;
+    color: white;
+    font-size: 3rem;
+    font-family: 'Raleway', sans-serif;
+}
+@media (max-width:560px) {
+    .contenido{
+        font-size: 0.5rem;
+    }
+    pre{
+        font-size: 0.7rem;
+    }
+}
+h1 {
+    font-size: 4rem;
+}
+h2{
+    font-size: 2rem;
+    text-decoration: underline;
+    font-family: 'Raleway', sans-serif;;
+    padding-left: 2.5rem;
+    color: white;
+}
+p {
+    font-size: 2.2rem;
+}
+
+.hashtag {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/*Boton wpp*/
+.contact{
+    position: fixed;
+    right: 6px;
+    top: 90%;
+    z-index: 20;
+}
+.contact .wpp{
+    float: right;
+    clear: right;
+    margin: 6px;
+    max-width: 100%;
+    vertical-align: middle;
+    border-style: none;
+}
+.contact .wpp:hover{   
+    transform: scale(1.5) rotate(1turn);
+    transition: all 0.7s ease-in-out;
+}

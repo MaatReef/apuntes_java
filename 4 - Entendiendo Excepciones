@@ -1,0 +1,1308 @@
+Manejo de Errores
+-----------------------------------------------------------------------
+03 Pila de ejecución
+
+Lugar donde se ejecutan todas las tareas que java va realizando..
+
+
+public class Flujo {
+
+    public static void main(String[] args) {
+        System.out.println("Ini do main");
+        metodo1();
+        System.out.println("Fin do main");
+        
+    }
+        
+    private static void metodo1() {
+        System.out.println("Ini do metodo1");
+        metodo2();
+        System.out.println("Fin do metodo1");
+    }
+
+    private static void metodo2() {
+        System.out.println("Ini do metodo2");
+        for(int i = 1; i <= 5; i++){
+            
+            System.out.println(i);
+        }
+        System.out.println("Fin do metodo2");
+    }
+
+}
+                // Pila de Ejecución
+Ini do main
+Ini do metodo1
+Ini do metodo2
+1
+2
+3
+4
+5
+Fin do metodo2
+Fin do metodo1
+Fin do main
+
+-----------------------------------------------------------------------
+04 Pila de ejecución - Gráfico
+                    Luego.. 
+3    metodo 2       1
+2    meotdo 1       2
+1    main           3
+
+Main, luego metodo 1, luego metodo 2..
+Cuando metodo 2, termina se va, regresa al 1, cuando termina se va y regresa al main.
+El garbage collection limpia la memoria
+Ciclo de Ejecución, aplica para muchos lenguajes.
+
+Una pila -> Stack
+
+Ejercicio---
+
+public class Principal {
+
+    public static void main(String[] args) { 
+        System.out.println("MAIN BEGIN"); 
+        m1();
+        System.out.println("MAIN END");
+    }
+
+    public static void m1() { 
+        System.out.println("B BEGIN"); 
+        m2();
+        System.out.println("B END");
+    }
+
+    public static void m2() {
+        System.out.println("A BEGIN");
+        System.out.println("A END");
+    }
+
+}
+Marque la alternativa que muestra correctamente la salida del programa cuando se ejecuta.
+MAIN BEGIN
+B BEGIN
+A BEGIN
+AEND
+BEND
+MAIN END
+Correcto. ¡Exacto! Alternativa correcta.
+
+
+¿Por qué la JVM usa un Stack?
+Para saber cuál método está siendo ejecutado.
+Correcto. Una pila de Java es parte de la JVM y almacena los métodos que se están ejecutando. Además del bloque de código, la pila almacena las variables y referencias de ese bloque. Entonces, la JVM organiza la ejecución y sabe exactamente qué método se está ejecutando, que es siempre el método en la parte superior de la pila. La JVM también sabe qué otros aún deben ejecutarse, que son precisamente los métodos que continúan.
+
+Para organizar la ejecución de los métodos.
+Correcto. Una pila de Java es parte de la JVM y almacena los métodos que se están ejecutando. Además del bloque de código, la pila almacena las variables y referencias de ese bloque. Entonces, la JVM organiza la ejecución y sabe exactamente qué método se está ejecutando, que es siempre el método en la parte superior de la pila. La JVM también sabe qué otros aún deben ejecutarse, que son precisamente los métodos que continúan.
+
+-----------------------------------------------------------------------
+07 Debug
+
+Agregamos los breakponts, para hacer el Debug.. Para ver todo lo que hay en memoria.
+Vamos analizando el código paso a paso..
+
+En esta clase aprendimos:
+
+Qué es, para qué sirve y cómo funciona la pila de ejecución.
+Qué es la depuración (debug) y para qué sirve.
+Cómo utilizar Eclipse y su perspectiva de debug.
+Cómo cambiar entre perspectivas de Eclipse.
+
+-----------------------------------------------------------------------
+02 Errores o Excepciones, prácticamente es lo mismo.
+
+Cada tipo de error en Java, se especifica como un tipo en particular.
+
+
+-----------------------------------------------------------------------
+03 Analizando excepciones
+
+De acuerdo al error, java te da el error..
+Hay tipos de erorres, tipos de excepciones.
+
+Marque las alternativas correctas sobre excepciones en Java:
+Toda excepción en Java tiene un nombre que la idenfica. Este enfoque hace que sea más fácil de entender que usar números mágicos (códigos de error) como 15, 7012 o 16.
+Correcto.
+
+Las excepciones no controladas caen en la pila de ejecución en busca de alguien que pueda manejarlas.
+Correcto
+
+-----------------------------------------------------------------------
+05 Tipos de excepciones
+
+Hay que saber manejar los errores.. 
+Stack Trace, es el recorrido que se realiza por el error.
+
+-----------------------------------------------------------------------
+06 Controlando errores por tipo
+
+Debemos lidiar con los problemas para asi evitar que el programa crashea.
+
+try{// Intenta esto } catch {AritmeticExeption |NullPointerException}
+
+Con este control evitamos que el stack se caiga, debemos continuar con el programa.
+
+---- Ejemplo
+Respecto a la salida del código, marque la opción correcta:
+
+
+public class Principal {
+
+    public static void main(String[] args) {
+
+        String nombre = "Alura"; System.out.println("ANTES");
+
+        try { 
+            System.out.println(nombre);
+        } catch(ArrayIndexOutOfBoundsException ex) { 
+            System.out.println("CATCH");
+        }
+
+        System.out.println("DESPUES"); 
+    }
+
+} 
+
+Salida: ANTES
+Alura DESPUÉS
+
+Correcto. No se producirá ningún error y, por lo tanto, no se llamará a la condición de CATCH.
+
+
+-----------------------------------------------------------------------
+08 Controlando errores
+
+try, es para intentar..
+catch, para atrapar el error.
+
+Try no puede existir sin catch.
+----- Ejemplo
+
+try{ // Intenta esto
+    int num = 0;
+    int reusltado = i/num;
+    System.out.prinln(resultado);
+
+}catch(ArithmeticException | NullPointerException exception){  // Atrapa el error, y el programa sigue su flujo.
+    
+    System.out.prinln(exception.getMessage());      // Obtenemos el mensaje del error.
+    exception.printStackTrace();                    // Vemos la traza 
+
+}
+
+
+Podemos atrapar mas de 2 errores en una mismo catch.. O usar otro catch, enlazado al último.
+
+--- Ejemplo
+try { 
+    System.out.println(1/0);
+} catch(ArithmeticException ex) { 
+    ex.printStackTrace();
+} catch(NullPointerException ex) { 
+    ex.printStackTrace();
+}
+Marque la opción que demuestra correctamente el código anterior a través de Multi- Catch:
+
+try {
+    System.out.println(1 / 0);
+} catch (ArithmeticException | NullPointerException ex) { 
+    ex.printStackTrace();
+}
+
+Correcto. A través de un | (pipe) en la cláusula catch, podemos capturar más de una excepción. Con eso, podemos tener un solo bloque para manejar una o más excepciones.
+
+En esta clase aprendemos:
+
+Qué son las excepciones, para qué sirven y por qué se utilizarlas.
+Cómo analizar el seguimiento de excepciones o stacktrace.
+Manejar excepciones con bloques try-catch.
+Manejar una excepción lanzada dentro del bloque catch.
+Manejar múltiples excepciones con más de un bloque catcho usando Multi-Catch usando el pipe (|).
+
+-----------------------------------------------------------------------
+02 Overview
+
+Con base en lo que se ha visto hasta ahora, juzgue las siguientes afirmaciones seleccionando las verdaderas:
+
+Si no se maneja, la excepción cambia el flujo de ejecución del programa.
+¡Correcto! Si no se trata, la excepción cambia el flujo de ejecución del programa y finalizándolo abruptamente.
+
+
+Para manejar la excepción, use el bloque try y catch.
+¡Correcto! Con el bloque try y catch, manejamos una excepción que puede ocurrir mientras nuestro programa se está ejecutando, tratándolo de antemano con un código específico.
+
+
+-----------------------------------------------------------------------
+04 Lanzando excepciones
+
+public class Flujo {
+
+    public static void main(String[] args) { System.out.println("Inicio del main"); metodo1();
+        System.out.println("Fin del main");
+    }
+
+    private    static void metodo1() { 
+        System.out.println("Inicio del metodo1"); 
+        metodo2();
+        System.out.println("Fin del metodo1");
+
+    }
+
+    private static void metodo2() {
+        System.out.println("Inicio del metodo2"); 
+        ArithmeticException exception = new ArithmeticException();
+    }
+
+}
+
+
+Sin embargo, cuando José ejecutó la clase, se sorprendió, ya que no se lanzó la excepción. Ayuda a José seleccionando la alternativa que resuelve el problema.
+
+José instancia la excepción, pero no lo lanzo a través del throw:
+private static void metodo2() {
+    System.out.println("Inicio del metodo2"); 
+    ArithmeticException exception = new ArithmeticException();
+    throw exception;
+}
+Correcto. No es suficiente crear una instancia de la excepción, es necesario lanzarlo a través del throw.
+
+
+
+-----------------------------------------------------------------------
+
+
+
+public class Flujo {
+
+    public static void main(String[] args) {
+        System.out.println("Ini do main");
+        metodo1();
+        System.out.println("Fin do main");
+        
+    }
+        
+    private static void metodo1() {
+        System.out.println("Ini do metodo1");
+        metodo2();
+        System.out.println("Fin do metodo1");
+    }
+
+    private static void metodo2() {
+        System.out.println("Ini do metodo2");
+        
+        // ArithmeticException ae = new ArithmeticException();
+        // ArithmeticException exception = new ArithmeticException();
+throw new ArithmeticException();                                                       // Lanzamos la excepción y rompemos el flujo del programa.
+    }
+
+}
+
+
+Solo podemos lanzar excepciones, no podemos lanzar objetos.
+
+
+2) La excepción solo se puede lanzar a través de su referencia, por ejemplo:
+La declaración 2 es falsa.
+Correcto. La declaración 2 es realmente falsa, ya que no es necesario guardar la excepción en una referencia, pudiendo lanzarla directamente en una sola línea, por ejemplo:
+
+1) Para lanzar una excepción, además de instanciarla, es necesario lanzarla a través del throw.
+3) Cuando se lanza la excepción, el código deja de ejecutarse abruptamente.
+4) Podemos asignar un mensaje a la excepción.
+
+-----------------------------------------------------------------------
+02 Estructura de excepciones
+
+Creamos nuestra propia excepcion..
+public class MiException extends RuntimeException{
+
+    public MiException(){
+        super();
+    }
+
+    public MiException(String message){
+        super(message);
+    }
+}
+
+
+
+public class Flujo {
+
+    public static void main(String[] args) {
+        System.out.println("Ini do main");
+        metodo1();
+        System.out.println("Fin do main");
+        
+    }
+        
+    private static void metodo1() {
+        System.out.println("Ini do metodo1");
+        try{
+            metodo2();
+        } catch (MiException me){                   // Atrapamos nuestra propia exception   
+            me.printStackTrace();
+
+        }
+        System.out.println("Fin do metodo1");
+    }
+
+    private static void metodo2() {
+        System.out.println("Ini do metodo2");
+        
+        // ArithmeticException ae = new ArithmeticException();
+        // ArithmeticException exception = new ArithmeticException();
+        throw new MiException("Mi excepcion fue lanzada");
+    }
+
+}
+
+
+Recordar que ..
+Miguel necesita hacer con la clase StockInsuficienteException heredar de alguna clase en la jerarquía Throwable. Por ejemplo, RuntimeException:
+public class StockInsuficienteException extends RuntimeException {
+
+}
+Correcto. ¡Eso ahí!
+
+
+-----------------------------------------------------------------------
+05 Excepciones y errores
+
+Las Exception y los Error, extienden de Throwable..
+Estos son los 2 grandes grupos.
+
+Las Excepciones, son los errores que nosotros lanzamos sobre la jvm, que podemos manejar.
+
+Los Errores, son errores que lanza la Jvm, desde dentro de ella.
+
+-----------------------------------------------------------------------
+06 Extendiendo una excepción
+
+public class StockInsuficienteException extends Exception {
+
+    public StockInsuficienteException (String msg) {
+        super(msg);
+    }
+
+} 
+
+public void RealizaCompra(Producto producto) { 
+    //otras instrucciones aquí..
+    if (totalDeProductosEnStock < 0) {
+        throw new StockInsuficienteException("Stock insuficiente"); 
+    }
+} 
+
+
+public void RealizaCompra(Producto producto) throws StockInsuficienteException {
+    //otras instrucciones aquí..
+    if (totalDeProdutosEnStock < 0) {
+        throw new StockInsuficienteException("Stock insuficiente"); 
+    }
+}
+Correcto. ¡Eso ahí! Necesitamos cambiar la firma del método para que quede explícito que puede lanzar tal excepción.
+
+
+
+1) Existe una gran jerarquía de clases que representan excepciones. Por ejemplo, ArithmeticException es hija de RuntimeException, que hereda de Exception, que a su vez es hija de la clase de excepciones más ancestral, Throwable. Conocer bien esta jerarquía significa saber cómo usar las excepciones en su aplicación.
+
+2) Throwable es la clase que necesita ser extendida para poder lanzar un objeto en la pila (usando la palabra reservada throw)
+
+3) La jerarquía que comenzó con la clase Throwable se divide en excepciones y errores. Las excepciones se utilizan en códigos de aplicación. Los errores son utilizados exclusivamente por la máquina virtual. Las clases que heredan de ExceptionError se utilizan para informar errores en la máquina virtual. Los desarrolladores de aplicaciones no deben crear errores que hereden de Error
+
+4) StackOverflowError es un error de la máquina virtual para informar que la pila de ejecución no tiene más memoria.
+
+5) Las excepciones se dividen en dos grandes categorías: las que el compilador comprueba obligatoriamente y las que no. Los primeros se denominan checked y se crean al pertenecer a una jerarquía que no pasa por RuntimeException. Los segundos son unchecked y se crean como descendientes de RuntimeException.
+
+Miguel se equivocó en el enunciado 3.
+Correcto. ¡Eso ahí! La primera oración del enunciado 3 es correcta. Sin embargo, las clases que informan de errores de máquinas virtuales heredan de Error. ¡Dile a Miguel que vuelva a ver los videos!
+
+
+-----------------------------------------------------------------------
+1) Primero, creamos la clase MiExcepcion * que hereda de *RuntimeException:
+public class MiExcepcion extends RuntimeException {
+
+}
+
+2) En la clase MiExcepcion, crearemos un constructor que recibe un mensaje de tipo String y se lo pasa al constructor de la clase padre RuntimeException:
+public class MiExcepcion extends RuntimeException {
+    public MiExcepcion (String msg) {
+        super(msg);
+    }
+}
+
+3) Ahora lanzaremos nuestra excepción dentro de metodo2(), en la clase Flujo. Reemplacemos el throw actual con lo siguiente:
+throw new MiExcepcion("Surgió un error");
+
+4) También necesitamos agregar el tipo MiExcepcion dentro del catch en la clase Flujo:
+try {
+    metodo1();
+} catch(ArithmeticException | NullPointerException | MiExcepcion ex) {
+    String msg = ex.getMessage();
+
+    System.out.println("Exception " + msg);
+    ex.printStackTrace();
+}
+
+5) Ahora cambie la clase MiExcepcion para extender la clase Exception (dejando checked):
+public class MiExcepcion extends Exception {  //checked
+
+}
+
+
+6) En la clase Flujo, haga que el código se compile nuevamente y use la excepción MiExcepcion en el metodo1() y metodo2():
+private static void metodo1() throws MiExcepcion {
+    System.out.println("Inicio del metodo1");
+    metodo2();
+    System.out.println("Fin del metodo1");
+}
+
+private static void metodo2() throws MiExcepcion {
+    System.out.println("Inicio del metodo2");
+    throw new MiExcepcion ("Surgió un error");
+    // System.out.println("Fin del metodo2");            
+}
+
+
+-----------------------------------------------------------------------
+public class FlujoConError {
+
+    public static void main(String[] args) { 
+        System.out.println("Inicio del main"); 
+        try{
+            metodo1();
+        } catch(ArithmeticException | NullPointerException ex) {
+            String msg = ex.getMessage(); 
+            System.out.println("Exception " + msg);
+            ex.printStackTrace();
+        }
+
+        System.out.println("Fin del main");
+    }
+
+    private static void metodo1() { 
+        System.out.println("Inicio del metodo1"); 
+        metodo2();
+        System.out.println("Fin del metodo1");
+    }
+
+    private static void metodo2() { 
+        System.out.println("Inicio del metodo 2"); 
+        metodo2();
+        System.out.println("Fin del metodo 2");
+    }
+}
+
+
+Si hiciste el ejercicio ¿será Miguel comprendió la clase ?, recordará lo que aprendimos. Para solucionarlo aún más, enumeramos los temas de esta clase:
+
+Existe una gran jerarquía de clases que representan excepciones. Por ejemplo, ArithmeticException es hija de RuntimeException, que hereda de Exception, que a su vez es hija de la clase de excepciones más ancestral, Throwable. Conocer bien esta jerarquía significa saber cómo usar las excepciones en su aplicación.
+Throwable es la clase que debe extenderse para poder lanzar un objeto en la pila (usando la palabra reservada throw)
+Es en la clase Throwable donde tenemos casi todo el código relacionado con las excepciones, incluyendo getMessage() e printStackTrace (). El resto de la jerarquía tiene solo algunas sobrecargas de constructores para comunicar mensajes específicos.
+La jerarquía que comenzó con la clase Throwable se divide en excepciones y errores. Las excepciones se utilizan en los códigos de aplicación. Los errores son utilizados exclusivamente por la máquina virtual.
+Las clases que heredan de Error se utilizan para informar errores en la máquina virtual. Los desarrolladores de aplicaciones no deben crear errores que hereden de Error.
+StackOverflowError es un error de máquina virtual para informar que la pila de ejecución no tiene más memoria.
+Las excepciones se dividen en dos categorías amplias: las que el compilador comprueba obligatoriamente y las que no.
+Los primeros se denominan checked y se crean por pertenecer a una jerarquía que no pasa RuntimeException.
+Los segundos están unchecked y se crean como descendientes de RuntimeException.
+
+-----------------------------------------------------------------------
+07 Checked y unchecked
+
+El compilador con las checked, nos avisa.
+En el caso de RuntimeException ya vimos que él incluye ArithmeticException y NullPointerException. En el caso de Exception, él tiene clases hijas como IOException, que es cuando trabajamos con archivos.
+Entonces sí es recomendable tener conocimiento de estos dos grupos de excepciones en Java, cosa de que cuando trabajamos releyendo archivos o con ciertas operaciones, ya hay excepciones preparadas y ya tenemos que saber cómo es que funciona esto. Aparte, en el examen de certificación son preguntas que vienen muy a menudo.
+
+Haciendo un overview de lo que hemos visto la clase pasada, una excepción verificada, una del tipo check, es una excepción que, valga la redundancia, es verificada por el compilador para que nosotros tratemos esa excepción a nivel del código de forma obligatoria.
+Los errores son, valga la redundancia, los errores lanzados por la máquina virtual de Java para situaciones en las cuales el programador no puede tener ningún tipo de control, por ejemplo falta de memoria, que la máquina virtual de Java crasheó o alguna cosa así. Entonces, esos son los errores.
+Como programadores no tenemos acceso a tratar errores ni a lanzar errores, eso es hecho por la misma máquina virtual de Java, la JVM. Pero sí tenemos control sobre las excepciones, podemos crear nuestras propias excepciones, como lo hemos hecho, y definirlas como excepciones verificadas o no verificadas, según pues necesitemos.
+
+Nuestra excepcion.. Es no verificada, unchecked
+public class MiException extends RuntimeException{
+
+
+Ahora sí será tratada.. Será checkeada
+public class MiException extends Exception{
+
+
+La hacemos checked por el compilador..
+public class MiException extends Exception{
+
+    public MiException(){
+        super();
+    }
+
+    public MiException(String message){
+        super(message);
+    }
+}
+
+Y ahora la atrapamos a través de un try y un catch..
+public class TestCuentaExceptionChecked {
+ 
+    public static void main(String[] args) {
+        Cuenta cuenta = new Cuenta();
+        try {
+            cuenta.deposita();
+        } catch (MiException ex) {
+            System.out.println("Exception atrapada");
+        }
+    }
+
+}
+
+Arrojamos mi excepción
+public class Cuenta {
+    
+    void deposita() throws MiException{
+        
+    }
+
+}
+
+----- Ejercicio
+class ConexionException extends Exception {
+
+    // ------
+
+}
+
+// ------
+
+class Conexion {
+
+    public void cerrar() throws ConexionException {
+
+        //implementación omitida
+    }
+
+}
+
+// ------
+
+class TestConexion {
+
+    public static void main(String[] args) {
+
+        Conexion con = new Conexion();
+
+        con.cerrar ();
+    }
+
+}
+
+La descripción dice que el código no se compila.
+
+Simplemente agregue throws ConexionException en la firma del método main.
+Correcto. Cuando se comprueba que la excepción es checked, debemos realizar una "acción" en el método main. Una forma es poner throws en la firma del main:
+public static void main(String[] args) throws ConexionException {
+
+
+Simplemente agregue un bloque try-catch a la llamada con.cerrar() dentro del método main.
+Correcto. Como la excepción es checked, debemos realizar una "acción" en el método main. Una forma es usar try-catch:
+public static void main(String[] args) {
+
+    Conexion con = new Conexion(); try {
+        con.cerrar();
+    } catch(ConexionException ex) {
+        ex.printStackTrace();
+    }
+
+}
+
+
+En la clase ConexionException, basta extender la clase RuntimeExeption en lugar de Exception.
+Correcto. De esta manera, se torna un unchecked y el compilador no obliga más a "tomar una acción”.
+
+
+-----------------------------------------------------------------------
+04 Extendiendo una excepción
+
+De esta manera al obligar a que una clase sea Checkeable, el compilador nos ayuda a revisar el problema, usando try y catch
+
+Todas Extienden de Exception..
+    RuntimeException    -> ArithmeticException   (Unchecked)
+                        -> NullPointerException  (Unchecked)
+    MiException (Checked)
+
+
+
+    public class Flujo {
+
+        public static void main(String[] args) {
+            System.out.println("Ini do main");
+            try {
+                metodo1();
+            // } catch (MiException | ArithmeticException e) {             // Aplicando el polimorfismo usamos Exception
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+            System.out.println("Fin do main");
+            
+        }
+            
+        private static void metodo1() throws MiException {                  // Debemos Arrojar la Exception
+            System.out.println("Ini do metodo1");
+           
+            metodo2();
+            
+            System.out.println("Fin do metodo1");
+        }
+    
+        private static void metodo2() throws MiException {                  // Debemos Arrojar la Exception
+            System.out.println("Ini do metodo2");
+            
+            // ArithmeticException ae = new ArithmeticException();
+            // ArithmeticException exception = new ArithmeticException();
+            throw new MiException("Mi excepcion fue lanzada");
+        }
+    
+    }
+    
+---- Repaso
+Ya hemos visto en este curso dos formas de capturar varias excepciones a través del bloque catch. (1) La forma tradicional, que ha funcionado desde el comienzo de Java, simplemente repite el bloque catch para cada excepción:
+try {
+    metodoPeligrosoQuePuedeLanzarVariasExcepciones();
+} catch(MiExcepcion ex) {
+    ex.printStackTrace();
+} catch(OtraExcepcion ex) {
+    ex.printStackTrace();
+} 
+
+Y (2) la forma más actual, que se introdujo en Java 7, le permite definir las diversas excepciones en el mismo bloque (multi catch):
+try {
+    metodoPeligrosoQuePuedeLanzarVariasExcepciones ();
+} catch(MiExcepcion | OtraExcepcion ex) { 
+    // multi-catch
+    ex.printStackTrace();
+}
+
+Encontrarás ambas formas en tu día a día como desarrollador Java. Ahora, vea la firma del "método peligroso" en cuestión:
+//funciona, podemos colocar dos excepciones en la firma
+
+public void metodoPeligrosoQuePuedeLanzarVariasExcepciones() throws MiExcepcion, OtraExcepcion {
+    // código omitido
+}
+
+
+Vimos otra variación más de catch, no sintáctica, sino conceptual. ¿Qué declaración a continuación se puede utilizar para capturar todas las excepciones de este "método peligroso"?
+
+Importante: ¡asumiendo que ambas excepciones son de tipo checked!
+
+try { 
+    metodoPeligrosoQuePuedeLanzarVariasExcepciones();
+} catch(Exception ex) {
+    ex.printStackTrace();
+}
+Correcto. Creamos un catch genérica que captura cualquier excepción, incluidas las excepciones checked.
+
+Esto puede parecer una buena práctica, pero generalmente no lo es. Como regla general, siempre trate de ser lo más específico posible en el bloque catch favoreciendo multiples bloques de catch o utilizando multi-catch.
+
+-----------------------------------------------------------------------
+06 Retornando excepciones
+
+Creamos nuestra exception, sus usos pueden ser muy variados..
+public class SaldoInsuficienteException extends RuntimeException{
+    
+    // Accedemos al padre que es RuntimeException, y seteamos el mensaje cada vez que arrojemos esta excepción.
+    public SaldoInsuficienteException(String mensaje){
+        super(mensaje);
+    }
+
+}
+
+
+Ahora usamos el método..
+package bytebank;
+
+public abstract class Cuenta {
+
+    protected double saldo;
+    private int agencia = 1;
+    private int numero;
+    private Cliente titular = new Cliente();
+
+    private static int total;
+
+    public Cuenta() {
+
+    }
+
+    public Cuenta( int agencia, int numero) {
+        this.agencia = agencia;
+        this.numero = numero;
+        System.out.println("Estoy creando una cuenta " + this.numero);
+
+        Cuenta.total ++;
+    }
+
+    public abstract void deposita(double valor);
+
+    public void saca(double valor) {
+        // Todo lo que sea control de errores va por encima del método.             // Acá aplicamos nuestra exception, en el metodo de reitrar.
+        if (this.saldo < valor){
+            throw new SaldoInsuficienteException("No tienes Saldo");
+        }
+        this.saldo -= valor;
+
+        // if(this.saldo >= valor) {
+        //     this.saldo -= valor;
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+    }
+
+    public boolean transfiere(double valor, Cuenta destino) {
+        if(this.saldo >= valor) {
+            this.saca(valor);
+            destino.deposita(valor);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public int getAgencia() {
+        return agencia;
+    }
+
+    public void setAgencia(int agencia) {
+        if (agencia > 0) {
+            this.agencia = agencia;
+        }
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        if (numero > 0) {
+            this.numero = numero;
+        }
+    }
+
+    public Cliente getTitular() {
+        return titular;
+    }
+
+    public void setTitular(Cliente titular) {
+        this.titular = titular;
+    }
+
+    public static int getTotal() {
+        return Cuenta.total;
+    }
+
+}
+
+
+// Testeamos desde una nueva clase..
+public class TestCuentaExceptionSaldo {
+    
+    public static void main(String[] args) {
+        Cuenta cuenta = new CuentaAhorros(123, 456);
+        cuenta.deposita(210);
+        cuenta.saca(210);
+        cuenta.saca(10);
+        
+    }
+
+}
+
+--- Ejercicio
+
+¿Cómo pueden las excepciones ayudar a mejorar el código de su programa?
+
+1) Las excepciones tienen un nombre y, si ese nombre es expresivo, documenta el problema que está ocurriendo.
+
+2) Las excepciones pueden tener un mensaje, es decir, el problema y el estado de las variables se pueden describir en el mensaje.
+
+3) Las excepciones cambian el flujo de ejecución, es decir, impiden que el problema siga el flujo "normal" cuando ocurre algo excepcional.
+
+4) Se pueden manejar excepciones, es decir, podemos volver a la ejecución "normal" si se resuelve el "problema".
+
+¿Qué opciones son las correctas?
+
+Todos.
+Correcto. Todas las opciones representan una forma de mejorar el código, especialmente la expresividad.
+
+
+-----------------------------------------------------------------------
+08 Controlando checked exceptions
+
+// Ahora usaremos checked
+public class SaldoInsuficienteException extends Exception{
+    
+    // Accedemos al padre que es RuntimeException, y seteamos el mensaje cada vez que arrojemos esta excepción.
+    public SaldoInsuficienteException(String mensaje){
+        super(mensaje);
+    }
+
+}
+
+
+Ahora la tratamos como checked con el throw y el try catch
+
+package bytebank;
+
+public abstract class Cuenta {
+
+    protected double saldo;
+    private int agencia = 1;
+    private int numero;
+    private Cliente titular = new Cliente();
+
+    private static int total;
+
+    public Cuenta() {
+
+    }
+
+    public Cuenta( int agencia, int numero) {
+        this.agencia = agencia;
+        this.numero = numero;
+        System.out.println("Estoy creando una cuenta " + this.numero);
+
+        Cuenta.total ++;
+    }
+
+    public abstract void deposita(double valor);
+
+    public void saca(double valor)  throws SaldoInsuficienteException{
+        // Todo lo que sea control de errores va por encima del método.
+        if (this.saldo < valor){
+            throw new SaldoInsuficienteException("No tienes Saldo");
+        }
+        this.saldo -= valor;
+
+        // if(this.saldo >= valor) {
+        //     this.saldo -= valor;
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+    }
+
+    public boolean transfiere(double valor, Cuenta destino) {
+        if(this.saldo >= valor) {
+            try {
+                this.saca(valor);
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+            destino.deposita(valor);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public int getAgencia() {
+        return agencia;
+    }
+
+    public void setAgencia(int agencia) {
+        if (agencia > 0) {
+            this.agencia = agencia;
+        }
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        if (numero > 0) {
+            this.numero = numero;
+        }
+    }
+
+    public Cliente getTitular() {
+        return titular;
+    }
+
+    public void setTitular(Cliente titular) {
+        this.titular = titular;
+    }
+
+    public static int getTotal() {
+        return Cuenta.total;
+    }
+
+}
+
+
+Dentro del Test..
+public class TestCuentaExceptionSaldo {
+    
+    public static void main(String[] args){
+        Cuenta cuenta = new CuentaAhorros(123, 456);
+        cuenta.deposita(210);
+        
+        try {
+
+            cuenta.saca(210);
+            cuenta.saca(10);
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+        
+    }
+
+}
+
+
+package bytebank;
+
+public class CuentaCorriente extends Cuenta {
+
+	public CuentaCorriente( int agencia, int numero) {
+		super(agencia, numero);
+	}
+	
+	@Override
+	public void saca(double valor) throws SaldoInsuficienteException{           // Arrojamos nuestra excepcion
+		double comision = 0.2;
+		super.saca(valor + comision);
+	}
+
+	@Override
+	public void deposita(double valor) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
+
+----------------------------- Ejercicio
+Johann creó una excepción SaldoInsuficienteException, como se muestra en el último video:
+public class SaldoInsuficienteException extends Exception {
+
+    public SaldoInsuficienteException(String msg) {
+        super(msg);
+    }
+}
+
+Luego cambió la implementación del método sacar para lanzar una excepción:
+public abstract class Cuenta { 
+
+    //atributos y otros métodos omitidos
+
+    public void sacar(double valor) throws SaldoInsuficienteException {
+        if(this.saldo < valor) {
+            throw new SaldoInsuficienteException("Saldo: " + this.saldo + ", Valor: " + valor);
+        }
+        this.saldo -= valor; 
+    }
+}    
+
+
+Hasta ahora todo está bien, pero la implementación del método sacar se basa en la clase CuentaCorriente que no quiere compilar:
+public class CuentaCorriente extends Cuenta implements Tributable { 
+    //atributos y otros métodos omitidos
+
+    @Override
+    public void sacar(double valor) {
+        double valorASacar = valor + 0.2;
+        super.sacar(valorASacar); 
+    }
+
+}
+
+Como la excepción es un checked, debemos usar throws *SaldoInsuficienteException en la firma del método sacar de la clase CuentaCorriente.
+Correcto. Observe que llamamos a super.sacar(..) en el método sacar de la clase CuentaCorriente. El compilador se da cuenta de que el método de la clase madre tiene el throws de una excepción checked y obliga al método hijo una acción.
+
+
+
+En esta clase, aprendimos y practicamos:
+
+cómo crear un bloque catch genérico utilizando la clase Exception;
+cómo crear una nueva excepción SaldoInsuficienteException;
+cómo transformar la excepción en checked o unchecked.
+
+-----------------------------------------------------------------------
+02 Creando conexión
+
+Aplicaciones Distribuidas, interactuan entre si para satisfacer las necesidades de Negocio.
+Facebook, varias proyectos que se comunican entre sí..
+
+Creamos la clas Conexion.java
+public class Conexion {
+
+    public Conexion() {
+        System.out.println("Abriendo conexion");
+    }
+ 
+    public void leerDatos() {
+        System.out.println("Recibiendo datos");
+        // throw new IllegalStateException();               // Este error es el que captamos en el archivo.
+    }
+ 
+    public void cerrar() {
+        System.out.println("Cerrando conexion");
+    }
+    
+}
+
+Ahora en el Archivoo TestConexion.java
+
+
+public class TestConexion {
+
+    public static void main(String[] args) {
+        Conexion con = new Conexion();
+        
+        try {
+            con.leerDatos();
+            // Debemos cerrar la conexion
+            con.cerrar();
+            
+        } catch (IllegalStateException e) {
+            // TODO: handle exception
+            System.out.println("Recibiendo Exception");
+            e.printStackTrace();
+
+            // Debemos cerrar la conexion
+            con.cerrar();
+        }
+
+        // Observamos que el codigo continua funcionando.
+        System.out.println("Fin");
+    }
+
+}
+
+Debemos atrapar el error, si lo tuvieramos..
+Pero estamos repitiendo código con..
+// Debemos cerrar la conexion
+con.cerrar();
+
+
+
+-----------------------------------------------------------------------
+03 Errores en conexión
+
+Podemos forzar la ejecución de ese código haya o no error..
+
+
+public class TestConexion {
+
+    public static void main(String[] args) {
+        Conexion con = new Conexion();
+        
+        try {
+            con.leerDatos();
+            
+        } catch (IllegalStateException e) {
+            // TODO: handle exception
+            System.out.println("Recibiendo Exception");
+            e.printStackTrace();
+
+        } finally{
+            // Debemos cerrar la conexion
+            con.cerrar();
+            
+        }
+
+        // Observamos que el codigo continua funcionando.
+        System.out.println("Fin");
+    }
+
+}
+
+
+Con la parte finally, la tercera estructura.. Si o si, vamos a cerrar la conexion..
+EN TODOS LOS CASOS.
+
+Debemos lanzar la excepcion y probar posibles errores.. Por ejemplo..
+throw new IllegalStateException();               // Este error es el que captamos en el archivo.
+
+
+¿Cuáles son las palabras claves relacionadas con las excepciones?
+
+1) throw
+
+2) finally
+
+3) catch
+
+4) throws
+
+5) try
+
+Todas
+Correcto
+
+-----------------------------------------------------------------------
+05 Aplicando finally
+
+Finally es opcional, pero es obligatorio el try y el catch..
+También es posible un try solo con el finally
+
+
+Vea las declaraciones sobre el bloque finally:
+
+1) El bloque finally es opcional cuando hay bloque catch.
+
+2) El bloque finally siempre será ejecutado (sin o con excepción).
+
+3) El bloque finally solo será ejecutado sin excepción.
+
+4) El bloque finally es normalmente utilizado para cerrar un recurso como conexión o transacción.
+
+¿Cuáles son las correctas?
+1, 2 y 4
+
+Correcto, porque el bloque finally es opcional, siempre se ejecuta (sin o con excepción) y normalmente se usa para cerrar un recurso.
+
+-------------------------------- Ejercicio
+El equipo de desarrolladores decidió crear dos excepciones para trabajar con cuentas:
+public class SacarException extends RuntimeException {
+}
+
+public class DepositarException extends RuntimeException { }
+
+Conociendo las dos excepciones, es necesario realizar un tratamiento. ¿Cuáles de las siguientes opciones son válidas (que compilan)? Seleccione 3 alternativas Alternativas
+
+try {
+
+} catch(SacarException | DepositarException ex) {
+
+} 
+Correcto, un tratamiento con try y multi-catch.
+
+try {
+
+} finally {
+
+}
+Correcto, en el tratamiento el bloque de catch es opcional cuando existe el bloque finally.
+
+try {
+
+} catch(SacaException ex) {
+
+} catch(DepositarException ex) {
+
+} finally {
+
+}
+Correcto, un tratamiento con try con dos bloques de catch (clásicos) y el bloque Finally.
+
+-----------------------------------------------------------------------
+08 Try with resources, es un método que viene con las versiones nuevas.
+
+Es un método que nos cierrar la conexion de manera "automatica" o bien "obligada"
+Es una manera más simplificada, o bien, más sencilla.
+
+
+public class Conexion  implements AutoCloseable {           // Implementamos el AutoCloseable
+
+    public Conexion() {
+        System.out.println("Abriendo conexion");
+    }
+ 
+    public void leerDatos() {
+        System.out.println("Recibiendo datos");
+        // throw new IllegalStateException();
+        // throw new IllegalStateException();
+    }
+ 
+    public void cerrar() {
+        System.out.println("Cerrando conexion");
+    }
+    
+    @Override
+    public void close() throws Exception {              // Debemos cerrar.
+        cerrar();
+    }
+
+ }
+
+
+ 
+public class TestConexion {
+
+    public static void main(String[] args) throws Exception {
+        
+        // Declaramos un objeto de tipo conexion dentro del try..
+        try (Conexion con = new Conexion()) {                           // Intenta la conexion primero..
+            con.leerDatos();
+        } catch (IllegalStateException ex){                             // Luego trata el catch
+            System.out.println("Ejecutando Catch Exception");
+            ex.printStackTrace();
+        }
+        
+        /*
+        Conexion con = null ;
+        
+        try {
+            con = new Conexion();
+            con.leerDatos();
+
+        } catch (IllegalStateException e) {
+             // TODO: handle exception
+             System.out.println("Recibiendo Exception");
+             e.printStackTrace();
+        
+        } finally{
+            System.out.println("Ejecutando Finally");
+            // Debemos cerrar la conexion
+            if (con != null) {
+                con.cerrar();
+            } 
+                
+        }
+
+        // Observamos que el codigo continua funcionando.
+        System.out.println("Fin");
+         */
+    }
+
+}
+
+--------------------------------- Ejercicio
+¿Qué se garantiza cuando usamos try-with-resources?
+try(Conexion con = new Conexion()) {
+    con.leerDatos();
+}
+
+El recurso necesita implementar el método close().
+Correcto, se crea automáticamente un bloque finally. En él se llama al método close() del recurso.
+
+
+El bloque finally se crea automáticamente.
+Correcto, se crea automáticamente un bloque finally. En él se llama al método close() del recurso.
+
+
+En esta clase aprendimos:
+
+que existe un bloque finally, útil para cerrar recursos (como conexión);
+cuando hay un bloque finally, el bloque de catch es opcional;
+que el bloque * finally * se ejecuta siempre, sin o con excepción;
+cómo utilizar try-with-resources.
+
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------

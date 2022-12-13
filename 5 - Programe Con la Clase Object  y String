@@ -1,0 +1,788 @@
+-----------------------------------------------------------------------
+01 Presentación
+
+Clases Principales -> Object y String
+
+Documentar el Código.
+
+Personalizar objetos al usar modificadores de Objetos
+
+-----------------------------------------------------------------------
+02 Usando Paquetes
+
+Los Proyectos pueden tener 200 o más clases..
+
+Debemos Organizar el código por medio de paquetes..
+
+modelo  -> Clases que representan cada entidad de nuestro negocio.. Un Cliente, Contador, Funcionario.
+
+Entonces dentro del folder modelo, movemos todas las entidades.. 
+
+
+¿Qué es FQN?
+Es el nombre completo de la clase compuesto por el nombre del paquete y el nombre de la clase.
+Correcto, el FQN (Full Qualified Name) es el nombre completo de la clase, que consta del nombre del paquete y el nombre de la clase.
+FQN = Nombre del paquete. Nombre de clase simple
+
+
+
+Vea las afirmaciones sobre Packages:
+
+A) Los Packages son una forma de distribuir código Java entre proyectos.
+
+B) Los Packages son directorios con un significado especial dentro del código fuente de Java
+
+C) La palabra reservada package debe ser la primera declaración en el código fuente de Java.
+
+D) Los Packages se utilizan para organizar y agrupar clases e interfaces.
+
+¿Qué afirmaciones son verdaderas?
+
+B, C y D
+Correcto, dado que los packages son directorios que tienen un significado especial dentro del código fuente de Java (b), la palabra reservada package debe ser la primera declaración (c) y los packages sirven para organizar y agrupar clases e interfaces (d).
+Solo la declaración (a) es incorrecta.
+
+
+Su amigo Pedro trabaja en la empresa Uberdist en el proyecto con el sobrenombre de udnotas. Pedro también mencionó que la empresa tiene un sitio web con la dirección uberdist.com.br.
+Pedro tiene dudas sobre la nomenclatura del package. ¿Qué nombre tendría más sentido y se considera una buena práctica?
+br.com.uberdist.udnotas
+
+NOMBRE_DEL_SITE_AL_REVES.NOMBRE_DEL_PROYECTO
+
+
+
+-----------------------------------------------------------------------
+06 Actualizando Clases
+
+Ahora creamos un folder.. Para Test.
+
+En la línea 1 de cada archivo es la declaración del paquete, la ubicación de esta clase.
+    package bytebank.test;          // Para los tests
+    package bytebank.modelo;        // Para los modelos
+
+De esta manera para ubicar los objetos dentro de los paquetes debemos apuntar a ..
+
+package bytebank.test;
+
+public class TestGerente {
+
+	public static void main(String[] args) {
+
+		// package     + classname             // De esta manera
+		bytebank.modelo.Gerente gerente = new bytebank.modelo.Gerente();
+		// gerente.setSalario(5000);
+		// Funcionario gerente = new Funcionario();
+		gerente.setSalario(6000);
+		gerente.setClave("AluraCursosOnLine");
+		gerente.setTipo(1);
+		
+		
+		System.out.println(gerente.getBonificacion());
+		System.out.println(gerente.iniciarSesion("AluraCursosOnLine"));
+	}
+	
+}
+
+
+-----------------------------------------------------------------------
+07 Importando Clases
+
+com.bytebank
+Debemos crear un paquete con ese nombre..
+
+Si es de Argentina
+ar.com.bytebank
+
+Si es de brasil
+br.com.bytebank
+
+com.bytebank.modelo
+com.bytebank.servicio.. O lo que necesitemos
+
+De esta manera tenemos una carpeta.. Con subcarpeta, y otra subcarpeta
+com  -> bytebank  -> modelo
+Al momento de mover los archivos vscode refactoriza las rutas en cada archivo en su linea numero 1ª
+package bytebank.com.bytebank.modelo;
+
+Con los test hacemos lo mismo..
+com  -> bytebank  -> test
+Al momento de mover los archivos vscode refactoriza las rutas en cada archivo en su linea numero 1ª
+package bytebank.com.bytebank.test;
+
+
+
+De esta manera es algo largo llamar a los objetos que se encuentran dentro de los paquetes..
+package bytebank.com.bytebank.test;
+
+public class TestControlBonificacion {
+
+	public static void main(String[] args) {
+		// Muuuy laargo
+		com.bytebank.modelo.Funcionario diego = new com.bytebank.modelo.Contador();
+		diego.setSalario(2000);
+		
+
+
+-----------------------------------------------------------------------
+08 Estructura de Clases
+
+1ª Paquetes
+2ª Imports
+3ª La clase como tal
+
+A través de los puntos se organizan los paquetes..
+
+Ahora usamos los import para asi traer los objetos que necesitemos..
+
+package bytebank.com.bytebank.test;
+
+import bytebank.com.bytebank.modelo.Contador;
+import bytebank.com.bytebank.modelo.Funcionario;			 
+import bytebank.com.bytebank.modelo.ControlBonificacion;			
+
+public class TestControlBonificacion {
+
+	public static void main(String[] args) {
+		Funcionario diego = new Contador();					// De esta manera podemos acceder directamente.
+		diego.setSalario(2000);
+		
+
+
+O bien podemos usar.. el comodín *, para acceder a todo
+
+package bytebank.com.bytebank.test;
+
+import bytebank.com.bytebank.modelo.*;				// Si uso más de 5 clases, nos traemos todo y fue.
+
+public class TestControlBonificacion {
+
+
+
+---- Ejercicio
+Ahora hemos visto que en un archivo de clase o de interfaz está la declaración package, la declaración import y la definición de la clase.
+
+A) Solo puede tener una declaración de package por archivo
+
+B) La declaración import es opcional
+
+C) Es posible repetir la declaración import para importaciones de diferentes packages
+
+D) La definición de clase siempre debe ir por último (después de package e import)
+
+¿Qué afirmaciones son correctas?
+
+Seleccione una alternativa
+
+Todas
+!Correcto!
+
+
+En el desarrollo de Java, organizamos nuestras clases en paquetes. Sobre este tema es correcto afirmar que:
+Cuando un proyecto usa paquetes, podemos usar import de otras clases para su uso.
+Correcto, import facilita el uso de la clase porque no necesitamos el Full Qualified Name.
+
+Por organización y por la convención adoptada, debemos seguir el dominio de la empresa. Es decir, si la empresa tiene el dominio alura.com.br, los paquetes deben ser subpaquetes de br.com.alura.
+Correcto, pero hay excepciones (pocas).
+
+El modificador default de Java restringe el acceso a nivel de paquete. Por lo tanto, si no se define ningún modificador, ya sea en la clase, método o atributo, solo las clases del mismo paquete pueden acceder a esta información.
+Correcto, de forma predeterminada, sólo las clases del mismo paquete pueden acceder a esta información.
+
+
+Qué aprendimos?
+
+Los packages sirven para organizar nuestro código.
+Los packages son parte del FQN (Full Qualified Name) de la clase.
+El nombre completo de la clase (FQN) consta de: PACKAGE.NOMBRE_SIMPLE_DE_LA_CLASE
+La definición de package debe ser la primera declaración en el código fuente
+Para facilitar el uso de clases de otros packages, podemos importarlas
+Los import son justo después de la declaración del package
+La nomenclatura padrón es usar el nombre de dominio en la web al revés con el nombre del proyecto, por ejemplo:
+
+br.com.caelum.geradornotas
+br.com.alura.gnarus
+br.gov.rj.notas
+de.adidas.lager
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+02 Modificadores de Acceso
+
+Los modificadores de acceso delimitan el acceso al cual se le aplique.
+Visibilidad de esa variable dentro del proyecto.
+
+// public: El más permisible, con mayor alcance, accesible desde cualquier parte.
+// default: Accesible solo dentro del mismo paquete (Carpeta).
+// protected: A nivel de paquete (Default) y fuera del paquete a nivel de herencia.
+// private: El más restrictivo, solo desde la clase misma.
+
+public class TestControlBonificacion 
+
+Si no lo especificamos, se aplica el default..
+
+
+Con respecto a los modificadores de acceso de Java, es correcto afirmar que:
+Tenemos cuatro modificadores: private, protected, default y public. Donde el orden del más restrictivo al menos restrictivo es: private, default, protected y public.
+Correcto.
+
+¿Qué modificador es visible en los siguientes lugares?
+Clase	Package	Clase Hijo	Cualquier Package
+✔	     ✔	        ✔	           ✘
+Protected
+¡Correcto! El modificador protected funciona al igual que <<package private>> pero agrega visibilidad para los hijos (llamado de "public para los hijos").
+
+
+Y ahora, ¿qué modificador es visible en los siguientes lugares?
+Clase	Package	Clase Hijo	Cualquier Package
+✔	      ✔ 	    ✘	          ✘
+<<package private>> (ausencia de modificador)
+Correcto. En ausencia del modificador, también llamado package private o default, el miembro es visible en la clase y en el package, pero es invisible fuera del package (ni siquiera para los hijos).
+
+
+¿Qué aprendimos?
+
+En esta clase volvimos a hablar sobre visibilidad y aprendimos:
+
+Hay 3 palabras clave relacionadas con la visibilidad: private, protected, public
+Hay 4 niveles de visibilidad (de menor a mayor):
+private (visible solo en clase)
+<<package private>> (visible en la clase y en cualquier otro miembro del mismo paquete, que puede ser llamado de default)
+protected (visible en la clase y en cualquier otro miembro del mismo paquete y para cualquier hijo)
+public (visible en cualquier paquete)
+Los modificadores pueden ser usados en la definición de la clase, atributo, constructor y método.
+
+
+-----------------------------------------------------------------------
+02 Documentación Javadoc
+
+Explicar que hace nuestro proyecto..
+
+-----------------------------------------------------------------------
+03 Generando Javadoc
+
+Comentarios en azul que luego es recopilado.
+/**
+* Cuenta va a acrear nuevas instancias de Cuenta Corriente.
+* 
+* @version 1.0
+* 
+* @author maatreef 
+*/
+
+
+/**
+*
+* Instancia una nueva cuenta sin parametros, a nivel de constructor.
+*/
+
+Podemos documentar en los métodos, constructor, donde deseemos.
+
+Javadoc, así se llama la "documentación"
+Nos organia el código para visualizarlo mejor.
+El javadoc lo podemos generar, como html.
+Una documentación técnica, para compartir código. Es importante hacerlo.
+
+
+
+¿Qué comentario deberíamos usar para declarar un javadoc en el código fuente?
+/ **
+* javadoc aquí
+* /
+Correcto, importante es usar el carácter / seguido de 2 caracteres **
+
+
+Lea las declaraciones con atención:
+
+A) Debe tener instalado el JDK para poder generar la documentación de javadoc.
+
+B) El javadoc es documentación escrita por el desarrollador para desarrolladores.
+
+C) Todos los miembros de la clase son contemplados en el javadoc.
+
+D) Hay etiquetas especiales para marcar el autor o la versión de la clase.
+
+Todos son verdaderos excepto:
+C
+Correcto. No es cierto ya que solo los miembros "públicos" son contemplados en el javadoc. Otros miembros (no públicos) se consideran detalles de implementación y no pueden ser utilizados por otras clases.
+
+
+
+Ya vimos en esta clase algunas tag (o anotaciones) de javadoc como @version o @author.
+
+Aquí está la lista completa:
+
+@author (usado en la clase o interfaz)
+@version (usado en la clase o interfaz)
+@param (usado en el método y constructor)
+@return (usado solo en el método)
+@exception o @throws (en el método o constructor)
+@see
+@since
+@seriel
+@deprecated
+Es importante que las etiquetas javadoc existan solo para estandarizar algunos datos fundamentales de su código fuente, como el autor y la versión.
+
+
+En los cursos también ha visto una anotación fuera del javadoc, la anotación @Override. Esta anotación se considera una configuración, en este caso interpretada por el compilador.
+
+Las anotaciones van mucho más allá de los tags de javadoc y son mucho más sofisticadas y poderosas. Ellas ingresaron a la plataforma Java desde la versión 1.5 mientras que el javadoc ha estado presente desde el nacimiento de la plataforma Java. Lo interesante es que las anotaciones se inspiraron en las etiquetas javadoc.
+
+Si aún no está seguro sobre el uso de las anotaciones, tenga la seguridad de que aún verá muchas usadas por las bibliotecas que se utilizan para definir datos y configuraciones. ¡Espere!
+
+
+Sabemos que el código producido por un desarrollador de Java puede ser utilizado por otros desarrolladores. En este sentido, documentar el código y facilitar su uso por otros desarrolladores es una buena práctica a seguir.
+
+En cuanto a la generación de documentación, podemos usar Javadoc, para la distribución podemos empaquetar la aplicación en un jar. Comencemos con Javadoc
+-----------------------------------------------------------------------
+08 Archivos JAR
+
+Similar al archivo zip.. 
+No tendremos acceso al código fuente, pero si al código compilado.
+
+El proyecto general lo debemos EXPORTAR como jarFile
+	- Exportamos nuestro proyecto como un archivo .jar
+
+-----------------------------------------------------------------------
+09 Usando Bibliotecas con JAR
+
+Un conjunto de clases exportado en un Jar, son una LIBRERÍA.
+Nos traemos el .jar dentro de nuestro NUEVO proyecto.
+
+Dentro de "lib".. metemos nuestro .jar
+	El archivo .jar debemos hacerle el Build Path, lo agregamos a la ruta de construcción.
+
+De esta manera podemos usar TODAS las funcionalidades que tenemos dentro de nuestro .jar, sin necesidad de duplicar nuestro código.
+
+-----------------------------------------------------------------------
+10 JAR Ejecutables
+
+Lo anterior es a nivel básico.. 
+Podemos generar nuestras dependencias a otro nivel (La dependencia es toda librería que no es escrita por nosotros)
+Y existen herramientas para administrar depedencias.
+
+El .jar como .exe.. Como un instalador.
+
+- Nuevamente como lo anterior..
+	Pero ahora manejamos el main class, a modo de ejemplo, le agregamos el TestGerente
+	Esta clase main class, es lo que da lugar al ejecutable.. Es decir, al ejecutarlo desde consola.
+
+Desde consola..
+	java archivo.jar
+
+
+Existen librerías que nos generan las Gui, las interfaces de ventanas, como un formulario, etc..
+java Swing
+
+
+Hablamos en el video de que JAR significa nada más que Java ARchive.
+
+¿Qué más podemos decir sobre el archivo JAR? Marque todas las declaraciones correctas:
+Es un archivo comprimido ZIP.
+Correcto, no es más que un archivo ZIP, pero con la extensión .jar
+
+Es el formato estándar en el mundo de Java para distribuir código compilado.
+Correcto, cualquier biblioteca o proyecto usará JAR(s) para distribuir el código.
+
+Sabemos que a través de jars podemos facilitar el intercambio de nuestro código entre equipos. Ha llegado el momento de practicar.
+
+En Eclipse, haciendo clic derecho en el proyectobytebank-heredado-cuenta, seleccione la opción export. Se mostrarán varias opciones de exportación, seleccione las que están dentro del grupo java y dentro de ella la opción JAR File haga clic en "NEXT". Veamos el siguiente paso a seguir.
+
+En el proyecto proyectobytebank-heredado-cuenta, seleccione solo la carpeta src. También desmarque los archivos .classpath y .project. Asegúrese de que solo esté marcada la opción "Export generated class files and resources". En "Jar File", seleccione una carpeta de fácil acceso en la que se guardará el archivo jar que vamos a crear. Haga clic en Finish y, si se muestra alguna advertencia, ignórela por completo.
+
+Verifique la existencia del archivo jar creado.
+
+Para probar el archivo jar recién creado, cree un nuevo proyecto java llamado bytebank-biblioteca. Cierre el resto de proyectos para que sea más fácil concentrarse en el nuevo proyecto.
+
+Con el botón derecho en el nuevo proyecto, elija New -> Folder. Para el nombre del folder, elija libs.
+
+Copie el jar exportado en la carpeta libs recién creada.
+
+Copiar el archivo jar en un proyecto no es suficiente, debe estar en el class path. Haga clic con el botón derecho en el archivo jar dentro de la carpeta libs y elija la opción add to build path. Vea si seleccionó la opción "Package Explorer". Si tiene la opción Navigator seleccionada, no aparecerá Build Path
+
+Ahora que nuestro proyecto ve el jar creado, cree la clase TestLibreria en el paquete br.com.alura.bytebank. Su propósito es importar algunas clases del jar importado:
+
+
+package br.com.alura.bytebank;
+
+
+import br.com.bytebank.banco.modelo.Cuenta;
+import br.com.bytebank.banco.modelo.CuentaCorriente;
+
+
+public class TestLiberia {
+
+
+    public static void main(String[] args) {
+        Cuenta c = new CuentaCorriente(123, 321);
+    }
+}
+Excelente, acaba de importar los recursos de un archivo jar.
+
+Java es una plataforma de desarrollo completa que destaca por su gran cantidad de proyectos de código abierto (open source). Para la mayoría de problemas en el día a día del desarrollador ya existen librerías para solucionar. Es decir, si te gustaría conectarte con una base de datos, o trabajar en desarrollo web, en el área de ciencia de datos, creación de servicios o Android, ya existen librerías para esto, muchas veces más de una.
+
+Existe la necesidad de organizar, centralizar y versionar los JARs de esas librerías y administrar las dependencias entre ellos. Para solucionar esto, se crearon herramientas específicas y en el mundo Java se destacó Maven. Maven organiza los JARs (código compilado, código fuente y documentación) en un repositorio central que es público y se puede buscar:
+
+mvnrepository.com
+
+Allí puede ver e incluso descargar los archivos JARs, pero lo mejor es que la herramienta Maven puede hacer esto por usted.
+
+Nota: si es un usuario de Linux, Maven es muy similar a los administradores de apt o rpm. En MacOS existe brew con el mismo propósito. En el mundo .Net tenemos nuget y la plataforma node.js usa npm. La gestión de dependencias es un problema cotidiano para el desarrollador, y cada sistema o plataforma tiene su propia solución.
+
+¿Qué aprendimos?
+
+En esta sección más ligera vimos y aprendimos:
+
+Qué comentarios y tags (anotaciones) usar para definir el javadoc
+Cómo generar javadoc en Eclipse
+Que javadoc es una documentación para desarrolladores
+Que las clases estándar de Java también usan javadoc
+Cómo crear nuestra propia librería a través de JAR (J*ava *ARchive)
+Cómo importar librerías al nuevo proyecto
+Cómo crear un JAR ejecutable
+En la siguiente clase conoceremos el paquete java.lang.
+
+-----------------------------------------------------------------------
+02 Conociendo java.lang
+
+Un paquete está compuesto por otras clases, o bien otros paquetes..
+Un paquete posee cierta jerarquía.	
+
+
+¿Qué es correcto decir sobre el paquete java.lang?
+Tiene clases imprescindibles para cualquier programa.
+Correcto, las clases String y System son solo dos ejemplos de varios otros.
+
+No necesita importar, se importa automáticamente.
+Correcto, no es necesario colocar explícitamente import java.lang. *
+
+Las clases String y System provienen de este paquete.
+Correcto, y veremos varias otras clases de este paquete fundamental.
+
+Cuando hablamos de excepciones hemos visto varias clases como Exception, RuntimeException, NullPointerException o ArithmeticException.
+
+Todas estas clases provienen del paquete java.lang, por lo que no fue necesario importarlas.
+
+-----------------------------------------------------------------------
+05 Explorando String
+
+	Un string es un objeto
+	String nombre = "Maat";
+	
+	// No usado, pero existe
+	// String nombre2 = new String("Maat");
+	
+	
+	java.lang -> Es el paquete base de java, java language
+	
+	String nombre = "Maat";
+	// nombre.replace(oldChar, newChar);
+	System.out.println("Antes del Replace: " + nombre);
+	nombre = nombre.replace("A", "a");
+	nombre = nombre.concat(" nombre propio");
+	System.out.println("Después del Replace: " + nombre);
+
+	Debemos almacenar el String en una nueva variable, usamos la referencia de nombre = "Maat" y la almacenamos más abajo en la variable nombre.
+
+	* Todo String es inmutable, Inmutabilidad, asi como se crea, muere.
+
+-----------------------------------------------------------------------
+06 Metodos String
+
+	https://docs.oracle.com/javase/10/docs/api/java/lang/String.html
+
+	String nombre = "Maat";
+	System.out.println("Antes del Replace: " + nombre);
+	nombre = nombre.replace("A", "a");
+	nombre = nombre.concat(" nombre propio");
+	nombre = nombre.toUpperCase();							// Tranforma todo a mayúscula
+	nombre = nombre.toLowerCase();							// Tranforma todo a minuscula
+	char letra = nombre.chartAt(3);							// El caracter en la posición 3
+	char letra = nombre.chartAt(30);						// Nada, no lo encuentra
+	// Hay 4 indexOf, hay otras formas de usarlo.. Con ctrl + click, entramos a inspeccionar el método.
+	int indice = nombre.indexOf("e");						// Encuentra la posición del index
+	System.out.println("Después del Replace: " + nombre);
+	System.out.println("Caracter encontrado: " + letra);	
+	System.out.println("Indice encontrado: " + indice);	
+
+	* Todo los Strings son Inmutables, Fijos.
+
+
+Una de las clases con las que nos topamos a menudo es String. ¿Qué afirmación es correcta sobre ella?
+Un objeto de tipo String no se puede modificar.
+Correcto, los objetos de la clase String son inmutables. Esto significa que, una vez creado, no se puede cambiar, por lo que cualquier cambio crea un nuevo objeto String.
+
+Es una clase definida en java.lang y por lo tanto no es necesario importar.
+Correcto, porque la clase String es en realidad del paquete java.lang. El FQN es java.lang.String
+
+Vea el código:
+
+public class TestString {
+
+    public static void main(String[] args) {
+
+        String nombre = "Mario";
+        nombre.replace('o', 'a');
+        System.out.println(nombre);
+    }
+}
+
+Al compilar y ejecutar, ¿cuál es el resultado?
+
+Nota: Si tiene preguntas, puede probarlo en Eclipse, por supuesto.
+
+
+El código compila y se ejecuta. El resultado es: Mario
+Correcto, el método replace no cambia el String original, sino que devuelve un nuevo String. Para contemplar el cambio debemos tomar el resultado del método replace:
+
+String nombre = "Mario";
+nombre = nombre.replace('o', 'a');
+System.out.println(nombre);
+
+
+En los videos, es posible que hayas notado que algunos métodos de la clase String reciben una variable de tipo CharSequence. El tipo CharSequence es una interfaz que la propia clase String implementa (¡ya que String es una secuencia de caracteres!):
+public class String implements CharSequence {
+
+Cuando usamos la clase String, incluso podríamos declarar la variable con el tipo de interfaz, pero eso es raro de ver:
+CharSequence seq = "es una secuencia de caracteres";
+
+Lo interesante es que hay otras clases que también implementan la interfaz CharSequence. En otras palabras, hay otras clases que son secuencias además de caracteres además de la clase String. ¿Por qué?
+
+
+Vimos que la clase String es especial porque genera objetos inmutables. Esto se considera beneficioso cuando se piensa en el diseño, pero es malo cuando se piensa en el rendimiento (por eso debemos usar comillas dobles en la creación, ya que la JVM quiere solucionar los problemas de rendimiento con optimizaciones).
+
+Ahora hay un problema: imagina que necesitas crear un texto enorme y necesitas concatenar muchos String, por ejemplo:
+String texto = "Ayuda";
+texto = texto.concat("-");
+texto = texto.concat("me ");
+texto = texto.concat("subi ");
+texto = texto.concat("en el ");
+texto = texto.concat("omnibus ");
+texto = texto.concat("equivocado ");
+System.out.println(texto); 
+
+En este pequeño ejemplo ya hemos creado varios objetos, solo porque estamos concatenando algunos String. Esto no es bueno pensando en el rendimiento y para resolver esto existe la clase StringBuilder que ayuda a concatenar Strings de manera más eficiente.
+
+Vea el mismo código usando StringBuilder:
+StringBuilder builder = new StringBuilder("Ayuda");
+builder.append("-");
+builder.append("me ");
+builder.append("subi ");
+builder.append("en el ");
+builder.append("omnibus ");
+builder.append("equivocado ");
+String texto = builder.toString();
+System.out.println(texto);
+
+StringBuilder es una clase común. Observe que usamos new para crear el objeto. Además, como el objeto es mutable, usamos la misma referencia, sin nuevas asignaciones.
+
+La interfaz CharSequence
+Ahora lo bueno es que la clase StringBuilder también implementa la interfaz CharSequence:
+public class StringBuilder implements CharSequence {
+CharSequence cs = new StringBuilder("También es una secuencia de caracteres");
+
+Esto significa que algunos métodos de la clase String saben cómo trabajar con StringBuilder, por ejemplo:
+String nombre = "ALURA";
+CharSequence cs = new StringBuilder("al");
+
+nombre = nombre.replace("AL", cs);
+
+System.out.println(nombre);
+
+Viceversa, la clase StringBuilder tiene métodos que reciben el tipo CharSequence. De esa forma podemos trabajar de forma compatible con ambas clases, basándonos en una interfaz común.
+
+¿Qué aprendimos?
+
+En esta clase aprendimos y sabemos:
+
+El package java.lang es el único paquete que no necesita ser importado
+Tiene clases fundamentales que cualquier aplicación necesita, como la clase String y System
+Los objetos de la clase String son inmutables y usamos una sintaxis literal para crear (objeto literal)
+Cualquier método para cambiar la clase String devuelve un nuevo String que representa el cambio
+La clase String es una CharSequence
+Si necesitamos concatenar muchos String debemos usar la clase StringBuilder
+Vimos varios métodos de la clase String como trim, charAt, contains, isEmpty, length, indexOf, replace
+En la siguiente clase veremos otra clase fundamental: java.lang.Object
+
+
+-----------------------------------------------------------------------
+02 Explorando System
+
+	System 					es la clase Padre.. 
+	System.out  			out es una instancia estática y publica
+	System.out.println();  	println es el método, y es publico 
+
+-----------------------------------------------------------------------
+03 Método toString()
+
+	public static String printLine(int valor){			// Sobrecargamos el método
+		System.out.println(valor);
+	}
+	public static String printLine(String valor){		// Mismo método con otro parámetro
+		System.out.println(valor);
+	}
+	public static String printLine(char valor){			// 
+		System.out.println(valor);	
+	}
+	public static String printLine(char valor){			// De esta manera estamos CREANDO MUCHOS métodos innecesarios.
+		System.out.println(valor);	
+	}
+
+
+
+La clase padre en el lenguaje Java es el Objecto, TODO SON OBJETOS.
+
+	public static String printLine(Object valor){			// Evitamos lo anterior y usamos la super clase Object
+		System.out.println(valor);
+	}
+
+
+¿Cuál es el propósito del método toString() de la clase Object?
+El método toString() existe para devolver información sobre el estado del objeto.
+Correcto, el método toString debería devolver información sobre el estado del objeto. Es útil para depurar en desarrollo.
+
+El método toString() existe para ser reemplazado.
+Correcto, es una buena práctica sobrescribir el método para darle un significado mayor que el resultado estándar de ese método.
+
+
+
+Vamos a sobreescribir el método toString() de la clase Object cambiando las clases de Cuentas.
+
+1) Abra la clase Cuenta y coloque el método toString con la información básica de la cuenta:
+@Override
+public String toString() {
+    return "Numero: " + this.numero + ", Agencia: " + this.agencia;
+}
+
+2) Ejecute la clase de prueba para crear una CuentaCorriente y CuentaAhorros. La clase debería verse así:
+public class Test {
+
+    public static void main(String[] args) {
+
+        Object cc = new CuentaCorriente(22, 33);
+        Object cp = new CuentaCorriente(33, 22);
+
+        System.out.println(cc);
+        System.out.println(cp);
+    }
+}
+La salida debe ser:
+Numero: 33, Agencia: 22 
+Numero: 22, Agencia: 33
+
+3) Tenga en cuenta que no hay forma de distinguir por la salida si es una CuentaAhorros o una CuentaCorriente. Por tanto, vamos a sobreescribir el método en las clases hijas.
+
+Abra la clase CuentaAhorros y agregue:
+@Override
+public String toString() {
+    return "CuentaAhorros, " + super.toString();
+}
+
+Y en la clase CuentaCorriente debe quedar:
+
+@Override
+public String toString() {
+    return "CuentaCorriente, " + super.toString();
+}
+
+4) Ejecute nuevamente la clase Tes. La salida debe ser:
+CuentaCorriente, Numero: 33, Agencia: 22 
+CuentaAhorros, Numero: 22, Agencia: 33
+
+
+-----------------------------------------------------------------------
+06 Clase Object
+
+	Superclase es el Object
+
+	public static String printLine(Object valor){			// Evitamos lo anterior y usamos la super clase Object
+		System.out.println(valor.toString());
+	}
+
+	.toString());  podemos sobreescribir el método..
+
+Es recomendable hacerlo dentro de la clase Padre, en nuestro ejemplo en la clase Cuenta.java
+
+	@Override
+	public String toString() {
+		String cuenta = "Numero: " + this.numero + "Agencia: " + this.agencia;
+		return cuenta;
+	}
+
+
+La clase Object es la clase raíz de Java, es correcto afirmar:
+No es necesario que dejar explícito en la declaración de una clase que debe heredar de Object, porque esto es automático.
+Correcto, no hay necesidad de heredar de Object explícitamente, el compilador inserta automáticamente la declaración.
+
+Cualquier objeto puede ser referenciado por el tipo de Object, ya que es el principal.
+Correcto, el tipo de objeto es la forma más genérica de hacer referencia a un objeto.
+
+
+
+Está revisando un proyecto de su amigo y encontró el siguiente código:
+
+Cuenta c = new Cuenta();
+c.agencia.getCodigo();
+La clase Cuenta está en otro package y se importó correctamente.
+
+¿Qué podemos decir sobre la parte “agencia” en el código anterior? Verifique todas las alternativas correctas:
+“agencia” es un atributo de la instancia.
+Correcto, agencia es un atributo de la instancia, porque usamos la referencia c para acceder al atributo. Si fuera estático, la llamada sería:
+Cuenta.agencia.getCodigo();
+
+agencia es una referencia.
+Correcto, porque estamos usando. para llamar al método getCodigo(). Si agencia fuera una primitiva, no sería posible llamar a un método.
+
+agencia tiene visibilidad pública.
+Correcto, porque en el enunciado dice que estamos importando las clases correctamente. Esto significa que la clase Cuenta está en otro paquete.
+
+
+
+Aún en el mismo proyecto encontraste otro código:
+boolean existe1 = Banco.existeBanco("agencia");
+boolean existe2 = Banco.existeBanco(394);
+existeBanco es un método.
+Correcto, los paréntesis dejan en claro que se trata de un método.
+
+
+existeBanco tiene acceso estático.
+Correcto porque usamos la clase Banco para llamar.
+
+
+existeBanco es una forma de sobrecarga.
+Correcto, hay dos versiones de este método que varían en parámetros, a la primera se le da un String y a la segunda se le da un valor int.
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------

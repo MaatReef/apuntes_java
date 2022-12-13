@@ -1,0 +1,533 @@
+---------------------------------------------------------
+------------------ 03 Conociendo de ArrayList
+
+------------------ 04 Cómo adicionar elementos a un ArrayList
+Si tenemos una lista de tipo String llamada alumnos, ¿cuál sería el método y valor para adicionar de forma correcta a la lista sin errores de compilación?
+Seleccione una alternativa
+
+alumnos.add(“Pepito”);
+¡Alternativa correcta! El método correcto es add y estamos colocando un String dentro del método add.
+
+
+
+
+------------------  06 Recorrer una lista de String
+
+Si tenemos una lista de String llamada alumnos, ¿cómo recorremos todos los valores de esa lista?
+Seleccione una alternativa
+for ( String alumno :  alumnos) { /*---------*/ }
+¡Alternativa correcta! Estoy usando un for recibiendo valores String.
+
+
+
+
+
+------------------ 07 Métodos adicionales
+
+------------------ 08 Ordenar una lista de String
+Queremos imprimir de forma descendente una lista de String llamada alumnos ¿cuál sería la forma de poder hacerlo?
+
+Seleccione una alternativa
+Collections.sort(alumnos, Collections.reverseOrder());
+¡Alternativa correcta! El método reverseOrder hace que nuestra lista sea ordenada descendentemente.
+
+
+
+En nuestra Clase3.java vamos adicionar el siguiente código para ordenar de forma descendente:
+List<String> cursosList = cursos.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+System.out.println(cursosList);
+
+
+Lo que aprendimos en esta aula:
+
+Introducción de Listas.
+
+Diferencias entre un Array[] e ArrayList.
+
+Adicionar valores en un ArrayList usando el método add().
+
+Remover valores de un ArrayList usando el método remove().
+
+Leer una lista usando for, foreach o foreach de Java 8 usando lambda.
+
+Uso de la clase Collections para ordenar una lista simple.
+
+Ordenar una lista usando el método sort() de la clase Collections.
+
+Uso del método sort() de una lista.
+
+Ordenar una lista usando stream().
+
+---------------------------------------------------------
+------------------ 02 Creando listas con Objetos
+Pero yo no quiero esto, yo quiero solamente por ejemplo 
+colocar el nombre del curso. 
+Entonces para esto vamos a hacer aquí implementar el 
+override y aquí implementar el public, el método toString.
+Entonces aquí estoy sobrescribiendo el método toString 
+que ya viene por defecto en todas las clases.
+
+Solamente que si no lo utilizo, él va a imprimir el 
+toString del objeto que yo estoy creando, 
+por eso aparecen esos valores extraños que ustedes 
+están viendo o que nosotros vimos. 
+
+    @Override                   // Sobreescribimos en la clase deseada
+    public String toString(){
+        return this.nombre;
+    }
+
+------------------  03 Adicionar un Objeto a una lista
+Queremos añadir un nuevo curso a nuestra lista de Curso ¿cuál sería la forma de poder hacerlo?
+Curso curso1 = new Curso("Geometria",30) ;
+ArrayList<Curso> cursos = new ArrayList<>();
+cursos.add(curso1);
+
+Seleccione una alternativa
+
+cursos.add(new Curso("Aritmética",20));
+¡Alternativa correcta! Estoy añadiendo un objeto de tipo Curso a nuestra lista de cursos.
+
+
+------------------ 04 Métodos adicionales
+
+------------------ 05 Ordenando listas
+Queremos ordenar una lista descendentemente por el tiempo de duración de Cursos con atributos que se llaman nombre y tiempo ¿Cuál sería la forma de poder hacerlo?
+Curso curso1 = new Curso("PHP",30) ;
+Curso curso2 = new Curso("Ruby",10) ;
+Curso curso3 = new Curso("JavaScript",20) ;
+Curso curso4 = new Curso("Java",50) ;
+
+
+ArrayList<Curso> cursos = new ArrayList<>();
+cursos.add(curso1);
+cursos.add(curso2);
+cursos.add(curso3);
+cursos.add(curso4);
+
+Seleccione una alternativa
+Collections.sort(cursos,Comparator.comparing(Curso::getTiempo).reversed());
+
+¡Alternativa correcta! Estoy ordenando la lista por tiempo de forma descendente, por eso es la respuesta correcta.
+
+
+
+
+------------------ 06 Haga lo que hicimos en aula
+Llegó el momento de que tú mismo ejecutes todos los pasos que hemos realizado durante esta aula. Si ya lo has hecho, ¡excelente!. Si no, es importante que realices lo que enseñé en los videos para continuar con la próxima aula.
+
+En nuestra Clase5.java vamos ordenar nuestra lista por nombre descendentemente de cursos excluyendo PHP:
+
+List<Curso> cursoList = cursos.stream().filter(curso -> !curso.getNombre().equalsIgnoreCase("PHP")).sorted(Comparator.comparing(Curso::getNombre).reversed()).collect(Collectors.toList());
+System.out.println(cursoList);
+
+------------------ 07 Lo que aprendimos
+Lo que aprendimos en esta aula:
+
+Crear una lista usando una clase llamada Curso.
+
+Sobrescribir el método toString de una clase para imprimir los valores de la clase Curso.
+
+Ordenar la lista de Cursos usando la clase Collections.
+
+Ordenar una lista de Cursos usando el método comparing de la clase Comparator, para seleccionar el tipo de atributo que usaremos para ordenar.
+
+Uso de stream() en nuestra lista de Cursos.
+
+Filtrar una lista usando el método filter() de stream.
+
+Usar stream para crear una nueva filtrada y ordenada usando el método collect().
+
+
+
+---------------------------------------------------------
+------------------ 02 Conociendo la interface List
+
+
+------------------ 03 Tipos de List
+¿Cuál no es un tipo de List?
+
+HashSet
+¡Alternativa correcta! Es una implementación de la interfaz Set y no de List
+
+
+
+
+
+------------------ 04 Referencias y encapsulamento entre listas
+Clase 7
+
+------------------ 05 Creando listas
+¿Cómo crear una lista de ArrayList?
+
+Seleccione una alternativa
+List lista = new ArrayList<>();
+
+¡Alternativa correcta! Estoy creando un List( Interfaz) que está implementando un ArrayList.
+
+
+
+------------------ 06 Diferencias entre ArrayList y LinkedList
+Clase 8
+
+------------------  07 Diferencias entre un ArrayList y LinkedList
+¿Cuál es una de las principales diferencias entre un ArrayList y LinkedList?
+
+El método get es más rápido usando ArrayList que LinkedList.
+¡Alternativa correcta! Al usar ArrayList, al guardar la posición termina siendo más rápido que un LinkedList.
+
+
+
+Lo que aprendimos en esta aula:
+
+Crear una lista dentro de una lista de Objetos y obtener los valores de esa sublista usando el método get.
+
+Obtener una lista inmutable usando el método unmodifiableList de la clase Collections.
+
+Ver cómo funcionan las referencias entre listas.
+
+Adicionar valores a una sublista usando el método add().
+
+Ver que la principal diferencia de un LinkedList y ArrayList es que un LinkedList termina siendo más rápido para adicionar valores a una lista en cualquier posición, a diferencia de una ArrayList donde dependiendo de la posición que sea adicionado el valor y dependiendo del tamaño de la lista va terminar siendo más demorado.
+
+Además usando el método get() para obtener algún valor de una posición de un LinkedList termina siendo más demorado que un ArrayList.
+
+Usar un ejemplo práctico para ver esas diferencias en tiempo de ejecución y tomar nuestras propias conclusiones.
+
+---------------------------------------------------------
+------------------02 Métodos tradicionales usando Collections y Streams
+Clase 9
+
+------------------ 03 Métodos de la clase Collections
+¿Cuál método es utilizado para ordenar una lista?
+sort(..)
+¡Alternativa correcta! Método usado para ordenar listas.
+
+
+
+------------------ 04 Otros métodos usando Collections y Streams
+
+------------------ 
+De los siguientes métodos ¿Cuáles pertenecen a la interfaz Stream?
+
+Seleccione una alternativa
+filter, findAny, findFirst, mapToInt, map, max, min, anyMatch
+
+¡Alternativa correcta! Todos estos métodos pertenecen a la interfaz Stream.
+
+
+------------------ 06 Haga lo que hicimos en aula
+
+En nuestra Clase10.java vamos a modificar el curso de Quimica que esta repetido con valor tiempo de 70:
+Curso curso7 = new Curso("Literatura",70) ;
+
+Luego vamos a sumar todos los tiempos de todos los cursos a excepción de Geometria:
+System.out.println(cursos.parallelStream().filter(curso -> !curso.getNombre().equalsIgnoreCase("Geometria")).mapToInt(Curso::getTiempo).sum());
+
+
+Ordenar valores de una lista usando la clase Collections.
+
+Filtrar valores de una lista usando un for.
+
+Sumar valores de una lista usando un for.
+
+Usar el método filter() de stream() para buscar o excluir valores de una lista.
+
+Utilizar el método mapToInt() de stream() para obtener valores específicos de alguna variable int y sumar esos valores usando el método sum().
+
+Aprender cómo usar los métodos average(), max(), min() de un stream() para obtener diferentes tipos de resultados.
+
+Hacer un group by de una lista usando el método groupingBy de la clase Collectors.
+
+---------------------------------------------------------
+
+------------------ 02 Conociendo la interface Set
+Clase 11
+
+Collection          -> Set
+                    -> List
+                    -> Queue
+                    -> Deque
+                    -> SortedSet
+
+Map                 -> SortedMap
+
+* El set, no tiene orden es como un círculo donde se van agregando dentro los datos necesarios, no tendremos un orden espécifico ni una posición equivalente.
+
+¿Cuál clase no pertenece a la interfaz Set?
+ArrayList
+¡Alternativa correcta! Es una implementación de la interfaz List y no de Set.
+
+En Set, pertenece TreeSet, HashSet y LinkedHashSet
+
+
+------------------ 04 Uso de la inferface Set
+Clase 12
+El Set:
+- No tiene un orden especifico
+- Los valores repetidos no se contemplan
+- Acá no  podemos usar el .get
+- Si podemos recorrerlo con un foreach.
+    listaAlumnos.forEach(alumno -> {
+        System.out.println(alumno);
+    });
+
+// Podemos importar desde la clase Collection, ya que todo viene de Collection.
+Collection<String> listaAlumnos = new HashSet<>();
+
+// Si necesitamos manejar el ArrayList, lo modificamos, es más sencillo al usar interface
+Collection<String> listaAlumnos = new ArrayList<>();
+
+// O bien, 
+Collection<String> listaAlumnos = new LinkedList<>();
+
+Recordando la documentación, al usar el padre Collection, accedemos a sus hijos..
+Collection          -> Set
+                    -> List
+                    -> Queue
+                    -> Deque
+                    -> SortedSet
+
+------------------ 06 Ventaja de usar un Set
+¿Cuál es una afirmación correcta al hablar de la interfaz Set?
+
+Seleccione una alternativa
+No guarda objetos duplicados
+¡Alternativa correcta! Una de las principales ventajas es cuando adicionamos registros a un Set el no guarda registros duplicados.
+
+
+------------------ 06 Ejemplos adicionales usando la interface Set
+
+Clase 13
+
+------------------  07 Métodos de la interfaz Set
+
+Del siguiente código ¿Cuál sería el resultado al imprimir cada uno de ellos?
+
+
+String alumno1 = "Luis Miguel";
+String alumno2 = "Pepito los palotes";
+String alumno3 = "Juan Carlos";
+String alumno4 = "Pedro Pedrito";
+String alumno5 = "Gustavo sanchez";
+String alumno6 = "Marcia Maria";
+String alumno7 = "Marcia Maria";
+String alumno8 = "Gustavo Sanchez";
+
+Collection<String> listaAlumnos = new HashSet<>();
+
+Seleccione una alternativa
+[Juan Carlos, Gustavo sanchez, Pedro Pedrito, Gustavo Sanchez, Pepito los palotes, Marcia Maria, Luis Miguel]
+¡Alternativa correcta! Gustavo Sanchez es diferente a Gustavo sanchez, en String una mayúscula hace que ya no sea igual.
+
+
+------------------ 08 Haga lo que hicimos en aula
+
+En nuestra Clase13.java vamos a buscar por el nombre Gustavo Polar, como ese nombre no existe vamos a devolver como resultado No existe:
+
+System.out.println(listaAlumnos.stream().filter(alumno -> alumno.equalsIgnoreCase("Gustavo Polar")).findFirst().orElse("No Existe"));
+
+------------------ 09 Lo que aprendimos
+
+Usar un HashSet adicionando valores en un Set de String usando el método add().
+
+Leer un HashSet e imprimir sus valores en consola.
+
+Entender el árbol de jerarquías de la Clase Collection.
+
+Usar la interfaz Collection para generalizar una lista de HashSet así luego de acuerdo a las necesidades migrar de Set para List.
+
+Utilizar el método max() de Stream para obtener el valor máximo de una lista.
+
+Usar el método removeIf() de nuestra interfaz Collection.
+
+Explicar algunas diferencias entre las interfaces Set y List, en la cual la principal sería que un Set no adiciona valores repetidos.
+
+---------------------------------------------------------
+------------------ 02 Porque usar equals o hashCode
+Clase 14
+
+Creamos una clase para Alumno
+
+Si usamos HashSet, debemos asegurarnos de usar hashCode en nuestra clase padre, sobrescribir.. Van de la mano
+
+@Override
+public boolena equals(Object obj){
+    Alumno alumno = (Alumno) obj;
+    // Usar los 2 del mismo tipo en el cual estamos comparando
+    return this.nombre.equals(alumno.getNombre());
+}
+
+@Override
+public void hashCode(){
+    // Usar los 2 del mismo tipo en el cual estamos comparando
+    return this.nombre.hashCode();
+}
+
+Ahora sí desde nuestra clase instanciada.. 
+Collection<Alumno> listaAlumnos = new HashSet<>();
+
+------------------  03 Métodos equals y hashCode
+¿Por qué sobrescribir el método equals y hashCode, en una clase?
+
+Seleccione una alternativa
+Porque al usar el método contains usa el hashCode y el equals es usado para comparar valores, es una necesidad primordial sobrescribir estos métodos, para buscar los resultados esperados en nuestras comparaciones
+
+¡Alternativa correcta! Aparte de los descrito en la respuesta, es bueno hacer esa sobrescritura de métodos, para luego tener la capacidad de migrar para alguna otra interfaz sin la mayor preocupación de obtener resultados no esperados.
+
+
+
+
+------------------ 04 Ejemplos adicionales usando equals o hashCode
+Clase 15
+
+Como el set no tiene un orden específico.. 
+Con el hashCode subagrupamos en pequeños contenedores.
+
+
+------------------ 05 Métodos de la interfaz Set
+
+¿Qué método podemos usar para buscar valores en un HashSet?
+
+Seleccione una alternativa
+contains(....)
+¡Alternativa correcta! El método contains nos permite buscar un valor en nuestro HashSet.
+
+
+
+------------------ 06 Lo que hicimos
+
+En nuestra Clase15.java imprimir todos los códigos de los alumnos de forma descendente para el curso1:
+
+curso1.getAlumnos().stream().sorted(Comparator.comparing(Alumno::getCodigo).reversed()).forEach(alumno -> System.out.println(alumno.getCodigo()));
+
+------------------ 07 Lo que aprendimos
+
+Es muy importante sobrescribir el método equals y hashCode de un Set porque así podremos usar con efectividad nuestros métodos contains() y comparar valores usando el método equals.
+
+Verificar valores de un Set.
+
+Encapsular métodos para adicionar valores de una Lista de Set o List para poder hacer una migración de tipo de lista con más facilidad.
+
+---------------------------------------------------------
+
+------------------ 02 Otros tipos de Sets y Iterators
+Clase 16
+
+------------------ 03 Conociendo de Iterator
+
+¿Cuál método es usado para recorrer los valores de un Iterator?
+
+Seleccione una alternativa
+next()
+¡Alternativa correcta! El método next es usado para recorrer los valores de un Iterator.
+
+hasNext()
+¡Alternativa incorrecta! El método hasNext sirve para validar si existe valores para recorrer
+
+------------------ 04 Cual collection usar
+
+Clase 17
+Ante la elección de set y list, usamos COllection como clase padre, luego podemos variar.. Y cambiar entre una o bien la otra.
+
+Clase 8, comparamos para saber que elegir.
+
+------------------ 05 Conociendo de Iterator
+¿Cuál método puede usar una lista para trabajar con Iterator?
+
+Seleccione una alternativa
+iterator()
+
+¡Alternativa correcta! El método iterator devuelve un Iterator
+
+------------------ 06 Haga lo que hicimos en aula
+
+En nuestra Clase17.java vamos a modificar este código:
+alumnoIterator.next();
+
+Y vamos a cambiarlo por el siguiente código para evitar el exception NoSuchElementException:
+
+try {
+    alumnoIterator.next();
+} catch (NoSuchElementException e){
+    System.out.println("No Existe");
+}
+
+------------------  07 Lo que aprendimos
+
+Lo que aprendimos en esta aula:
+
+Leer valores de una lista usando la interfaz Iterator a través del método next().
+
+Saber el exception que puede dar cuando usamos el método next() de forma incorrecta.
+
+Saber que la interfaz Iterator era una forma antigua de leer los valores de una lista.
+
+Saber que la principal diferencia entre un Set y List es que el primero no guarda registros duplicados, además que saber que la forma de leer esos valores además de usar un for, es a través de la interfaz Iterator
+
+Reconocer que un Set y List forman parte de la interfaz Collection y por ello podemos usar los métodos que contiene ella.
+
+
+---------------------------------------------------------
+------------------ 02 Definición de mapas
+Clase 18
+
+El map viene de java.util, pero no es de Collection
+Todo mapa posee una key, "String", y el value, "Alumno"
+private Map<String, Alumno> alumnoMap = new HashMap<>();
+
+Para agregar al Map, usamos HashSet o bien put
+
+------------------ 03 Conociendo de Mapas
+¿Cuál es la mejor definición para mapas?
+
+Seleccione una alternativa
+Un mapa es una interfaz, hace parte del package java.util no posee métodos de la interfaz Collection, trabaja bajo un concepto de (llave, valor)
+
+¡Alternativa correcta! Todo lo detallado es parte de la definición de mapas
+
+
+
+------------------ 04 Ejemplos de mapas
+Clase 19
+
+Es una manera..
+private Map<String, Alumno> alumnoMap = new HashMap<>();
+    - Cada vez que hacemos un put, agregamos como java lo considere.
+
+O bien..
+private Map<String, Alumno> alumnoMap = new LinkedHashMap<>();
+    - Cada vez que hacemos un put, agregamos con un orden al usar LinkedHashMap.
+
+Por ejemplo es más útil usar un map, cuando sabemos que hay un valor específico  a buscar.
+Si tuviesemos que recorrer una lista de millones de registros con un for es poco útil, en ese caso usar mejor un map.
+
+------------------ 05 Conociendo de Mapas
+¿Por qué usar un mapa?
+
+Seleccione una alternativa
+Obtener valores a través de una llave única, hace más rápido la búsqueda de información
+
+¡Alternativa correcta! Un mapa trabaja bajo un concepto de (llave, valor), al tener una llave única por ejemplo un DNI, termina siendo más rápido la búsqueda de información.
+
+
+------------------  06 Haga lo que hicimos en aula
+En nuestra Clase19.java vamos adicionar 3 alumnos nuevos y imprimir la nueva lista de alumnos
+
+curso1.getAlumnoMap().put("008", new Alumno("Juan Miguel", "008") );
+curso1.getAlumnoMap().put("009", new Alumno("Maria Jose", "009") );
+curso1.getAlumnoMap().put("010", new Alumno("Luis Pedro", "010") );
+
+curso1.getAlumnoMap().forEach((codigo, alumno) -> {
+    System.out.println(alumno);
+});
+
+
+------------------ 08 Lo que aprendimos
+Saber que un Map nos permite acceder a sus valores con más rapidez porque trabaja en el concepto de llave única y valor.
+
+Buscar valores de un mapa a través de un key termina siendo mucho más rápido que un List o Set.
+
+El usar mapas es muy útil cuando tenemos registros únicos en nuestros registros como DNI, numero de celular, etc. Porque así podemos diferenciar nuestros valores y colocarlos como llave única en nuestros registros.
+
+Leer valores de un Map.

@@ -1,0 +1,94 @@
+body {
+    background: #b75f4b;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #481818, #b75f4b);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #481818, #b75f4b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+a {
+    font-family: 'Carrois Gothic SC', sans-serif;
+    display: block;
+    text-align: center;
+    line-height: 1.2;
+    color: white;
+    padding: 0;
+}
+pre{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: inline-block;
+    margin: 1rem auto 1rem 1rem;
+    line-height: 0.1rem;
+    color: white;
+    background-color: #b75f4b;
+    padding: 1rem 4rem 1rem 4rem;
+}
+pre div{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: space-around;
+}
+pre li {
+    margin: 1rem auto 1rem 1rem;
+}
+
+.contenido {
+    max-width: 1200px;
+    margin: 5rem auto 0 auto;
+    color: white;
+    font-size: 3rem;
+    font-family: 'Carrois Gothic SC', sans-serif;
+}
+@media (max-width:560px) {
+    .contenido{
+        font-size: 0.5rem;
+    }
+    pre{
+        font-size: 0.7rem;
+    }
+}
+h1 {
+    font-size: 1.5rem;
+    margin-left: 2rem;
+    font-family: 'Carrois Gothic SC', sans-serif;
+    line-height: 1.2;
+    color: white;
+    padding: 0;
+}
+a {
+    font-size: 1.4rem;
+}
+p{
+    font-size: 1.5rem;
+    font-family: 'Carrois Gothic SC', sans-serif;
+    line-height: 1.2;
+    margin-left: 2rem;
+    color: white;
+    padding: 0;
+}
+
+.practica{
+    color: rgb(0, 17, 255); 
+}
+
+.hashtag {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.context{
+    display: flex;
+}
+a{
+    justify-content: space-between;
+    margin: auto;
+}
+
+li a {
+    display: inline;
+    text-decoration: none;
+    margin-left: 2rem;
+}
+img{
+    display: block;
+    text-decoration: none;
+    margin-left: 5rem;
+}

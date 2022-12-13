@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción Java</title>
+    <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+    <div class="context">
+        <a href="../../index.html">Inicio</a>
+        <a href="../1/index.html">Siguiente</a>
+    </div>
+    <div class="contenido" id="arriba">
+        <p>Java - Notas</p>
+    </div>
+
+    <h1>Extras:</h1>
+    <ol>
+        <li>
+            <a href="#1">1 - POO: ¿Qué es la programación orientada a objetos?</a>
+        </li>
+        <li>
+            <a href="#2">2 - Creando anotaciones en Java</a>
+        </li>
+        <li>
+            <a href="#3">3 - Las características más destacables de Java 8 en adelante</a>
+        </li>
+        <li>
+            <a href="#4">4 - Bases de datos relacionales</a>
+        </li>
+        <li>
+            <a href="#5">5 - Conociendo JDBC</a>
+        </li>
+        <!-- <li>
+            <a href="#6"></a>
+        </li>
+        <li>
+            <a href="#7"></a>
+        </li> -->
+
+    </ol>
+    <br>
+    <h1>Compendio</h1>
+    <br>
+    <br>
+    <br>
+
+    <h2 id="1">1 - POO: ¿Qué es la programación orientada a objetos?</h2>
+    <pre>
+        Programación orientada a objetos y programación estructurada
+        Como la mayoría de las actividades que hacemos a diario, la programación también tiene diferentes formas de realizarse.
+        Estos modos se llaman paradigmas de programación y entre ellos están la programación orientada a objetos (POO) y la
+        programación estructurada. Cuando comenzamos a usar lenguajes como Java, C#, Python y otros que posibilitan el paradigma
+        orientado a objetos, es común cometer errores y aplicar la programación estructurada pensando que estamos usando
+        recursos de la orientación a objetos.
+
+        En la programación estructurada, un programa consta de tres tipos básicos de estructuras:
+
+        Secuencias: son los comandos a ejecutar
+        Condiciones: secuencias que solo deben ejecutarse si se cumple una condición (ejemplos: if-else, switch y comandos similares)
+        Repeticiones: secuencias que deben realizarse repetidamente hasta que se cumpla una condición (for, while, do-while, etc.)
+        Estas estructuras se utilizan para procesar la entrada del programa, cambiando los datos hasta que se genera la salida esperada. Hasta ahora, nada que la programación orientada a objetos no haga también, ¿verdad?
+
+        La principal diferencia es que, en la programación estructurada, un programa generalmente se escribe en una sola rutina (o función) y, por supuesto, puede dividirse en subrutinas. Pero el flujo del programa sigue siendo el mismo, como si se pudiese copiar y pegar el código de las subrutinas directamente en las rutinas que las llaman, de tal forma que, al final, solo existiese una gran rutina que ejecute todo el programa.
+        
+        <img src="img/1.png" alt="">
+
+        Además, el acceso a las variables no tiene muchas restricciones en la programación estructurada. En lenguajes fuertemente basados en este paradigma, restringir el acceso a una variable se limita a decir si es visible o no dentro de una función (o módulo, como en el uso de la palabra clave static, en lenguaje C), pero no es posible decir de forma nativa que solo se puede acceder a una variable mediante unas pocas rutinas del programa. El esquema para situaciones como estas implica prácticas de programación perjudiciales para el desarrollo del sistema, como el uso excesivo de variables globales. Vale la pena recordar que las variables globales se usan típicamente para mantener estados en el programa, marcando en qué parte de la ejecución se encuentran.
+
+        La programación orientada a objetos surgió como una alternativa a estas características de la programación estructurada. El propósito de su creación fue también acercar el manejo de las estructuras de un programa al manejo de las cosas en el mundo real, de ahí el nombre "objeto" como algo genérico, que puede representar cualquier cosa tangible.
+
+        Este nuevo paradigma se basa principalmente en dos conceptos clave: clases y objetos. Todos los demás conceptos, igualmente importantes, se basan en estos dos.
+
+        ¿Qué son clases y objetos?
+        Imagina que recientemente compraste un auto y decidiste modelar ese auto utilizando programación orientada a objetos. Tu auto tiene las características que estabas buscando: motor 2.0 híbrido, azul oscuro, cuatro puertas, cambio automático, etc. También tiene comportamientos que probablemente fueron el motivo de tu compra, como acelerar, reducir la velocidad, encender los faros, tocar la bocina y tocar música. Podemos decir que el auto nuevo es un objeto, donde sus características son sus atributos (datos vinculados al objeto) y sus comportamientos son acciones o métodos.
+
+        Tu auto es un objeto tuyo, pero en la tienda donde lo compraste habían otros tantos, muy similares, con cuatro ruedas, volante, cambio, espejos retrovisores, faros, entre otras partes. Ten en cuenta que, aunque tu auto es único (por ejemplo, tiene un registro único en el Departamento de Tránsito), puede haber otros con exactamente los mismos atributos, o similares, o incluso totalmente diferentes, pero que aún se consideran autos. Entonces podemos decir que tu objeto se puede clasificar (es decir, tu objeto pertenece a una clase) como un auto, y que tu auto no es más que una instancia de esa clase llamada "auto".
+
+        <img src="img/2.png" alt="">
+
+        Así, abstrayendo un poco la analogía, una clase es un conjunto de características y comportamientos que definen el conjunto de objetos pertenecientes a esta clase. Tenga en cuenta que la clase en sí es un concepto abstracto, como un molde, que se vuelve concreto y palpable a través de la creación de un objeto. Llamamos a esta creación de instanciación de clase, como si estuviéramos usando este molde (clase) para crear un objeto.
+
+        Ejemplo de Java
+        <code>
+            public class Auto {
+                Double velocidad;
+                String modelo;
+            
+                public Auto(String modelo) {
+                    this.modelo = modelo;
+                    this.velocidad = 0;
+                }
+            
+                public void acelerar() {
+                    /* código del auto para acelerar */
+                }
+            
+                public void frear() {
+                    /* código del auto para frenar */
+                }
+            
+                public void acenderFaro() {
+                    /* código del auto para encender el faro */
+                }
+            }
+        </code>
+        Ejemplo en Python
+        <code>
+            class Auto:
+                def __init__(self, modelo):
+                    self.modelo = modelo;
+                    self.velocidad = 0
+
+                def acelerar(self):
+                    # Codigo para acelerar el auto
+
+                def frear(self):
+                    # Codigo para frenar el auto
+
+                def encenderFaro(self):
+                    # Codigo para encender el faro del auto
+        </code>
+        Encapsulamiento, herencia y polimorfismo: las principales características de la POO
+        Las dos bases de la POO son los conceptos de clase y objeto. De estos conceptos derivan algunos otros conceptos extremadamente importantes al paradigma, que no solo lo definen, sino que son las soluciones a algunos problemas de la programación estructurada. Los conceptos en cuestión son el encapsulamiento, la herencia, las interfaces y el polimorfismo.
+
+        Encapsulamiento
+        Aun usando la analogía del auto, sabemos que tiene atributos y métodos, es decir, características y comportamientos. Los métodos del auto, como acelerar, pueden usar atributos y otros métodos del auto, como el tanque de gasolina y el mecanismo de inyección de combustible, respectivamente, ya que acelerar consume combustible.
+
+        <img src="img/3.png" alt="">
+
+        Sin embargo, si algunos de estos atributos o métodos son fácilmente visibles y modificables, como el mecanismo de aceleración del auto, esto puede darle libertad para realizar cambios, lo que resulta en efectos secundarios imprevisibles. En esta analogía, una persona puede no estar satisfecha con la aceleración del auto y cambia la forma en que se produce, creando efectos secundarios que pueden hacer incluso con que el auto ni ande, por ejemplo.
+
+        En este caso, decimos que el método de aceleración de su auto no es visible desde el exterior del mismo auto. En la POO, un atributo o método que no es visible desde afuera del mismo objeto se llama "privado" y cuando está visible, se llama "público".
+
+        <img src="img/4.png" alt="">
+
+        Pero entonces, ¿cómo sabemos cómo acelera nuestro auto? Es simple: no lo sabemos. Solo sabemos que para acelerar hay que pisar el acelerador y el objeto sabe cómo realizar esta acción sin exponer cómo lo hace. Decimos que la aceleración del auto está encapsulada, porque sabemos lo que hará cuando ejecutemos este método, pero no sabemos cómo y, de hecho, al programa no le importa cómo lo hace el objeto, solo que lo haga.
+
+        Lo mismo ocurre con los atributos. Por ejemplo: no sabemos cómo el auto sabe qué velocidad mostrar en el velocímetro o cómo calcula su velocidad, pero no necesitamos saber cómo se hace eso. Solo necesitamos saber que nos dará la velocidad adecuada. Se puede leer o cambiar un atributo encapsulado desde getters y setters.
+
+        Ese encapsulamiento de atributos y métodos evita la llamada fuga de alcance, donde un atributo o método es visible para alguien que no debería poder verlo, como otro objeto o clase. Esto evita confundir el uso de variables globales en el programa, facilitando identificar en qué estado estará cada variable en cada momento del programa, ya que la restricción de acceso nos permite identificar quién puede modificarla.
+
+        Ejemplo en Java
+        <code>
+            public class Auto {
+                private Double velocidad;
+                private String modelo;
+                private MecanismoAceleracion mecanismoAceleracion;
+                private String color;
+            
+                /* Vea que se inserta el mecanismo de aceleración en el auto al construirse, y
+                    no lo vemos ni podemos modificarlo, es decir, no tiene getter ni setter.
+                    Ya el "modelo" se puede ver, pero no se puede alterar. */
+                public Auto(String modelo, MecanismoAceleracion mecanismoAceleracion) {
+                    this.modelo = modelo;
+                    this.mecanismoAceleracion = mecanismoAceleracion;
+                    this.velocidad = 0;
+                }
+            
+                public void acelerar() {
+                    this.mecanismoAceleracion.acelerar();
+                }
+            
+                public void frenar() {
+                    /* código del auto para frenar */
+                }
+            
+                public void encenderFaro() {
+                    /* código del auto para encender el faro */
+                }
+            
+                public Double getVelocidad() {
+                    return this.velocidad
+                }
+            
+                private void setVelocidad() {
+                    /* código para alterar la velocidad del auto */
+                    /* Como solo el propio auto debe calcular la velocidad, 
+                        este método no se puede llamado de afuera, por eso es "private" */
+                }
+            
+                public String getModelo() {
+                    return this.modelo;
+                }
+            
+                public String getCor() {
+                    return this.cor;
+                }
+            
+                /* podemos cambiar el color del auto cuando deseemos */
+                public void setCor(String color) {
+                    this.cor = color;
+                }
+            }
+        </code>
+        Ejemplo en Python
+
+        <code>
+            # Ejemplo de la clase Auto en Python
+            class Auto:
+                def __init__(self, modelo, mecanismoAceleracion):
+                    self.__modelo = modelo;
+                    self.__velocidad = 0
+                    self.__mecanismoAceleracion = mecanismoAceleracion
+
+                def acelerar(self):
+                    mecanismoAceleracion.acelerar()
+
+                def frear(self):
+                    # Codigo para frenar el auto
+
+                def encenderFaro(self):
+                    # Codigo para encender el faro del auto
+
+                def getVelocidad(self):
+                    return self.velocidad
+
+                def __setVelocidad(self):
+                    # Codigo para alterar la velocidad por dentro del objeto
+
+                def getModelo(self):
+                    return self.modelo
+
+                def getColor(self):
+                    return self.color
+
+                def setColor(self, color):
+                    self.color = color
+        </code>
+        Herencia
+        En nuestro ejemplo, acabas de comprar un auto con los atributos que buscabas. A pesar de ser únicos, hay autos con exactamente los mismos atributos o formas modificadas. Digamos que compraste el modelo Fit de Honda. Este modelo tiene otra versión llamada WR-V (o "Honda Fit Cross Style"), que tiene muchos de los atributos de la versión clásica, pero con algunas diferencias muy grandes para transitar por caminos de tierra: el motor es híbrido (acepta alcohol y gasolina), tiene un sistema de suspensión diferente, y supongamos que además tenga un sistema de tracción diferente (tracción a las cuatro ruedas, por ejemplo). Vemos entonces que no solo cambian algunos atributos sino también algunos mecanismos (o métodos, traduciéndose a POO), pero esta versión "cross" sigue siendo el modelo Honda Fit, es decir, es un tipo del modelo.
+
+        Cuando decimos que una clase A es un tipo de clase B, decimos que clase A hereda las características de la clase B y que la clase B es madre de la clase A, estableciendo entonces una relación de herencia entre ellas. En el caso del auto, decimos que un Honda Fit "Cross" es un tipo de Honda Fit, y lo que cambia son algunos atributos (tapabarros reforzado, altura de la suspensión, etc.), y uno de los métodos de la clase (acelerar, ya que ahora hay tracción en las cuatro ruedas), pero todo lo demás sigue igual, y el nuevo modelo recibe los mismos atributos y métodos que el modelo clásico.
+
+        Ejemplo en Java
+        <code>
+            // "extends" establece la relacion de herencia con la clase Auto
+            public class HondaFit extends Auto {
+            
+                public HondaFit(MecanismoAceleracion mecanismoAceleracion) {
+                    String modelo = "Honda Fit";
+                    // llama al constructor de la clase madre, es decira, de la clase "Auto"
+                    super(modelo, mecanismoAceleracion);
+                }
+            }  
+        </code>
+        Ejemplo en Python
+
+        <code>
+            # Las clases dentro del parénteses son las clases madre de la clase definiendose
+            class HondaFit(Auto):
+
+                def __init__(self, mecanismoAceleracion):
+                    modelo = "Honda Fit"
+                    # llama al constructor de la clase madre, es decir, de la clase "Auto"
+                    super().__init__(self, modelo, mecanismoAceleracion)
+        </code>
+        Interfaz
+        Muchos de los métodos de los autos son comunes en muchos automóviles. Tanto un auto como una motocicleta son clases cuyos objetos pueden acelerar, frenar, encender los faros, etc., ya que son comunes a los automóviles. Podemos decir, entonces, que tanto la clase "auto" como la "motocicleta" son "automóviles".
+
+        Cuando dos (o más) clases tienen comportamientos comunes que pueden separarse en otra clase, decimos que la "clase común" es una interfaz, que puede ser "heredada" por las otras clases. Tenga en cuenta que colocamos la interfaz como una "clase común", que puede ser "heredada" (con comillas), porque una interfaz no es exactamente una clase, sino un conjunto de métodos que todas las clases que heredan de ella deben tener (implementar) - por lo tanto, una interfaz no es "heredada" por una clase, sino implementada. En el mundo del desarrollo de software, decimos que una interfaz es un "contrato": una clase que implementa una interfaz debe proporcionar una implementación para todos los métodos que define la interfaz y, a cambio, la clase de implementación puede decir que es del tipo de interfaz. En nuestro ejemplo, "auto" y "motocicleta" son clases que implementan los métodos de la interfaz "automóvil", por lo que podemos decir que cualquier objeto de estas dos primeras clases, como una Honda Fit o una motocicleta Yamaha, son automóviles.
+
+        Un pequeño detalle: una interfaz no puede ser heredada por una clase, sino implementada. Sin embargo, una interfaz puede heredar de otra interfaz, creando una jerarquía de interfaces. Usando un ejemplo completo con autos, decimos que la clase "Honda Fit Cross" hereda de la clase "Honda Fit", que a su vez hereda de la clase "Auto". La clase "Auto" implementa la interfaz "Automóvil" que, a su vez, puede heredar (por ejemplo) una interfaz llamada "MedioDeTransporte", ya que tanto un "automóvil" como un "carro" son medios de transporte, aunque un carro no sea un automóvil.
+
+        EJemplo en Java
+        <code>
+            public interface Automovil {
+                void acelerar();
+                void frenar();
+                void encenderFaro();
+            }
+            
+            public class Auto implements Automovil {
+            
+                /* ... */
+            
+                @Override
+                public void acelerar() {
+                    this.mecanismoAceleracion.acelerar();
+                }
+            
+                @Override
+                public void frenar() {
+                    /* código del auto para frenar */
+                }
+            
+                @Override
+                public void encenderFaro() {
+                    /* código del auto para encender el faro */
+                }
+            
+                /* ... */
+            }
+            
+            public class Moto implements Automovil {
+            
+                /* ... */
+            
+                @Override
+                public void acelerar() {
+                    /* código específico de la moto para acelerar */
+                }
+            
+                @Override
+                public void frenar() {
+                    /* código específico de la moto para frenar */
+                }
+            
+                @Override
+                public void encenderFaro() {
+                    /* código específico de la moto para encender el faro */
+                }
+            
+                /* ... */
+            }
+        </code>
+        Ejemplo en Python
+
+        <code>
+            class Automovil():
+                def acelerar(self):
+                    raise NotImplementedError()
+
+                def frenar(self):
+                    raise NotImplementedError()
+
+                def encenderFarol(self):
+                    raise NotImplementedError()
+
+            class Auto(Automovil):
+
+                # ...
+
+                def acelerar(self):
+                    # Codigo para acelerar el auto
+
+                def frenar(self):
+                    # Codigo para frenar el auto
+
+                def encenderFaro(self):
+                    # Codigo para encender el faro del auto
+
+                # ...
+
+            class Moto(Automovil):
+
+                # ...
+
+                def acelerar(self):
+                    # Codigo para acelerar la moto
+
+                def frear(self):
+                    # Codigo para frenar la moto
+
+                def encenderFaro(self):
+                    # Codigo para encender la moto
+
+                # ...
+        </code>
+        Nota: crea un error de tipo NotImplementedError, aquello, evidencia que, si una clase hija intenta ejecutar un método de la clase padre sin haberlo implementado, se produce el error. En Python, las interfaces se crean como clases normales que heredan las clases hijas. Hay formas de forzar la implementación por parte de las clases hijas, pero para nuestro ejemplo, este abordaje es suficiente.
+
+        Polimorfismo
+        Digamos que una de las razones por las que compraste un auto fue la calidad de su sistema de sonido. Pero, en su caso, digamos que la reproducción solo se puede hacer por radio o bluetooth, mientras que en su auto antiguo, solo se puede hacer a través de la tarjeta SD y pendrive. El método de "reproducir música" está presente en ambos autos, pero como su sistema de sonido es diferente, la forma en que el automóvil reproduce música es diferente. Decimos que el método "reproducir música" es una forma de polimorfismo, porque dos objetos, de dos clases diferentes, tienen el mismo método que se implementa de diferentes maneras, es decir, un método tiene varias formas, varias implementaciones diferentes en diferentes clases, pero que tienen el mismo efecto ("polimorfismo" proviene del griego poli = muchas, morfos= forma).
+
+        Ejemplo en Java
+        <code>
+            public class Main {
+                public static void main(String[] args) {
+                    Automovil moto = new Moto("Yamaha XPTO-100", new MecanismoDeAceleracionDeMotos())
+                    Automovil auto = new Auto("Honda Fit", new MecanismoDeAceleracionDeAutos())
+                    List<Automovil> listaAutomoviles = Arrays.asList(moto, auto);
+                    for (Automovil automovil : listaAutomoviles) {
+                        automovil.acelerar();
+                        automovil.encenderFaro();
+                    }
+                }
+            }
+        </code>
+        Ejemplo en Python
+        <code>
+            def main():
+                moto = Moto("Yahama XPTO-100", MecanismoDeAceleracionDeMotos())
+                auto = Auto("Honda Fit", MecanismoDeAceleracionDeAutos())
+                listaAutomoviles = [moto, auto]
+                for automovil in listaAutomoviles:
+                    automovil.acelerar()
+                    automovil.encenderFaro()
+        </code>
+        Ten en cuenta que, aunque son objetos diferentes, moto y auto tienen los mismos métodos acelerar y encenderFaro, que se llaman igual, a pesar de estar implementados de manera diferente.
+
+        Design Patterns
+        Algunos problemas aparecen con tanta frecuencia en POO que sus soluciones se han convertido en estándares de diseño de sistemas y modelado de código orientado a objetos para solucionarlos. Estos estándares de proyecto, (o design patterns) no son más que formas estandarizadas de solucionar problemas comunes en lenguajes orientados a objetos. El libro "Design Patterns", conocido como Gof:Gang of Four, es la principal referencia en este tema, conteniendo los principales estándares utilizados en grandes proyectos.
+
+        Clean code y SOLID
+        En proyectos desarrollados con POO, como en cualquier otro, el código puede volverse desordenado y difícil de mantener a medio y largo plazo. Ante esta situación, se han desarrollado algunos principios de buenas prácticas de programación y código limpio, por ejemplo:
+
+        KISS (Keep It Simple, Stupid, "Mantén las cosas sencillas"): Siempre que se escribe un código, debe escribirse de la manera más sencilla posible, para mantener el código más legible. Códigos demasiado complejos son más difíciles de mantener, ya que es más difícil entender qué hace y cómo lo hace.
+        DRY (Don't Repeat Yourself, "No repita"): Todo el código escrito para solucionar un problema debe escribirse solo una vez, para evitar la repetición del código. Es casi una variación de KISS, ya que la repetición del código lo hace más confuso y difícil de mantener y corregir, si es necesario.
+        Además de los design patterns y de los principios del código limpio existe un conjunto de técnicas, más generalizadas que los design patterns, que ayudan a crear código orientado a objeto para hacerlo más maleable, permitiendo un mantenimiento y expansión del código más fluido y sin complicaciones a lo largo del tiempo.
+    </pre>
+
+    <br>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <h2 id="2">2 - Creando anotaciones en Java</h2>
+    <pre>
+        Tenemos la siguiente clase que representa a un usuario en nuestro sistema:
+
+        <code>
+        public class Usuario {
+
+        private String nombre;
+        private String identidad;
+        private LocalDate fechaNacimiento;
+        }
+        </code>
+
+        Para guardar un nuevo usuario, se realizan varias validaciones, como por ejemplo: Ver si el nombre solo contiene letras, la IDENTIDAD solo números y ver si el usuario tiene al menos 18 años. Aquí está el método que hace esta validación:
+
+        <code>
+        public boolean usuarioValido(Usuario usuario){
+        if(!usuario.getNombre().matches("[a-zA-Záàâãéèêíïóôõöúçñ\\s]+")){
+            return false;
+        }
+        if(!usuario.getIdentidad().matches("[^0-9]+")){
+            return false;
+        }
+        return Period.between(usuario.getFechaNacimiento(), LocalDate.now()).getYears() >= 18;
+        }
+        </code>
+
+        Supongamos ahora que tengo otra clase, la clase Producto, que contiene un atributo nombre y quiero hacer la misma validación que hice para el nombre de usuario: Ver si sólo contiene letras. ¿Y entonces? ¿Voy a crear otro método para hacer la misma validación? ¿O crear una interfaz o una clase que tanto Usuario como Producto extienden? No tiene mucho sentido ¿verdad? ¿Cómo resolver este caso sin repetir código?
+
+        Anotaciones
+        En Java 5 se ha introducido un nuevo recurso al lenguaje, las anotaciones. Permiten que los metadatos se escriban directamente en el código.
+
+        Los metadatos son, por definición, datos que hacen referencia a los propios datos.
+
+        En el contexto de la orientación a objetos, los metadatos son informaciones sobre los elementos del código. Esta información se puede definir en cualquier medio, solo con que el software o componente la recupere y la utilice para agregar nueva información en los elementos del código.
+
+        Ten en cuenta que las notas por sí solas no hacen nada. Necesitan que la aplicación las recupere y las utilice para que solo así puedan proporcionarnos algo que podamos usar para realizar alguna tarea.
+
+        Volviendo a nuestro problema, vamos a crear una anotación para validar la edad mínima del usuario. Para ello, vamos a anotar nuestra clase:
+
+        <code>
+        public class Usuario {
+
+            private String nombre;
+            private String identidad;
+            @EdadMinima
+            private LocalDate fechaNacimiento;
+        </code>
+
+        Si miramos nuestro código nos daremos cuenta de que no compila, ya que falta implementar la anotación @EdadMinina. Por lo tanto, necesitamos crear una nueva clase con el nombre IdadeMinima:
+
+        <code>
+        public class EdadMinima {
+        }
+        </code>
+
+        Pero, pensándolo bien, ¿estamos creando una clase? ¡No lo estamos! Por lo tanto, la nomenclatura es diferente para una anotación. La forma correcta sería:
+
+        <code>
+        public @interface EdadMinima {
+        }
+        </code>
+
+        Extraño, ¿no? Pero fue la manera que la gente de Java hizo para decir que ese archivo es una anotación.
+
+        Ahora tenemos que anotar nuestra interfaz con algunas anotaciones obligatorias para que Java entienda dónde y cuándo se puede utilizar su anotación, siendo ellas:
+
+        - @Retention - Aquí hablaremos de nuestra aplicación hasta que nuestra anotación esté disponible.
+        - @Target - Aquí pasaremos los elementos que se pueden anotar con esta anotación.
+        ¿Hasta dónde estará disponible nuestra anotación? Necesitamos que se ejecute cuando el usuario envíe sus datos, y esto sucede cuando nuestra aplicación se está ejecutando, por lo que la necesitamos en tiempo de ejecución, Runtime:
+
+        <code>
+        @Retention(RetentionPolicy.RUNTIME)
+        public @interface EdadMinima {
+        }
+        </code>
+
+
+        ¿Y quién será anotado? ¿Qué elemento tiene sentido ser anotado con una anotación que verifica si el usuario tiene edad suficiente? ¿Un atributo, cierto? Luego, un Field:
+
+        <code>
+        @Target(ElementType.FIELD)
+        @Retention(RetentionPolicy.RUNTIME)
+        public @interface EdadMinima {
+        }
+        </code>
+
+        Ahora que hemos especificado el contexto de nuestra anotación, tenemos que hablar de la edad mínima que nuestra anotación debe utilizar para validar la edad del usuario, para ello, vamos a crear una propiedad en nuestra anotación llamada valor:
+
+        <code>
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.FIELD)
+        public @interface EdadMinima {
+            int valor();
+        }
+        </code>
+
+        Nuestra anotación está completa, ahora anotemos el atributo fechaNacimiento de la clase Usuario con ella:
+
+        <code>
+        public class Usuario {
+
+            private String nombre;
+            private String identidad;
+            @EdadMinima
+            private LocalDate fechaNacimiento;
+            //getters e setters
+        }
+        </code>
+
+        Solo haciendo eso, recibiremos un error de compilación. Necesitamos pasar la edad mínima para nuestra anotación, luego:
+
+        <code>
+        public class Usuario {
+
+            private String nombre;
+            private String identidad;
+            @EdadMinima(valor=18)
+            private LocalDate fechaNacimiento;
+            //getters e setters
+        }
+        </code>
+        
+        Para validar esta anotación vamos a crear un usuario y pasar a un método validador():
+
+        <code>
+        public static void main(String[] args) {
+        Usuario usuario = new Usuario("Maria", "42198284863", LocalDate.of(1995, Month.MARCH, 14));
+        System.out.println(validador(usuario));
+        }
+        </code>
+        
+        Ahora vamos a crear el método validador() que devolverá un boolean:
+
+        <code>
+        public static boolean validador(Usuario usuario) {
+        }
+        </code>
+
+        El problema de crear nuestro método de esta manera es que nuevamente nosotros estamos limitandonos a validar solo usuarios, solo que nuestra meta es validar cualquier objeto.
+
+        Para ello, podemos hacer uso de Generics que, en nuestro caso, permitirá recibir un objeto de cualquier tipo:
+
+        <code>
+        public static <T> boolean validador(T objeto) {
+        }
+        </code>
+        
+        Ahora estamos hablando de que vamos a recibir un objeto de tipo genérico T. Pero hacerlo no es suficiente, necesitamos validar ese objeto. ¿Y cómo validamos un objeto que no conocemos?
+
+        Necesitamos descubrir, en tiempo de ejecución, informaciones acerca del objeto que llegará en nuestro método, luego, podemos usar reflexión. Con reflexión podemos descubrir y operar datos de la clase. Entonces, primero, vamos a tomar la clase de ese objeto:
+
+        <code>
+        public static <T> boolean validador(T objeto) {
+        Class<?> clase = objeto.getClass();
+        }
+        </code>
+        
+        Con eso conseguimos operar la clase referente al tipo del objeto recibido. Primero, averigüemos qué atributo de nuestra clase está anotado con @EdadMinima.
+
+        Para averiguarlo, iteraremos sobre los atributos de la clase utilizando el método getDeclaredFields():
+
+        <code>
+        public static <T> boolean validador(T objeto) {
+        Class<?> clase = objeto.getClass();
+        for (Field field : clase.getDeclaredFields()) {
+        }
+        }
+        </code>
+
+        Ahora estamos iterando por todos los atributos de clase de nuestro objeto. El siguiente paso es averiguar qué campo está anotado con nuestra anotación.
+
+        Usaremos el método isAnnotationPresent(). Este método comprueba si el campo contiene la anotación pasada y devuelve un boolean.
+
+        <code>
+        public static <T> boolean validador(T objeto) {
+        Class<?> clase = objeto.getClass();
+        for (Field field : clase.getDeclaredFields()) {
+            if (field.isAnnotationPresent(EdadMinima.class)) {
+            }
+        }
+        }
+        </code>
+
+        Si entra en el if sabremos que el campo tiene la anotación EdadMinima. Solo falta comparar la edad mínima que asignamos en nuestra anotación con la edad pasada. Para hacer eso vamos a recoger nuestra anotación.
+
+        Para conseguir nuestra anotación usaremos el método getAnnotation() pasando nuestra anotación:
+
+        <code>
+        public static <T> boolean validador(T objeto) {
+        Class<?> clase = objeto.getClass();
+        for (Field field : clase.getDeclaredFields()) {
+            if (field.isAnnotationPresent(EdadMinima.class)) {
+                EdadMinima edadMinima = field.getAnnotation(EdadMinima.class);
+            }
+        }
+        }
+        </code>
+        
+        Tenemos un objeto del tipo de nuestra anotación, con él conseguimos coger la edad mínima que setamos. Ahora necesitamos, también, la edad pasada por el usuario.
+
+        Para acceder al valor de un atributo private necesitamos decir que este atributo está accesible de esta manera:
+
+        <code>
+        public static <T> boolean validador(T objeto) {
+        Class<?> clase = objeto.getClass();
+        for (Field field : clase.getDeclaredFields()) {
+            if (field.isAnnotationPresent(EdadMinima.class)) {
+                EdadMinima edadMinima = field.getAnnotation(EdadMinima.class);
+                field.setAccessible(true);
+            }
+        }
+        }
+        </code>
+
+        Pero tenga en cuenta que no recibimos la edad del usuario, recibimos su fecha de nacimiento. Tenemos que tomar esta fecha y averiguar la edad del usuario. Para obtener el valor del atributo anotado con @EdadMinima usaremos el método get() de la clase Field:
+
+        <code>
+        public static <T> boolean validador(T objeto) {
+        Class<?> clase = objeto.getClass();
+        for (Field field : clase.getDeclaredFields()) {
+            if (field.isAnnotationPresent(EdadMinima.class)) {
+                EdadMinima edadMinima = field.getAnnotation(EdadMinima.class);
+                try{
+                    field.setAccessible(true);
+                    LocalDate fechaNacimiento = (LocalDate) field.get(objeto);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        }
+        </code>
+
+        Tenga en cuenta que hemos hecho un cast para LocalDate, ya que el método get() nos devuelve un objeto.
+
+        Para finalizar, vamos a comparar para ver si el período entre fechaNacimiento y la fecha actual es mayor o igual al valor que colocamos como edad mínima en nuestra anotación:
+
+        En la comparación usaremos el método between() que toma como parámetro dos fechas para ser comparadas, el método now() para obtener la fecha actual y el método getYears() para saber el valor del período en años:
+
+        <code>
+        public static <T> boolean validador(T objeto) {
+        Class<?> clase = objeto.getClass();
+        for (Field field : clase.getDeclaredFields()) {
+            if (field.isAnnotationPresent(EdadMinima.class)) {
+                EdadMinima edadMinima = field.getAnnotation(EdadMinima.class);
+                try{
+                    field.setAccessible(true);
+                    LocalDate fechaNacimiento = (LocalDate) field.get(objeto);
+                    return Period.between(fechaNacimiento, LocalDate.now()).getYears() >= EdadMinima.valor();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+        }
+        </code>
+
+        Tenga en cuenta que tomamos el período en años y comparamos para ver si el valor es mayor o igual a EdadMinina.valor() que no es más que el valor que ponemos en nuestra anotación. Además, al final volvemos falso, ya que si ningún campo del objeto posee la anotación @IdadeMinima no puede ser validado.
+
+        <code>
+        public static void main(String[] args) {
+        Usuario usuario = new Usuario("Maria", "52902488033", LocalDate.of(2005, Month.JANUARY, 13));
+        System.out.println(validador(usuario));
+        }
+        </code>
+        
+        La fecha de nacimiento del usuario creado es 13/01/2005, por lo que comparado con la fecha actual resultará en false. Vamos a ver:
+
+        <img src="img/5.png" alt="">
+        Ahora vamos a probar con la fecha 10/01/2000:
+        
+        <code>
+        public static void main(String[] args) {
+            Usuario usuario = new Usuario("Maria", "52902488033", LocalDate.of(2000, Month.JANUARY, 13));
+            System.out.println(validador(usuario));
+        }
+        </code> 
+
+        <img src="img/6.png" alt="">
+        ¡Bien! Ahora nuestro validador() puede validar cualquier clase que tenga nuestra anotación.
+
+        Conclusión
+        En este post podemos descubrir el poder de la reflexión, realmente nos ayuda y mucho cuando necesitamos operar sobre la clase de los objetos dinámicamente.
+
+        Con anotaciones hemos sido capaces de marcar los elementos de nuestra aplicación para que nuestro método que usa reflexión logre captar informaciones útiles para que fuese posible ejecutar nuestra lógica de validación.
+
+        Usar la reflexión es muy útil cuando queremos crear algo más genérico, pero debemos tener cuidado porque con la reflexión, operamos sobre los tipos de objetos dinámicamente y esto hace que algunas optimizaciones de la máquina virtual no se ejecuten. Así que tenemos que tener cuidado de ver dónde es realmente necesario el uso de la reflexión.
+    </pre>
+    <br>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <h2 id="3">3 - Las características más destacables de Java 8 en adelante</h2>
+    <pre>
+        
+    </pre>
+
+    <br>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <h2 id="4">4 - Bases de datos relacionales</h2>
+    <pre>
+
+    </pre>
+
+    <br>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <h2 id="5">5 - Conociendo JDBC</h2>
+    <pre>
+
+    </pre>
+
+    <br>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+    <br>
+    <!-- 
+    <h2 id="6"></h2>
+    <pre>
+        
+    </pre>
+
+    <br>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <h2 id="7"></h2>
+    <pre>
+        
+    </pre>
+
+    <br>
+    <div class="context">
+        <a href="#arriba">Arriba</a>
+    </div>
+    <br>
+    <br>
+    <br> -->
+
+
+    <div class="context">
+        <a href="../../index.html">Inicio</a>
+        <a href="../1/index.html">Siguiente</a>
+    </div>
+</body>
+
+</html>

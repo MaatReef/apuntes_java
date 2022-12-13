@@ -1,0 +1,3214 @@
+-----------------------------------------------------------------------
+01 Presentación
+
+Todo esto se basa en diferentes estructuras de datos, como arreglos de 
+datos, cuando tenemos varios datos de un solo tipo, varios objetos, 
+podemos agruparlos en un objeto digamos un poco mayor, y a la vez 
+trabajar con los métodos que heredamos de la clase object.
+Si ustedes ya han visto el curso anterior de orientación, objetos, 
+van a saber que en base a herencia y polimorfismo, ya que todos los 
+objetos heredan de la clase object, entonces tenemos muchos más métodos 
+para explorar como el equal, hashCode, etcétera. Wrappers. 
+
+¿Qué son wrappers?
+Wrappers son objetos que engloban otros objetos para aplicar técnicas de 
+encapsulamiento y esconder los atributos propios de cada objeto también. 
+
+¿Qué son lambda expressions? 
+Deben haber escuchado mucho esto los que conocen un poco de Amazon. 
+Lambda expression es un tipo de funciones de programación, pero que se 
+ejecutan en un contexto separado.
+
+
+El paquete de Java.util, es de los más usados y si aprenden a dominar 
+este paquete, si entienden que es lo que él tiene aquí, entonces 
+créanme que va a ser un gran diferencial al momento de que ustedes 
+van a comenzar a trabajar como programadores.
+
+---------------------------------------------------------
+02 Conociendo Arrays
+
+Hemos tocado poco el Java.lang, pero este no es el único paquete de Java.
+
+Haciendo un pequeño resumen del paquete Java.lang..
+Es el paquete pues donde están las principales clases 
+de Java, como por ejemplo, clase object, clase string. 
+Entonces, el paquete Java.lang es ese paquete que no 
+necesitamos ni siquiera importarlo. 
+¿Por qué? 
+Porque automáticamente pues es la base de todo el lenguaje.
+
+Y ahora, ¿será que es el único paquete que tiene Java? 
+No. Java también tiene otros paquetes muy importantes, 
+como por ejemplo estos de aquí que son pues 
+el paquete Java.util y el paquete Java.io. 
+¿Qué tiene el paquete Java.util?
+
+Bueno, en programación son llamados los utilitarios, 
+que son estructuras de datos, 
+son objetos que nos van a simplificar un poco la vida 
+para realizar diferentes operaciones. 
+Ya vamos a explorar mucho más de él a lo largo del curso, 
+entonces no se preocupen por entenderlo ahora. 
+Y el paquete Java.io no lo vamos a explorar en este 
+curso o lo vamos a tocar muy, muy poco.
+
+Pero también les recomiendo mucho aprender sobre 
+los diferentes objetos que tiene este paquete. 
+Como un pequeño spoiler, lo que tiene ese paquete 
+pues son archivos para leer, clases para leer archivos, 
+streams de datos. 
+Es para programación no avanzada, 
+pero sí a un nivel ya intermedio y respetable.
+
+Vamos a entrar aquí a nuestro proyecto. 
+El proyecto con el que vamos a trabajar es el mismo 
+proyecto del curso de Java herencia y polimorfismo.
+
+Para hacer un resumen del proyecto también básicamente 
+nuestro ByteBank, que es el banco que creamos aquí 
+en Alura, y aquí lo que hicimos fue crear diferentes 
+objetos como nuestra clase cuenta, funcionario, 
+cuenta corriente, todo, para explicar pues los 
+conceptos de herencia y polimorfismo.
+
+Por lo tanto, aquí nosotros tenemos pues interfaces, 
+tenemos clases abstractas, tenemos clases padres, 
+clases hijas, etcétera. 
+Entonces este proyecto va a ser la base para implementar 
+ahora lo que nosotros queremos explicar aquí en el 
+paquete Java.util.
+
+Para comenzar, vamos a ver ya nuestro ya clásico 
+método main. Entonces, lo que yo voy a hacer es 
+crear un nuevo test y lo voy a llamar TestMain. 
+Finish. 
+Y listo, tenemos aquí nuestro TestMain. 
+Ahora, como ya es clásico, ¿qué hacemos en cada test? 
+Creamos nuestro método main. 
+Y solo a modo de resumen, vamos a repasar qué es 
+lo que significa cada palabra que está aquí.
+
+public static void main (String [] args) {
+}
+
+Public, ya sabemos, es un modificador de acceso, 
+significa que él es accesible desde cualquier parte 
+del proyecto. 
+Static significa que este método, este objeto 
+está digamos localizado en una sección 
+específica de memoria heap. 
+Void es el tipo de método que no retorna valor.
+
+Main es el nombre del método que Java sabe que es el 
+método principal, por lo tanto, él va a buscar 
+por un método con este nombre y estas características. 
+String ya sabemos pues que es un tipo de objeto 
+que almacena, pues una secuencia de caracteres, 
+que pueden ser alfanuméricos. 
+Y seguimos con unos corchetes. 
+Y aquí entra algo que no hemos visto hasta ahora. 
+¿Qué son esos corchetes?
+
+Aquí el nombre de la variable args significa 
+argumentos en plural, es una abreviación de arguments. 
+Pero bueno, primera cosa que tenemos que ver 
+es que está en plural, arguments, y este string 
+tiene corchetes. 
+¿Qué significa eso? 
+Vamos a ver en un momento. 
+Vamos a ejecutar este método main en un momento 
+después, pero primero tenemos este primer problema.
+
+No problema pero primer interrogante. 
+¿Cuál sería nuestra segunda interrogante? 
+Por ejemplo, supongamos que yo aquí tengo un 
+entero edad = 20. 
+Perfecto, declaro un entero edad2 = 15 
+y un entero edad3 = 67, perfecto. 
+Entonces perfecto, yo declaré tres valores del tipo 
+int, tres variables del tipo int, cada una con 
+su valor, nada nuevo hasta aquí.
+
+¿Y qué pasaría si yo quiero agruparlas en una 
+sola referencia? Es decir, si yo quiero que 
+estas variables ahora estén en un solo objeto, 
+algo así como un objeto que englobe estos tres. 
+¿Será que es posible? Sí es posible. 
+¿Por qué? Porque yo ahí estaría hablando, ¿de qué? 
+De edades, edades en plural. ¿Y qué dice aquí? 
+Argumentos en plural. 
+Y este signo de aquí, ¿qué me indica?
+
+Que esto agrupa varios strings, que son los argumentos. 
+Y si yo quisiera agrupar varias edades sabiendo que 
+son del tipo int, ¿cómo podría hacer? 
+Entonces, vamos a comenzar, supongo que debe ser algo así. 
+Declaro el tipo de dato, los corchetes, indicando 
+pues que es un arreglo, todo un array, como se 
+le conoce más. 
+Y le voy a poner edades, perfecto. 
+Punto y coma, y listo.
+
+int edad = 20;
+int edad2 = 13;
+int edad3 = 56;
+
+// Quiero agruparlas en una sola referencia
+
+// El Array como una caja, con un tamaño fijo
+// Indices posición de la caja.
+int[] edades = new int[5];
+
+Con esto decimos que edades hace referencia a un objeto..
+En la memoria Heap.
+
+// Guardamos el valor en la posición 2
+edades[2] = 30;
+System.out.println(edades[2]);   // 30
+System.out.println(edades[0]);   // 0
+
+Entonces, un array es un conjunto de datos en una 
+misma estructura de datos, valga la redundancia. 
+¿Qué más?
+Para acceder a él yo necesito explicarle en qué índice 
+está el valor al que yo deseo o acceder o guardar, 
+en qué índice deseo yo guardar un valor. 
+Y bueno, por último, ¿qué es el índice? 
+El índice es la posición en el que está pues cada 
+sección de mi caja. 
+Los índices comienzan por 0.
+
+
+Seleccione todas las declaraciones sobre arrays correctas:
+Un array es siempre zero-based 
+(El primer elemento se encuentra en la posición 0).
+Correcto. La primera posición del array siempre se 
+indica con 0.
+
+
+Es una estructura de datos.
+Correcto. El array es una estructura de datos.
+
+Un array siempre es inicializado con los valores padron.
+Correcto. Ya que cada posición del array se inicializa 
+con el valor padrón. ¿Cuál es este valor padrón? 
+El tipo de array define. 
+Por ejemplo, en el array int el valor padrón es 0, 
+en el double el valor es 0.0.
+
+
+
+
+Un array realmente tiene una sintaxis extraña 
+porque usa estos corchetes ( [ ] ). 
+Entonces, en caso de duda, relájese y pruebe cada línea 
+dentro de un método main. 
+No hay problema en cometer errores, pues estamos 
+aprendiendo...
+
+Sabiendo esto, ¿cuál es la forma correcta de 
+crear un array de tipo double?
+
+double[] precios = new double[5];
+Correcto. 
+Definimos el tamaño al momento de crear el array.
+
+Además de la sintaxis presentada en la alternativa, 
+existe otra alternativa (menos utilizada):
+double precios[] = new double[5];
+
+Ambas formas son correctas.
+
+
+---------------------------------------------------------
+05 Operaciones
+
+edades[100] = 30;
+No se puede imprimir ni acceder a un valor de un array 
+que simplemente no existe.
+
+
+La estructura nace y muere con el mismo tamaño.
+
+int tamanoArray = edades.length;
+system.out.println(tamanoArray);        // 5
+
+
+for (int i = 0; i < tamanoArray; i++) {
+    // Comienzo de la posición 0 del array hasta la longitud del Array
+    System.out.println(edades[i]);
+}
+
+
+--------------Ejercicio
+Se está preparando para la certificación de Java 
+y ha pasado por el siguiente código:
+
+CuentaAhorro[] cuentas = new CuentaAhorro[10];
+CuentaAhorro ca1 = new CuentaAhorro(11,22);
+CuentaAhorro ca2 = new CuentaAhorro(33,44);
+cuentas[0] = ca1;
+cuentas[1] = ca1;
+cuentas[4] = ca2;
+cuentas[5] = ca2;
+CuentaAhorro ref1 = cuentas[1];
+CuentaAhorro ref2 = cuentas[4];
+
+¿Cuántas referencias apuntan a CuentaAhorro con 
+agencia 33 y número 44?
+
+4
+Correcto. ¿Vamos a contar?.
+
+1 - CuentaAhorro ca2 = new CuentaAhorro(33,44);
+2 - cuentas[4] = ca2;
+3 - cuentas[5] = ca2;
+4 - CuentaAhorro ref2 = cuentas[4];
+
+
+
+---------------------------------------------------------
+07 Objetos
+
+Las variables de los objetos son referencias a los objetos de la memoria head.
+
+CuentaCorriente cc = new CuentaCorriente(23, 44);
+Esta variable aquí, cc, es mi referencia que yo tengo 
+al objeto CuentaCorriente con estos valores que está 
+en la memoria heap.
+                                [new|cc|null|null|null] 
+CuentaCorriente[] cuentasArray = new CuentaCorriente[5];
+// Ahora cc que esta en el Array apunta al new CuentaCorriente(23,44); 
+cuentasArray[1] = cc; 
+
+Es decir, con la refeerencia no creamos un nuevo objeto..
+Solo apuntamos al mismo objeto. 
+
+cc              // Ambas a punta al mismo objeto.. 1ª Referencia
+cuentas[1]      // 2ª Referencia
+
+cuentas[0] = new CuentaCorriente(11, 99);
+System.out.println(cuentas[0]);         // 3ª Referencia
+
+// Todos las posiciones se inicializan pero con valores null.
+
+Entonces, es así cómo también podemos crear arreglos con 
+objetos un poco más complejos y referenciarlos en un array.
+
+
+--------------Ejercicio
+Continuando con los estudios para la certificación, 
+encontró otro fragmento de código:
+
+CuentaAhorro[] cuentas = new CuentaAhorro[10];
+CuentaAhorro ca1 = new CuentaAhorro(11,22);
+CuentaAhorro ca2 = new CuentaAhorro(33,44);
+cuentas[0] = ca1;
+cuentas[4] = ca2;
+System.out.println(cuentas[1].getNumero());
+
+Ejecutando este tramo de código dentro del método main 
+de nuestro proyecto, ¿cuál es el resultado?
+
+Nota: En caso de duda, pruebe el código, ¡no hay problema!
+
+NullPointerException
+Correcto, porque estamos accediendo al segundo elemento 
+del array (posición 1) y esta posición sigue siendo null:
+System.out.println(cuentas[1].getNumero());
+En consecuencia, recibimos una excepción NullPointerException.
+
+
+
+Hasta ahora hemos visto la forma "clásica" 
+de crear un objeto array utilizando la palabra clave new, 
+por ejemplo:
+
+int[] numeros = new int[6];
+numeros[0] = 1;
+numeros[1] = 2;
+numeros[2] = 3;
+numeros[3] = 4;
+numeros[4] = 5;
+
+Sin embargo, también existe una forma literal. 
+Literal, en este contexto, significa usar valores 
+directamente, menos burocrático, más directo. 
+Vea la diferencia:
+
+int[] refs = {1,2,3,4,5};
+
+Usamos las llaves {} para indicar que es un array y 
+los valores ya están declarados dentro de las llaves.
+
+En esta clase sobre arrays aprendimos:
+- Un array es una estructura de datos 
+y se usa para almacenar elementos 
+(valores primitivos o referencias)
+- Los arrays usan corchetes ([]) sintácticamente
+- ¡Los arrays tienen un tamaño fijo!
+- ¡Un array también es un objeto!
+- Los arrays son zero-based(el primer elemento se encuentra en la posición 0)
+- Un array siempre se inicializa con los valores padron.
+- Al acceder a una posición no válida recibimos la excepción ArrayIndexOutOfBoundException
+- Las matrices tienen un atributo length para conocer el tamaño
+- La forma literal de crear un array, utilizando llaves {}.
+
+---------------------------------------------------------
+02 Cast Objeto #1
+
+Cuenta[] cuentas = new Cuenta[5];
+
+CuentaCorriente cuenta = (CuentaCorriente) cuentas[1];
+// Casteamos como una CuentaCorriente.
+
+---------------------------------------------------------
+03 Cast Objeto #2
+
+Object es obviamente, el más absorvente de todos los objetos.
+// De esta manera tenemos un array de tipo Object..
+// Guardamos adentro varios tipos de datos distintos.
+Object[] referencias = new Object[5];
+
+CuentaCorriente cc = new CuentaCorriente(23, 44);
+referencias[1] = cc;        // Guardo en el objeto
+
+
+
+Cliente cliente = new Cliente();
+referencias[4] = cliente; 
+
+// Este objeto de la posición 4 es de tipo CLiente.  
+cliente obtenido = (Cliente) referencias[4];
+
+
+--------------Ejercicio
+Ver el código a continuación:
+
+Cliente clienteNormal = new Cliente();
+clienteNormal.setNombre("Flavio");
+
+Cliente clienteVip = new Cliente();
+clienteVip.setNombre("Romulo");
+
+Object[] refs = new Object[5];
+refs[0]  = clienteNormal;
+refs[1]  = clienteVip;
+
+System.out.println(refs[1].getNombre());
+
+
+Suponiendo que el código está dentro de una clase con el método main, ¿se compila el código? Y si compila, ¿cuál es el resultado?
+No compile, debido a la línea:
+System.out.println(refs[1].getNombre());
+
+Correcto. Observe que nuestro array almacena referencias de tipo Object. Al acceder a alguna posición en el array, recibimos una referencia de tipo Object:
+Object ref = refs[1];
+Con esta referencia en la mano, no podemos llamar al método getNombre(). Para que esto funcione, primero debemos hacer un type cast antes.
+int numero = 3;
+double valor = numero; //cast implícito
+
+
+
+
+-------------- Cast explícito e implícito
+
+Ya hemos hablado mucho sobre Type Cast que no es más que convertir de un tipo a otro.
+
+Cast implícito y explícito de primitivos
+
+Para ser correctos, ya hemos visto cast sucediendo incluso antes de definirlo. Tenemos dos ejemplos, el primero en el mundo de los primitivos:
+
+int numero = 3;
+double valor = numero; //cast implícito
+
+
+Observe que colocamos un valor de la variable numero (tipo int) en la variable valor (tipo double), sin usar un cast explícito. ¿Esto funciona? La respuesta es sí, ya que cualquier entero cabe dentro de un double. Por eso el compilador se queda quieto y no exige un cast explícito, pero nada le impide escribir lo:
+
+int numero = 3;
+double valor = (double) numero; //cast explícito
+
+Ahora bien, lo contrario no funciona sin cast, ya que un double no cabe en un int:
+double valor = 3.56;
+int numero = (int) valor; //cast explícito es exigido por el compilador
+En este caso, el compilador desecha todo el valor fraccionario y almacena solo el valor entero.
+
+
+
+-------------- Cast implícito y explícito de referencias
+En las referencias, se aplica el mismo principio. Si el cast siempre funciona no es necesario hacerlo explícito, por ejemplo:
+
+CuentaCorriente cc1 = new CuentaCorriente(22, 33);
+Cuenta cuenta = cc1; //cast implícito
+
+Aquí también podría ser explícito, pero nuevamente, el compilador no lo requiere porque cualquier CuentaCorriente es una Cuenta:
+
+CuentaCorriente cc1 = new CuentaCorriente(22, 33);
+Cuenta Cuenta = (Cuenta) cc1; //cast explícito mas desnecessário
+
+-------------- Cast posible e imposible
+¿Type cast explícito siempre funciona?
+
+La respuesta es no. El cast explícito solo funciona si es posible, pero hay casos en los que el compilador sabe que un cast es imposible y luego ni compila ni con type cast. Por ejemplo:
+Cliente cliente = new Cliente();
+Cuenta cuenta = (Cuenta) cliente; //imposible, no compila
+
+Como el cliente no extiende la clase de Cuenta ni implementa una interfaz de tipo de Cuenta, es imposible que funcione ese cast, ya que una referencia de tipo de Cuenta nunca puede apuntar a un objeto del tipo de Cliente.
+
+La certificación Java tiene muchas de estas preguntas sobre cast posible, imposible, explícita e implícita. Si pretendes obtener esta certificación, vale la pena estudiar este tema con mucha tranquilidad.
+
+
+-------------- ¿Qué declaración?
+Vea la jerarquía de clases:
+
+Y la declaración del array:
+????[] referencias = new ????[5];
+
+referencias[0] = new Designer();
+referencias[1] = new Gerente();
+
+Designer designer = (Designer) referencias[0];
+Gerente gerente = (Gerente) referencias[1];
+
+¿Qué podemos poner en lugar de ???? para que se compile el código?
+
+Selecciona 2 alternativas
+Funcionario
+Correcto, ya que los tipos Designer y gerente son Funcionarios,basta colocar:
+Funcionario[] referencias = new Funcionario[5];
+
+
+Object
+Correcto, ya que el tipo logra guardar cualquier tipo de Object de referencias al código de compilación:
+Object[] referencias = new Object[5];
+
+
+-------------- Cuales casts
+Continuando con la misma jerarquía de clases:
+
+Y la declaración del array:
+Funcionario[] referencias = new Funcionario[5];
+
+referencias[0] = new Designer();
+
+???? ref = (????) referencias[0];
+¿Qué podemos poner en lugar de ???? para que se compile el código?
+
+Selecciona 3 alternativas
+Designer
+Correcto, como el Designer es un Funcionario, el cast es posible (compila) y también funcionará con normalidad.
+
+
+Gerente
+Correcto, como el Gerente es un Funcionario, el cast es posible (compila) (pero cuando se ejecuta daría ClassCastException).
+
+Object
+Correcto, al final todas las referencias en el array son de tipo Object. Usando Object el cast no necesita ser explícito, basta con:
+Object ref = referencias[0];
+
+
+-------------- Acerca de ClassCastException
+Lea atentamente las declaraciones sobre ClassCastException:
+
+A) Es del paquete java.lang
+
+B) Es una excepción checked
+
+C) Se lanza cuando falla el type cast
+
+Todos son verdaderos excepto:
+
+Seleccione una alternativa
+B
+Correcto. Todo lo contrario, el ClassCastException es un unchecked ya que extiende de RuntimeException.
+
+C
+Incorrecto. Si, el ClassCastException se lanza cuando falla el cast.
+
+A
+Incorrecto. Si, el ClassCastException es del paquete java.lang.
+
+
+
+
+
+
+
+
+---------------------------------------------------------
+11 Metodo Main
+
+    public static void main (String[] args) {
+
+        for (int i = 0; i < args.length; i++){
+            System.out.println(args[i]);
+        }
+
+    }
+
+Desde consola: Puedo pasarle argumentos al main
+    - java /Testmain ar1 ar2 ar3 ar4 
+
+
+--------------Ejercicio
+---------------------------------------------------------
+12 Haga lo que hicimos en clase: Arrays
+Ha llegado el momento de practicar lo que vimos en este capítulo.
+
+1) Tenemos la siguiente clase:
+package com.bytebank.banco.test;
+
+import com.bytebank.banco.modelo.CuentaCorriente;
+
+public class TestArrayReferencias {
+
+    public static void main(String[] args) {
+
+        CuentaCorriente[] cuentas = new CuentaCorriente[5];
+        CuentaCorriente cc1 = new CuentaCorriente(22, 11);
+        cuentas[0] = cc1;
+
+        CuentaCorriente cc2 = new CuentaCorriente(22, 22);
+        cuentas[1] = cc2;    
+
+        System.out.println( cuentas[1].getNumero()  );
+
+        CuentaCorriente ref = cuentas[0];
+        System.out.println(cc2.getNumero());
+        System.out.println(ref.getNumero());
+    }
+}
+
+2) Queremos almacenar instancias de CuentaCorriente o CuentaAhorro en el array de cuentas. Para eso, necesitamos que la cuenta sea de un tipo más genérico, en el caso de Cuenta.
+
+package com.bytebank.banco.test;
+
+import com.bytebank.banco.modelo.CuentaCorriente;
+// importo
+import com.bytebank.banco.modelo.CuentaAhorro;
+
+public class TestArrayReferencias {
+
+    public static void main(String[] args) {
+
+        // alterando el tipo
+        Cuenta[] cuentas = new Cuenta[5];
+        CuentaCorriente cc1 = new CuentaCorriente(22, 11);
+        cuentas[0] = cc1;
+
+        // crea instancia de CuentaAhorro
+        CuentaAhorro ca2 = new CuentaAhorro(22, 22);
+        cuentas[1] = ca2;    
+
+        System.out.println(cuentas[1].getNumero()  );
+
+        // no compila
+        CuentaCorriente ref = cuentas[0];
+        System.out.println(cc2.getNumero());
+        System.out.println(ref.getNumero());
+
+    }
+}
+
+Cuando cambiamos el tipo de array de CuentaCorriente, la siguiente instrucción deja de compilarse:
+CuentaCorriente ref = cuentas[0];
+
+Debido a que, en tiempo de ejecución, tenemos un objeto de tipo CuentaCorriente como primer elemento del array de cuentas, su referencia es del tipo Cuenta al acceder a cuentas [0]. Por lo tanto, una solución es cambiar el tipo de variable de ref a Cuenta:
+
+package com.bytebank.banco.test;
+
+import com.bytebank.banco.modelo.CuentaCorriente;
+// importo
+import com.bytebank.banco.modelo.CuentaAhorro;
+
+public class TestArrayReferencias {
+
+    public static void main(String[] args) {
+
+        // alterando el tipo
+        Cuenta[] cuentas = new Cuenta[5];
+        CuentaCorriente cc1 = new CuentaCorriente(22, 11);
+        cuentas[0] = cc1;
+
+        // crea instancia de CuentaAhorro
+        CuentaAhorro ca2 = new CuentaAhorro(22, 22);
+        cuentas[1] = ca2;    
+
+        System.out.println(cuentas[1].getNumero()  );
+
+        // alterou o tipo, agora compila
+        Cuenta ref = cuentas[0];
+        System.out.println(cc2.getNumero());
+        System.out.println(ref.getNumero());
+    }
+}
+
+3) Modifique el código para que incluso utilizando el tipo CuentaCorriente sea posible asignar a la variable ref el valor de cuentas[0]. Como estamos seguros de que el elemento en la posición cuentas[0] es una instancia de CuentaCorriente, podemos asumir la responsabilidad de la conversión a través de un type cast:
+
+package com.bytebank.banco.test;
+
+import com.bytebank.banco.modelo.CuentaCorriente;
+// importo
+import com.bytebank.banco.modelo.CuentaAhorro;
+
+public class TestArrayReferencias {
+
+    public static void main(String[] args) {
+
+        // alterando el tipo
+        Cuenta[] cuentas = new Cuenta[5];
+        CuentaCorriente cc1 = new CuentaCorriente(22, 11);
+        cuentas[0] = cc1;
+
+        // crea instancia de CuentaAhorro
+        CuentaAhorro ca2 = new CuentaAhorro(22, 22);
+        cuentas[1] = ca2;    
+
+        System.out.println(cuentas[1].getNumero()  );
+
+        // alterou o tipo, realizando o cast
+        CuentaCorriente ref = (CuentaCorriente) cuentas[0];
+        System.out.println(cc2.getNumero());
+        System.out.println(ref.getNumero());
+    }
+}
+
+4) Ahora intente acceder al elemento en la posición de cuentas[1]. Como en tiempo de ejecución es del tipo CuentaAhorro, el cast no funcionará y se lanzará una excepción en la consola.
+
+
+13
+En esta clase aprendimos:
+
+Un array de tipo Object puede contener cualquier tipo de referencia.
+Cuando convertimos una referencia genérica a una referencia más específica, necesitamos usar un type cast.
+El cast solo compila cuando es posible, aún así puede fallar al ejecutarse.
+Cuando falla el type cast, podemos recibir un ClassCastException.
+Para recibir valores al llamar al programa Java en la línea de comando, podemos usar la matriz String[] en el método main.
+
+---------------------------------------------------------
+02 Operaciones Array
+
+Puede decirse que el constructor de un array es el tamaño que especificamos.
+Obejct[] referencias = new Obejct[5];
+
+
+Para no tener que mezclar toda esa lógica propia del array, con mi clase digamos del negocio que estoy haciendo aquí, yo voy a abstraer todo eso en un nuevo objeto.
+GuardaCuentas.
+Por qué? Porque con este objeto lo que yo le voy a decir es simplemente: "Aquí me vas a guardar solamente cuentas", perfecto. Lo creamos y listo. ¿Qué es lo que vamos a hacer aquí? Vamos a crear un objeto para guardar muchas cuentas.
+ Ya digamos tercerizar esa responsabilidad a un método simple.
+
+--------------Ejercicio
+
+---------------------------------------------------------
+03 Guarda Cuentas
+
+package com.bytebank.modelo;
+
+public class GuardaCuentas {
+	
+	// Crear un objeto para guardar muchas Cuentas
+	// Permitirnos agregar cuentas con un metodo 
+	// guardaCuentas.adiciona(cuenta);
+	// obtener, remover, etc.
+	
+	Cuenta[] cuenta = new Cuenta[10];
+	int indice = 0;
+
+	
+	//                    [X  | X | X | X | ... |  ]
+	public void adicionar(Cuenta cc) {
+		cuenta[indice] = cc;
+		indice++;
+	}
+	
+	public Cuenta obtener(int indice) {
+		return cuenta[indice];
+	}
+
+}
+
+
+Y ahora guardamos el TestGuardaCuentas
+
+package com.bytebank.test;
+
+import com.bytebank.modelo.Cuenta;
+import com.bytebank.modelo.CuentaCorriente;
+import com.bytebank.modelo.GuardaCuentas;
+
+public class TestGuardaCuentas {
+	
+	public static void main(String[] args) {
+		
+		GuardaCuentas guardaCuentas = new GuardaCuentas();
+		Cuenta cc = new CuentaCorriente(11, 22);
+		guardaCuentas.adicionar(cc);
+		Cuenta cc2 = new CuentaCorriente(22,44);
+		guardaCuentas.adicionar(cc2);
+		
+		System.out.println(guardaCuentas.obtener(0));
+		System.out.println(guardaCuentas.obtener(1));
+		
+	}
+
+}
+
+
+* Desafio, crear una clase que guarde cualquier referencia de un objeto.. 
+
+-------------- 04 Haga lo que hicimos en clase: GuardadorDeCuentas
+Ha llegado el momento de que pongas en práctica lo visto en clase. Para hacer esto, siga los pasos que se enumeran a continuación.
+
+1) Cree la clase GuardadorDeCuentas:
+package com.bytebank.banco.modelo;
+
+public class GuardadorDeCuentas {
+
+    private Cuenta[] referencias;
+
+    public GuardadorDeCuentas() {
+        this.referencias = new Cuenta[10];
+    }
+
+}
+
+2) Crea una clase para probar al guardador de cuentas.
+public class Test {
+    public static void main(String[] args) {
+        GuardadorDeCuentas guardador = new GuardadorDeCuentas();
+
+        Cuenta cc = new CuentaCorriente(22, 11);
+        guardador.adicionar(cc);
+    }
+}
+
+3) Cree el método adicionar() en el guardador:
+public class GuardadorDeCuentas {
+
+    private Cuenta[] referencias;
+    private int posicionLibre;
+
+    public GuardadorDeCuentas() {
+        this.referencias = new Cuenta[10];
+        this.posicionLibre = 0;
+    }
+
+    public void adicionar(Cuenta ref) {
+        referencias[this.posicionLibre] = ref;
+        this.posicionLibre++;
+    }
+
+}
+
+4) Modifique su clase de Test para incluir una cuenta más:
+public class Test {
+    public static void main(String[] args) {
+        GuardadorDeCuentas guardador = new GuardadorDeCuentas();
+
+        Cuenta cc = new CuentaCorriente(22, 11);
+        guardador.adicionar(cc);
+
+        Cuenta cc2 = new CuentaCorriente(22, 22);
+        guardador.adicionar(cc2);
+    }
+}
+
+5) Ahora queremos comprobar si la cantidad de elementos dentro del guardador es 2. Cree el código en la clase de Test y aproveche la sugerencia de Eclipse para crear el método por usted
+public class Test {
+    public static void main(String[] args) {
+        GuardadorDeCuentas guardador = new GuardadorDeCuentas();
+
+        Cuenta cc = new CuentaCorriente(22, 11);
+        guardador.adicionar(cc);
+
+        Cuenta cc2 = new CuentaCorriente(22, 22);
+        guardador.adicionar(cc2);
+
+        int tamano = guardador.getCantidadDeElementos();
+        System.out.println(tamano);
+    }
+}
+
+Luego complete la implementación del método en la clase GuardadorDeCuentas
+public class GuardadorDeCuentas {
+
+    private Cuenta[] referencias;
+    private int posicionLibre;
+
+    public GuardadorDeCuentas() {
+        this.referencias = new Cuenta[10];
+        this.posicionLibre = 0;
+    }
+
+    public void adicionar(Cuenta ref) {
+        referencias[this.posicionLibre] = ref;
+        this.posicionLibre++;
+    }
+
+    public int getCantidadDeElementos() {
+        return this.posicionLibre;
+    }
+}
+6) Agregue una característica más a la clase de Test para recuperar un determinado elemento del guardador desde una posición. Nuevamente use Eclipse para generar el método por usted:
+
+public class Test {
+    public static void main(String[] args) {
+        GuardadorDeCuentas guardador = new GuardadorDeCuentas();
+
+        Cuenta cc = new CuentaCorriente(22, 11);
+        guardador.adicionar(cc);
+
+        Cuenta cc2 = new CuentaCorriente(22, 22);
+        guardador.adicionar(cc2);
+
+        int tamano = guardador.getCantidadDeElementos();
+        System.out.println(tamano);
+
+        Cuenta ref = guardador.getReferencia(0);
+        System.out.println(ref.getNumero());
+    }
+}
+
+7) Ahora implemente el método en GuardadorDeCuentas:
+public class GuardadorDeCuentas {
+
+    private Cuenta[] referencias;
+    private int posicionLibre;
+
+    public GuardadorDeCuentas() {
+        this.referencias = new Cuenta[10];
+        this.posicionLibre = 0;
+    }
+
+    public void adicionar(Cuenta ref) {
+        referencias[this.posicionLibre] = ref;
+        this.posicionLibre++;
+    }
+
+    public int getCantidadDeElementos() {
+        return this.posicionLibre;
+    }
+
+    public Cuenta getReferencia(int pos) {
+        return this.referencias[pos];
+    }
+}
+8) Ejecute la clase de Test para verificar que el guardador esté funcionando.
+
+9) (Desafío) Ahora intente crear un guardador que sepa almacenar cualquier tipo de referencias, usando la clase Object.
+
+---------------------------------------------------------
+05 Guarda Referencias
+
+package com.bytebank.modelo;
+
+public class GuardaReferencias {
+	
+	// Crear un objeto para guardar muchas Cuentas
+	// Permitirnos agregar cuentas con un metodo 
+	// guardaCuentas.adiciona(cuenta);
+	// obtener, remover, etc.
+	
+	Object[] referencia = new Object[10];
+	int indice = 0;
+
+	
+	//                    [X  | X | X | X | ... |  ]
+	public void adicionar(Object cc) {
+		referencia[indice] = cc;
+		indice++;
+	}
+	
+	public Object obtener(int indice) {
+		return referencia[indice];
+	}
+
+}
+
+Con el método anterior genérico, ahora armamos el test..
+package com.bytebank.test;
+
+import com.bytebank.modelo.Cuenta;
+import com.bytebank.modelo.CuentaCorriente;
+import com.bytebank.modelo.GuardaCuentas;
+import com.bytebank.modelo.GuardaReferencias;
+
+public class TestGuardaReferencias {
+	
+	public static void main(String[] args) {
+		
+		GuardaReferencias guardaReferencias = new GuardaReferencias();
+		Cuenta cc = new CuentaCorriente(11, 22);
+		guardaReferencias.adicionar(cc);
+		Cuenta cc2 = new CuentaCorriente(22,44);
+		guardaReferencias.adicionar(cc2);
+		
+		System.out.println(guardaReferencias.obtener(0));
+		System.out.println(guardaReferencias.obtener(1));
+		
+	}
+
+}
+
+* De esta manera podemos crear "clases utilitarias" para facilitar el laburo.
+Esta capa es de abstracción, ya que tenemos métodos más de utilidad que propios del negocio.
+
+
+Ahora veremos el paquetel utils..
+Array List.. 
+En el caso del ArrayList, lo que él hace es internamente, 
+por ejemplo, si yo estoy agregando muchas cuentas, 
+obvio que como los arrays son de tamaño fijo, 
+entonces él sí va a inicializar con un array de un tamaño, 
+digamos 10, él va a inicializar con 10 cajitas, 
+10 posiciones.
+Pero cuando estas se llenan, en el caso del ArrayListo, 
+lo que él va a hacer es crear un ArrayList nuevo, 
+con el doble de tamaño, y copiar todos los elementos 
+nuevamente al nuevo ArrayList, que ya tiene el doble de 
+tamaño, y así sucesivamente conforme nosotros vamos 
+llenando el ArrayList. 
+Entonces, esa es una funcionalidad más que ya tenemos 
+lista aquí con este objeto.
+Como va llegando se va posicionando de lado a lado, no podemos especificar su ubicación al momento de agregar.
+
+package com.bytebank.test;
+
+import java.util.ArrayList;                     // Nos traemos el Array List
+
+import com.bytebank.modelo.Cuenta;
+import com.bytebank.modelo.CuentaCorriente;
+
+public class TestArrayList {
+	
+	public static void main(String[] args) {
+		
+
+		ArrayList lista = new ArrayList();
+		Cuenta cc = new CuentaCorriente(11, 22);
+		Cuenta cc2 = new CuentaCorriente(13, 42);
+		
+		lista.add(cc);      // Una a una se van agregando
+		lista.add(cc2);
+
+		Cuenta obtenerCuenta = (Cuenta) lista.get(0);
+		System.out.println(obtenerCuenta);
+		
+	}
+
+}
+
+--------------Ejercicio
+¿Qué sucede si agrega una referencia a la lista 
+sin definir la posición?
+
+El elemento se agrega al final de la lista.
+Correcto, agregar el elemento siempre está al final de la lista.
+
+
+
+
+
+---------------------------------------------------------
+07 Arraylist .size
+
+package com.bytebank.test;
+
+import java.util.ArrayList;                     // Nos traemos el Array List
+
+import com.bytebank.modelo.Cuenta;
+import com.bytebank.modelo.CuentaCorriente;
+
+public class TestArrayList {
+	
+	public static void main(String[] args) {
+		
+		
+		// <> Forzando a que acepte solo un tipo de objeto
+		
+		// LinkedList funciona con otra estructura de datos
+		// List<Cliente> listaCLientes = new LinkedList<>();
+		
+		// El Vector es thread safe, entonces crea una unica instancia 
+		// para todas las pilas de ejecucion
+		// List<Cuenta> lista = new Vector<Cuenta>();
+		
+		// Obligatorio especificar        No es obligatorio
+		// En Java, los generics son digamos los espacios que tiene un objeto que acepta como parámetro para la construcción del objeto como tal, otro tipo de objeto.
+        // De esta manera la siguiente Lista se arma en base al objeto <Cuenta>
+		
+        ArrayList<Cuenta> lista = new ArrayList<>();
+		// ArrayList lista = new ArrayList();
+		Cuenta cc = new CuentaCorriente(11, 22);
+		Cuenta cc2 = new CuentaCorriente(13, 42);
+		
+		lista.add(cc);      // Una a una se van agregando
+		lista.add(cc2);
+
+//		Cliente cliente = new Cliente();
+//		lista.add(cliente);
+
+		Cuenta obtenerCuenta = (Cuenta) lista.get(0);
+		System.out.println(obtenerCuenta);
+
+
+        for (int i = 0; i < lista.size(); i++) {    // Usamos el .size
+			System.out.println(lista.get(i));       // 
+		}
+		
+	 // Por cada cuenta en la lista
+		for (Cuenta cuenta : lista) {               // Usamos el for each, recorriendo la cuenta.
+			System.out.println(cuenta);
+		}
+		
+		boolean contiene = lista.contains(cc3);
+		// Por valor
+		if (contiene) {
+			System.out.println("Si, es igual (equals)");
+		}
+		
+	}
+
+}
+
+Por lo tanto.. El ArrayList es un tipo de objeto que
+va a crear un arreglo de objetos para nosotros, 
+y de esta forma ya no tenemos que preocuparnos, 
+pues por el tamaño del array ni operaciones 
+obteniendo el índice ni nada de esto. 
+El ArrayList lo va a hacer internamente él.
+
+--------------Ejercicio
+¿Cuáles fueron las desventajas señaladas al usar arrays?
+El array tiene un tamaño fijo (no puede crecer dinámicamente)
+Correcto. Una vez creada, el array siempre tendrá el mismo tamaño de elemento. Esto es muy malo cuando no sabemos exactamente cuántos elementos necesitamos conservar.
+
+El array no sabe cuántas posiciones están ocupadas (solo tamaño total)
+Correcto. Ésta es una gran desventaja. No queremos saber cuántos elementos puede tener un array, sino cuántos elementos existen realmente en el array.
+
+
+Sintaxis fuera del estándar "OO Java"
+Correcto. Los arrays tienen su propia sintaxis, lo que dificulta la lectura del código.
+
+
+--------------Ejercicio
+Ve las siguientes afirmaciones acerca de Arraylist.
+
+A) Conserve las referencias.
+
+B) Es del paquete java.util
+
+C) Utiliza un array internamente
+
+D) Al inicializar es necesario definir el tamaño
+
+¿Cuáles son las correctas?
+A, B y C
+Correcto, java.util.ArrayList es realmente un guardador de referencias y usa un array internamente.
+
+
+--------------Ejercicio
+¿Cuántos elementos puede guardar un objeto de tipo 
+java.util.ArrayList?
+
+El límite es la memoria de la JVM.
+Correcto, el único límite es la memoria de la JVM.
+
+
+--------------11. Haga lo que hicimos en clase: ArrayList
+Ha llegado el momento de que pongas en práctica lo visto en clase. Para hacer esto, siga los pasos que se enumeran a continuación.
+
+1) ¿Realizó el desafío del video anterior? Entonces, verifique si su guardador ve parecido como el siguiente código:
+public class GuardadorDeReferencias {
+
+    private Object[] referencias;
+    private int posicionLibre;
+
+    public GuardadorDeReferencias() {
+        this.referencias = new Object[10];
+        this.posicionLibre = 0;
+    }
+
+    public void adicionar(Object ref) {
+        referencias[this.posicionLibre] = ref;
+        this.posicionLibre++;
+    }
+
+    public int getCantidadDeElementos() {
+        return this.posicionLibre;
+    }
+
+    public Object getReferencia(int pos) {
+        return this.referencias[pos];
+    }
+}
+
+2) Cree una prueba(test) para validar el guardador de referencias:
+public class TestGuardadorReferencias {
+    public static void main(String[] args) {
+        GuardadorDeReferencias guardador = new GuardadorDeReferencias();
+
+        Cuenta cc = new CuentaCorriente(22, 11);
+        guardador.adicionar(cc);
+
+        Cuenta cc2 = new CuentaCorriente(22, 22);
+        guardador.adicionar(cc2);
+
+        int tamano = guardador.getCantidadDeElementos();
+        System.out.println(tamano);
+
+        Cuenta ref = (Cuenta)guardador.getReferencia(0);
+        System.out.println(ref.getNumero());        
+    }
+}
+
+3) Ya existe una clase para simplificar el acceso al array. Esta clase es ArrayList. Cree la clase Test dentro del paquete br.com.bytebank.banco.test.util para probar esta clase con el siguiente código:
+package com.bytebank.banco.test.util;
+
+import java.util.ArrayList;
+
+public class Test {
+    public static void main(String[] args) {
+
+        ArrayList lista = new ArrayList();
+
+        Cuenta cc = new CuentaCorriente(22, 11);
+        lista.add(cc);
+
+        Cuenta cc2 = new CuentaCorriente(22, 22);
+        lista.add(cc2);
+
+        System.out.println("Tamano: " + lista.size());
+
+        Cuenta ref = (Cuenta) lista.get(0);
+        System.out.println(ref.getNumero());
+
+        lista.remove(0);
+        System.out.println("Tamano: " + lista.size());
+
+        Cuenta cc3 = new CuentaCorriente(33, 311);
+        lista.add(cc3);
+
+        Cuenta cc4 = new CuentaCorriente(33, 322);
+        lista.add(cc4);
+
+        for(int i = 0; i < lista.size(); i++) {
+            Object oRef = lista.get(i);
+            System.out.println(oRef);
+        }
+
+        System.out.println("----------");
+
+        for(Object oRef : lista) {
+            System.out.println(oRef);
+        }
+
+    }
+}
+
+
+
+
+--------------Ejercicio 12. Código heredado
+Ha encontrado un código heredado que aún no usa genéricos:
+ArrayList lista = new ArrayList();
+Cliente cliente = new Cliente();
+lista.add(cliente);
+
+¿Cómo se puede mejorar el código y aplicar genéricos?
+ArrayList<Cliente> lista = new ArrayList<Cliente>();
+
+Correcto, parametrizamos ArrayList usando <>. Hay una variación/simplificación que se incluyó en Java 1.7. El siguiente código es equivalente a la alternativa:
+ArrayList<Cliente> lista = new ArrayList<>();
+
+--------------Ejercicio 13. Beneficios Generics (genéricos)
+Los generics entraron en la versión 1.5 en la plataforma Java y se mejoraron ligeramente en el Java 1.7. ¿Cuáles son los principales beneficios?
+
+Selecciona 3 alternativas
+Evitar cast excesivos
+Correcto, una vez parametrizada la lista, ya no necesitamos más el cast, por ejemplo:
+Cliente ref = (Cliente) lista.get(0); // innecesario con generics
+
+
+El código más legible, ya que el tipo de elementos es explícito.
+Correcto, al crear la lista queda claro cuál es la intención. Por ejemplo, en la declaración siguiente, está bastante claro que la lista contiene Strings:
+ArrayList<String> nombres = new ArrayList<String>();
+
+
+Anticipar problemas del cast en el momento de la compilación.
+Correcto, el compilador advierte si pasamos por alto el tipo, por ejemplo:
+ArrayList<String> lista = new ArrayList<String>(); 
+lista.add("Nico");
+Cuenta c = lista.get(0); //no compila
+
+
+--------------Ejercicio 14. Haga lo que hicimos en clase: Generics
+Ha llegado el momento de que pongas en práctica lo visto en clase. Para hacer esto, siga los pasos que se enumeran a continuación.
+
+1) Para demostrar problemas en el ArrayList, agregue un objeto de tipo Cliente y ejecute la clase Test. Verá que se producirá una excepción del tipo ClassCastException porque no fue posible convertir la referencia del tipo Cliente en una Cuenta.
+package br.com.bytebank.banco.test.util;
+
+import java.util.ArrayList;
+
+public class Test {
+    public static void main(String[] args) {
+
+        ArrayList lista = new ArrayList();
+
+        //Cuenta cc = new CuentaCorriente(22, 11);
+        Cliente cliente = new Cliente();
+        lista.add(cliente);
+
+        Cuenta cc2 = new CuentaCorriente(22, 22);
+        lista.add(cc2);
+
+        System.out.println("Tamanho: " + lista.size());
+
+        Cuenta ref = (Cuenta) lista.get(0);
+        System.out.println(ref.getNumero());
+
+        lista.remove(0);
+        System.out.println("Tamanho: " + lista.size());
+
+        Cuenta cc3 = new CuentaCorriente(33, 311);
+        lista.add(cc3);
+
+        Cuenta cc4 = new CuentaCorriente(33, 322);
+        lista.add(cc4);
+
+        for(int i = 0; i < lista.size(); i++) {
+            Object oRef = lista.get(i);
+            System.out.println(oRef);
+        }
+
+        System.out.println("----------");
+
+        for(Object oRef : lista) {
+            System.out.println(oRef);
+        }
+
+    }
+}
+
+2) Informe al compilador que solo desea crear una matriz de cuentas. Modifique la clase de prueba para hacer esto:
+package br.com.bytebank.banco.test.util;
+
+import java.util.ArrayList;
+
+public class Test {
+    public static void main(String[] args) {
+
+        ArrayList<Cuenta> lista = new ArrayList<Cuenta>();
+
+        Cuenta cc = new CuentaCorriente(22, 11);
+        lista.add(cc);
+
+        Cuenta cc2 = new CuentaCorriente(22, 22);
+        lista.add(cc2);
+
+        System.out.println("Tamanho: " + lista.size());
+
+        Cuenta ref = (Cuenta) lista.get(0);
+        System.out.println(ref.getNumero());
+
+        lista.remove(0);
+        System.out.println("Tamanho: " + lista.size());
+
+        Cuenta cc3 = new CuentaCorriente(33, 311);
+        lista.add(cc3);
+
+        Cuenta cc4 = new CuentaCorriente(33, 322);
+        lista.add(cc4);
+
+        for(int i = 0; i < lista.size(); i++) {
+            Object oRef = lista.get(i);
+            System.out.println(oRef);
+        }
+
+        System.out.println("----------");
+
+        for(Object oRef : lista) {
+            System.out.println(oRef);
+        }
+
+    }
+}
+
+3) Intente agregar un objeto de otro tipo a la lista anterior. ¡El compilador no te dejará!
+
+4) Modifique su código para aprovechar los beneficios de los generics, elimine el cast en el método get() y al usar enchanced for:
+package br.com.bytebank.banco.test.util;
+
+import java.util.ArrayList;
+
+public class Test {
+    public static void main(String[] args) {
+
+        ArrayList<Cuenta> lista = new ArrayList<Cuenta>();
+
+        Cuenta cc = new CuentaCorriente(22, 11);
+        lista.add(cc);
+
+        Cuenta cc2 = new CuentaCorriente(22, 22);
+        lista.add(cc2);
+
+        System.out.println("Tamanho: " + lista.size());
+
+        Cuenta ref = lista.get(0);
+        System.out.println(ref.getNumero());
+
+        lista.remove(0);
+        System.out.println("Tamanho: " + lista.size());
+
+        Cuenta cc3 = new CuentaCorriente(33, 311);
+        lista.add(cc3);
+
+        Cuenta cc4 = new CuentaCorriente(33, 322);
+        lista.add(cc4);
+
+        for(int i = 0; i < lista.size(); i++) {
+            Object oRef = lista.get(i);
+            System.out.println(oRef);
+        }
+
+        System.out.println("----------");
+
+        for(Cuenta oRef : lista) {
+            System.out.println(oRef);
+        }
+
+    }
+}
+
+5) ¡Excelente! ¡Ahora su código es más seguro y expresivo con el uso de Generics!
+
+
+-------------- 15 Otras formas de inicialización
+Lista con capacidad predefinida.
+
+Decíamos que el ArrayList es un array dinámico, es decir, debajo de la tela se usa un array, pero sin preocuparse por los detalles y limitaciones.
+
+Ahora piense que necesita crear una lista que represente a los 26 estados de Brasil. Le gustaría usar un ArrayList para "escapar" del array, pero sabe que ArrayList crea un array automáticamente, del tamaño que la clase considere conveniente.
+
+¿No hay alguna forma de crear esta lista definiendo el tamaño del array? Por supuesto que lo es y es muy sencillo. El constructor de la clase ArrayList es sobrecargado y tiene un parámetro que recibe la capacidad:
+ArrayList lista = new ArrayList(26); //capacidad inicial
+
+La lista sigue siendo dinámica, ¡pero el tamaño de la matriz inicial es 26!
+
+Lista a partir de otra
+
+Otra forma de inicializar una lista es basada en otra que es muy común en el día a día. Para esto, ArrayList tiene un constructor más que recibe la lista base:
+ArrayList lista = new ArrayList(26); //capacidad inicial
+lista.add("RJ");
+lista.add("SP");
+//otros estados
+ArrayList nueva = new ArrayList(lista); //creando basada en la primera lista
+
+Cuanto más sepamos sobre las clases estándar de Java, más fácil será nuestro código.
+
+
+--------------16. ¿Que Aprendimos?
+En esta clase comenzamos a hablar sobre la lista y llegamos a conocer la clase java.util.ArrayList. Aprendimos:
+
+Que la clase java.util.ArrayList encapsula el uso de array y ofrece varios métodos de más alto nivel.
+Que una lista guarda referencias.
+Cómo usar los métodos size, get, remove.
+Cómo usar foreach para iterar a través de ArrayList.
+Que los generics parametrizan clases
+Que en el caso de ArrayList podemos definir el tipo de los elementos mediante generics.
+Este es solo el comienzo de este poderoso paquete java.util. ¡En la próxima clase bucearemos más!
+
+---------------------------------------------------------
+--------------02 Comparando Elementos
+
+.size () lo que va a hacer él es retornarme la cantidad
+de elementos que contiene ese ArrayList. 
+Ojo, a diferencia del método .length, el cual retorna 
+la cantidad de de espacios que tengo en el array, 
+pero yo nunca sé de esa cantidad de espacios, 
+cuántos ya están llenos.
+
+Entonces en este caso, el método .size sí me retorna 
+la cantidad de parámetros que contiene el ArrayList, 
+no la cantidad de espacios que tiene disponible. 
+De hecho, la cantidad de espacios yo nunca la voy 
+a conocer, porque no es algo que nos interese 
+saber cuánto es el ArrayList.
+Porque el ArrayList, recuerden, cuando el espacio 
+se va llenando, automáticamente él se duplica. 
+
+
+contains.. Si una lista contiene un elemento.
+package com.bytebank.test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
+
+import com.bytebank.modelo.Cliente;
+import com.bytebank.modelo.Cuenta;
+import com.bytebank.modelo.CuentaCorriente;
+
+public class TestArrayList {
+	
+	public static void main(String[] args) {
+		
+		// <> Forzando a que acepte solo un tipo de objeto
+		
+		// LinkedList funciona con otra estructura de datos
+		// List<Cliente> listaCLientes = new LinkedList<>();
+		
+		// El Vector es thread safe, entonces crea una unica instancia 
+		// para todas las pilas de ejecucion
+		// List<Cuenta> lista = new Vector<Cuenta>();
+		
+		// Obligatorio especificar        No es obligatorio
+		
+		List<Cuenta> lista = new ArrayList<Cuenta>();
+
+        // Los objetos se guardan en la memoria HEAP
+        // La referencia apunta al objeto
+	// referencia        Objeto -> HEAP
+		Cuenta cc = new CuentaCorriente(11, 22);
+		Cuenta cc2 = new CuentaCorriente(13, 42);
+		Cuenta cc3 = new CuentaCorriente(11, 22);
+		
+		lista.add(cc);
+		lista.add(cc2);
+		
+//		Cliente cliente = new Cliente();
+//		lista.add(cliente);
+		
+		Cuenta obtenerCuenta = lista.get(0);
+		System.out.println(obtenerCuenta);
+		
+		for (int i = 0; i < lista.size(); i++) {
+			System.out.println(lista.get(i));
+		}
+		
+		// Por cada cuenta : lista
+		for (Cuenta cuenta : lista) {
+			System.out.println(cuenta);
+		}
+		
+        // Acá preguntamos si lista contiene la referencia al objeto cc3
+        // La cc3 es igual a la cuenta cc1
+		boolean contiene = lista.contains(cc3);             // Contains
+		// Por valor
+		if (contiene) { // True
+			System.out.println("Si");
+		}
+		
+        // En esta situación el objeto contiene evalua en relación al objeto, la referencia..
+        // Para hacer evalua en función de los parámetros, lo veremos en el próximo punto.
+
+		
+	}
+
+}
+
+
+---------------------------------------------------------
+--------------03 Sobreescribiendo Equals
+Ya vimos el problema que tenemos de que este parámetro contiene esta variable contiene, nos retorna si es que la lista contiene una igualdad, comparando la referencia, pero no la información que está dentro de esta referencia.
+¿Entonces, qué vamos a hacer? 
+Vamos a crear un método en nuestra clase cuenta.
+
+    @Override   // Este luego no lo usamos porque el Equal de java hace esta funcionalidad.
+    public boolean esIgual(Cuenta cuenta) {
+        // Acá evaluamos el parámetro de la cuenta enviada.
+        // No evaluamos referencias..
+    	return this.agencia == cuenta.getAgencia() && 
+    			this.numero == cuenta.getNumero();
+    }
+    
+Ahora evaluamos desde public class TestArrayList {
+
+		boolean contiene = lista.contains(cc3);
+// Aca comparamos por referencia		
+		if (contiene) {
+			System.out.println("Si");
+		}
+
+// Aca comparamos por valor		
+        if (cc.esIgual(cc3)){
+			System.out.println("Si, son iguales");
+        }
+
+    
+Además podemos usar equals que es un método propio de Java..
+
+    @Override         // De esta manera sobreescribimos el método que viene por defecto en Java y comparamos con lo que viene como parámetro.
+    public boolean equals(Object obj) {
+    	// Basada en valores
+    	Cuenta cuenta = (Cuenta) obj;       // Cuenta cuenta = es igual al objeto cuenta que llega como parámetro.
+    	return this.agencia == cuenta.getAgencia() && 
+    			this.numero == cuenta.getNumero();
+    }
+
+Ahora en el test..
+
+		boolean contiene = lista.contains(cc3);
+		// Por valor
+		if (contiene) {
+			System.out.println("Si, es igual (equals)"); // Acá lo incluimos.
+		}
+
+// Entonces ya sabemos cómo comparar en un array si contiene un elemento ya no basado en la referencia a la memoria, sino en la información que éste contiene.
+
+--------------Ejercicio
+El método equals, junto con los métodos toString y hashCode, es uno de los métodos fundamentales de la clase Object.
+
+¿Cuál es la firma correcta para este método?
+public boolean equals(Object ref)
+Correcto, es público, devuelve boolean y recibe un Objeto.
+
+--------------Ejercicio
+¿Qué es cierto sobre el método equals?
+Selecciona 3 alternativas
+Debemos sobreescribir para definir el criterio de igualdad.
+Correcto, debemos sobreescribir el método equals para definir la igualdad del objeto.
+En general, existen los métodos equals, toString y hashCode para sobreescribir.
+
+
+La implementación estándar compara las referencias.
+Correcto, la implementación del método equals de la clase Object compara solo las referencias.
+
+
+Está definido en la clase Object.
+Correcto, pero eso ya lo sabías :)
+
+
+---------------------------------------------------------
+-------------- 06 Listas Anexadas
+- java.utilArrayList 
+Se van guardando de acuerdo al orden de llegada.
+
+ArrayList   -> Puede afectar al perfomance 
+            - Ya que siempre se actualiza en copias, de acuerdo a lo requerido.
+
+
+java.util.LinkedList    -> Listas Anexadas
+El LinkedList no es un arreglo, sino es un conjunto de objetos en el cual cada objeto que existe aquí sabe quién es su objeto anterior.
+Dentro de LinkedList él ya tiene referencias al siguiente nodo y al nodo anterior.
+En este caso, en el caso del LinkedList, se suele llamar a estos conjuntos de objetos de nodos. Cada parte de estas es un nodo de la lista anexada.
+¿Y qué beneficios me trae pues la lista anexada? 
+El beneficio principal que me trae es que yo puedo realizar operaciones de remover elementos o insertar elementos según un especifico orden sin necesidad de recorrer todo el array.
+Entonces sí, existen veces en las que es mucho más performático, mucho más útil, realizar operaciones usando listas anexadas en lugar pues de los ArrayList.
+Pero supongamos porque si yo tengo muchas operaciones de recorrer los ArrayList, aquí, en este caso sí nos causa un problema.
+¿Por qué? 
+Porque cada vez que él recorre el array, cuando son operaciones, es recorrer la lista completa. Yo necesito imprimir todos los elementos de mi lista a cada momento.
+
+                        -> java.util.ArrayList
+java.util.List          -> java.util.LinkedList
+                        -> java.util.Vector
+
+--------------Ejercicio 07. Acerca de las listas
+El paquete java.util es extremadamente importante en el desarrollo de Java. Al respecto podemos decir que:
+Selecciona 3 alternativas
+Todas las listas garantizan el orden de inserción.
+Correcto, las listas garantizan el orden de inserción. Esto significa que al iterar recibimos los elementos en el mismo orden en que fueron insertados.
+
+List es una interface, ArrayList y LinkedList son implementaciones.
+Correcto.
+
+Todas las listas tienen un índice.
+Correcto, las listas siempre tienen un índice (podemos acceder al elemento a través de la posición).
+Además, hay una característica más: la lista acepta elementos duplicados, pero hablaremos de eso un poco más adelante.
+
+
+--------------Ejercicio 08. LinkedList vs ArrayList
+LinkedList y ArrayList son dos implementaciones diferentes de la interfaz List. 
+LinkedList es una lista doblemente "enlazada" y ArrayList representa un array con redimensión de tamaño dinámico.
+
+Cada implementación tiene sus ventajas y desventajas (en caso de duda, elija ArrayList). Relacione las características con las implementaciones:
+
+A) Acceso fácil y de rendimiento por el índice.
+
+B) Inserción y eliminación con performance en cualquier posición, también al inicio.
+
+C) Los elementos deben copiarse cuando no hay más capacidad.
+
+D) Acceso más lento por el índice, es necesario investigar los elementos.
+
+Seleccione una alternativa
+ArrayList: A e C
+LinkedList: B e D
+
+Correcto.
+
+
+--------------09. Haga lo que hicimos en clase: Equals
+Ha llegado el momento de replicar lo que se hizo en video.
+
+1) Cambie el nombre de la clase Test a TestArrayList y cree una copia de esa clase con el nombre TestArrayListEquals.
+
+2) Elimine parte del código de la clase TestArrayListEquals, dejando solo:
+public static void main(String[] args){
+
+    ArrayList<Cuenta> lista = new ArrayList<Cuenta>();
+
+    Cuenta cc1 = new CuentaCorriente(22, 22);
+    Cuenta cc2 = new CuentaCorriente(22, 22);
+
+    lista.add(cc1);
+
+    for(Cuenta cuenta : lista){
+        System.out.println(cuenta);
+    }
+}
+
+3) Pruebe si su lista contiene una cuenta, usando el método cuentains:
+public static void main(String[] args){
+
+    ArrayList<Cuenta> lista = new ArrayList<Cuenta>();
+
+    Cuenta cc1 = new CuentaCorriente(22, 22);
+    Cuenta cc2 = new CuentaCorriente(22, 22);
+
+    lista.add(cc1);
+
+    boolean existe = lista.contains(cc2); //nuevo
+
+    System.out.println("Ya existe? " + existe);
+
+    for(Cuenta cuenta : lista){
+        System.out.println(cuenta);
+    }
+}
+
+Tenga en cuenta que la salida es false, pero eso no es lo que queremos porque los dos objetos representan la misma cuenta.
+
+4) En la clase Cuenta agregue la funcionalidad que verificará si una cuenta es igual a otra. Vea abajo:
+public boolean esIgual(Cuenta otra){
+
+    if(this.agencia != otra.agencia){
+        return false;
+    }
+
+    if(this.numero != otra.numero){
+        return false;
+    }
+
+    return true;
+}
+
+5) En la clase TestArrayListEquals, pruebe el método usando el siguiente código:
+//creación de cuentas omitidas
+
+boolean igual = cc1.esIgual(cc2);
+System.out.println(igual); //debe imprimir true
+
+6) Haga la misma prueba ahora con cuentas que tengan diferentes números y valores de agencia.
+
+7) Modificar su método esIgual para sobreescribir el método equals, y recuerde usar @Override. Cambie el nombre del método, consulte el código a continuación:
+@Override
+public boolean equals(Object ref){
+
+    Cuenta otra = (Cuenta) ref;
+
+    if(this.agencia != otra.agencia){
+        return false;
+    }
+
+    if(this.numero != otra.numero){
+        return false;
+    }
+
+    return true;
+}
+
+8) Corrija el código en la clase Test y ejecútalo. ¡Vea que ahora nuestra salida es del método cuentains es true!
+
+
+--------------10. De Array para List
+De ahora en adelante usaremos las listas para escapar de las desventajas del array. 
+Sin embargo, ¿recuerdas nuestro array String[] del método main? Ciertamente, y no podemos cambiar la firma del método main ya que la JVM no acepta esto.
+Bueno, dado que no podemos cambiar la firma, ¿no hay forma de transformar un array en una lista? Por supuesto que la hay, y para eso, ya existe una clase que ayuda en esta tarea: java.util.Arrays
+
+La clase java.util.Arrays tiene varios métodos estáticos auxiliares para trabajar con arrays. Vea lo simple que es transformar un array en una lista:
+
+public class Test {
+
+  public static void main(String[] args) {
+    List<String> argumentos = Arrays.asList(args);
+  }
+}
+
+--------------11. ¿Qué aprendimos?
+En esta clase aprendemos:
+
+- Cómo implementar el método equals para definir la igualdad.
+- Que el método equals es usado por las listas.
+- Que hay más de una lista, java.util.LinkedList
+- La diferencia entre ArrayList y LinkedList
+- La interfaz java.util.List que define los métodos de la lista
+
+
+---------------------------------------------------------
+--------------02 Vectores, no se usa.. Poco usado
+
+                        -> java.util.ArrayList
+java.util.List          -> java.util.LinkedList
+                        -> java.util.Vector
+
+
+package com.bytebank.test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;                                  // Importamos
+import java.util.Vector;
+
+import com.bytebank.modelo.Cliente;
+import com.bytebank.modelo.Cuenta;
+import com.bytebank.modelo.CuentaCorriente;
+
+public class TestArrayList {
+	
+	public static void main(String[] args) {
+		
+		// <> Forzando a que acepte solo un tipo de objeto
+		
+		// LinkedList funciona con otra estructura de datos
+		// List<Cliente> listaCLientes = new LinkedList<>();                // Usamos el List, las operaciones son las mismas.
+		
+		// El Vector es thread safe, entonces crea una unica instancia 
+		// para todas las pilas de ejecucion
+		// List<Cuenta> lista = new Vector<Cuenta>();
+		
+        // <Cuenta> es el objeto especificado
+		// Obligatorio especificar        No es obligatorio
+		List<Cuenta> lista =        new ArrayList<Cuenta>();                      // Usamos el List de java utils
+
+		// referencia    Objeto -> HEAP
+		Cuenta cc = new CuentaCorriente(11, 22);
+		Cuenta cc2 = new CuentaCorriente(13, 42);
+		Cuenta cc3 = new CuentaCorriente(11, 22);
+		
+		lista.add(cc);
+		lista.add(cc2);
+		
+//		Cliente cliente = new Cliente();
+//		lista.add(cliente);
+		
+		Cuenta obtenerCuenta = lista.get(0);
+		System.out.println(obtenerCuenta);
+		
+		for (int i = 0; i < lista.size(); i++) {
+			System.out.println(lista.get(i));
+		}
+		
+		// Por cada cuenta : lista
+		for (Cuenta cuenta : lista) {
+			System.out.println(cuenta);
+		}
+		
+		boolean contiene = lista.contains(cc3);
+		// Por valor
+		if (contiene) {
+			System.out.println("Si, es igual (equals)");
+		}
+		
+		
+	}
+
+}
+
+El Vector es Thread Safe impacta en el perfomance, no se usa.. Poco usado.
+Thread es programación en hilos, en threads.
+Porque él es un único objeto para todas las pilas de ejecución.
+
+
+
+--------------Ejercicio 03. Vector, mi Vector!
+¿Qué aprendimos sobre Vector?
+
+Verifique todas las alternativas correctas:
+
+Selecciona 2 alternativas
+Vector es threadsafe.
+Correcto, esta es la gran diferencia entre ArrayList y Vector
+
+
+Vector también usa un array.
+Correcto, como ArrayList, Vector también usa una matriz por debajo.
+
+
+Vector es una lista.
+Correcto, Vector implementa la interfaz List.
+
+
+---------------------------------------------------------
+--------------04 Superclase Collection
+Resumen:
+ArrayList funciona con una estructura de array que ya conocemos, con nuestros corchetes ahí, internamente claro, esa es nuestra estructura de datos, es un arreglo simple, es el más simple que hay.
+    - Si tengo muchas operaciones donde yo necesito, puedes recorrer todo el array, recorrer todo mi arreglo de objetos, entonces el ArrayList es mucho más conveniente en temas de performance.
+LinkedList, él ya funciona internamente, él crea una estructura en la cual el objeto tiene referencia al siguiente objeto que le sigue en la lista y al anterior, entonces esta es una lista anexada.
+    - Si yo tengo muchas operaciones de insertar y quitar elementos, el LinkedList puede ser muy útil. 
+Vector que digamos que es la versión más antigua que tenemos de una lista.    
+    - Porque el vector tiene todos los atributos de la lista, pero es thread safe.
+    - Simplemente él crea una única instancia para que sea accesada, pues por todas las pilas de ejecución que hay en nuestro programa.
+
+
+Superclase: Lista extiende de Collection
+                                                    -> java.util.ArrayList
+java.util.Collection    ->  java.util.List          -> java.util.LinkedList
+                                                    -> java.util.Vector
+
+Para aprender buscar las referencias dentro del propio JavaDoc.
+Collection es más abstracto.
+import java.util.Collection;
+
+Las listas generalmente son muy, muy usadas en el día a día.
+
+--------------Ejercicio 05 ¿Dominas listas?
+Acerca de listas, marque todas las alternativas correctas:
+
+Selecciona 3 alternativas:
+Las listas son colecciones.
+Correcto, cualquier lista también es una colección (java.util.Collection).
+
+Las listas garantizan el pedido de inserción.
+Correcto, en la iteración los elementos aparecen en el orden de inserción.
+
+Las listas son secuencias(tienen índice).
+Correcto, todas las listas tienen un índice, es decir, son secuencias.
+
+
+Vea el esquema del código a continuación:
+????<String> vector = new Vector<String>();
+
+Selecciona 3 alternativas
+Collection
+Correcto, java.util.Collection es la interfaz principal de todas las colecciones.
+
+
+Vector
+Correcto, aquí no tenemos dudas, porque un Vector es un Vector :)
+
+
+List
+Correcto, java.util.List es la interfaz principal de todas las listas.
+
+
+--------------07. Haga lo que hicimos en clase: vector y colección
+Practiquemos rápidamente lo que vimos en esta clase más conceptual. Para hacer esto, siga los pasos a continuación.
+
+1) Abra la clase TestArrayList para probar las otras implementaciones de la lista. Para hacer esto, cree una instancia de java.util.Vector, pero también pruebe ArrayList y LinkedList:
+public class TestArrayList {
+
+    public static void main(String[] args) {
+
+        //List<Cuenta> lista = new ArrayList<Cuenta>(); //usa array por debajo
+        //List<Cuenta> lista = new LinkedList<Cuenta>(); //lista linkada
+        List<Cuenta> lista = new Vector<Cuenta>(); //usa array por debajo, pero también es threadsafe
+
+        //otro código omitido
+        //...
+    }
+}
+
+
+Tenga en cuenta que todo el resto del código sigue funcionando, independientemente de la lista utilizada. Esto se debe a que todas las implementaciones son listas.
+
+2) Pruebe la interfaz java.util.Collection en la misma clase TestArrayList:
+public class TestArrayList {
+
+    public static void main(String[] args) {
+
+        //List<Cuenta> lista = new ArrayList<Cuenta>(); //usa array por debajo
+        //List<Cuenta> lista = new LinkedList<Cuenta>(); //lista linkada
+        Collection<Cuenta> lista = new Vector<Cuenta>(); 
+
+        //otro código omitido
+        //...
+        Cuenta ref = lista.get(0); //no compila
+        //...
+
+    }
+}
+
+Tenga en cuenta que algunas líneas de código dejan de compilarse, justo los métodos que usan la posición, cómo remove(int pos) o get(int pos). Esto se debe a que solo las listas son secuencias y tienen un índice, pero hay otras colecciones que funcionan sin índice y por lo tanto no tienen estos métodos.
+
+3) Después de probar la interfaz java.util.Collection, use la interfaz java.util.List nuevamente.
+
+
+--------------08. ¿Qué aprendimos?
+En esta clase vimos:
+
+java.util.Vector, que es un ArrayList threadsafe.
+La interfaz java.util.Collection que es la interfaz de todas las colecciones.
+Las listas son secuencias que aceptan elementos duplicados.
+Los conjuntos (java.util.Set) también son colecciones, pero no aceptan duplicados ni listas.
+
+---------------------------------------------------------
+--------------02 Integer
+
+package com.bytebank.test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TestRepasoArray {
+	
+	public static void main(String[] args) {
+		
+		int[] numeros = new int[10];            // Tamaño Fijo
+		
+		int numero = 40;
+		// WRAPPER      -> Envuelve al valor primitivo
+		// Integer numeroObjeto = new Integer(40);  deprecado, se dejará de usar
+		Integer numeroObjeto = Integer.valueOf(40); // 
+		
+        //<Objeto Integer>, la lista no puede guardar primitivos, SOLO OBJETOS
+		List<Integer> lista = new ArrayList<Integer>();     // ArrayList, ya tiene métodos para agregar, ver eliminar data dentro de su estructura.
+        // primitivo != object
+		lista.add(numero);              // autoboxing, java sabe que es un primitivo pero lo convierte como objeto
+		lista.add(Integer.valueOf(40));
+		lista.add(numeroObjeto);
+		
+		
+	}
+
+}
+
+
+---------------------------------------------------------
+--------------03 Autoboxing
+package com.bytebank.test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TestRepasoArray {
+	
+	public static void main(String[] args) {
+		
+		int[] numeros = new int[10];            // Tamaño Fijo
+		
+		int numero = 40;
+		// WRAPPER          -> Envuelve al valor primitivo
+		// Integer numeroObjeto = new Integer(40);  deprecado, se dejará de usar
+		Integer numeroObjeto = Integer.valueOf(40); // El valor 40 como primitivo, sera mapeado a un objeto Integer y sera referenciado en numeroObjeto
+		
+        //<Objeto Integer>, la lista no puede guardar primitivos, SOLO OBJETOS
+		List<Integer> lista = new ArrayList<Integer>();     // ArrayList, ya tiene métodos para agregar, ver eliminar data dentro de su estructura.
+        // primitivo != object
+		lista.add(numero);              // autoboxing, java sabe que es un primitivo pero lo convierte como objeto
+		lista.add(Integer.valueOf(40));
+		lista.add(numeroObjeto);
+				
+        // así como en el autoboxing automáticamente yo detectaba un int y lo mapeaba para un integer                    
+        // unboxing, o que yo hago es saber que yo necesito un int, yo extraigo el int de mi integer y se lo entrego a la variable del tipo primitivo.
+		// int valorPrimitivo = numeroObjeto;
+		int valorPrimitivo = numeroObjeto.intValue();   // Al objeto numeroObjeto, le pedimos el valor intValue
+		
+                                                                // Pasamos el objeto a otros primitivos como..
+		byte byteInteger= numeroObjeto.byteValue();             // Valor en bytes
+		double doubleInteger = numeroObjeto.doubleValue();      // En doubles
+		float floatIOnteger = numeroObjeto.floatValue();        // En float
+		
+		System.out.println(Integer.MAX_VALUE);         // Para saber sus valores máximo que puede guardar
+		System.out.println(Integer.MIN_VALUE);
+                                                        // Para saber cuanto soporta como estructura de datos..
+		System.out.println(Integer.SIZE);               // bits   
+		System.out.println(Integer.BYTES);              // 4
+		
+	}
+
+}
+
+
+
+-------------- 04. Código confuso
+El autoboxing/unboxing puede resultar confuso. ¿Será que usted desmitifica el siguiente código?
+public class TestWrapper {
+
+    public static void main(String[] args){
+        Integer ref = Integer.valueOf("3");
+        ref++;
+        System.out.println(ref);
+    }
+}
+
+¿El código se compila y se ejecuta? ¿Cuál sería el resultado?
+Seleccione una alternativa
+
+Compila, ejecuta e imprime 4.
+Correcto, en realidad incrementa valor entero, aunque sea una referencia. Lo que sucede detrás de escena es un autoboxing/unboxing en la línea que incrementa la variable (ref ++). Puedes imaginar que esta línea será reemplazada por tres nuevas:
+int valor = ref.intValue();
+valor = valor + 1;
+ref = Integer.valueOf(valor);
+
+¡El valor se desenvuelve, luego se incrementa y luego se envuelve nuevamente!
+
+
+--------------05. Parsing
+Estás leyendo un archivo de texto con varios números. El problema es que los datos vienen como un String, por ejemplo:
+
+String diaComoTexto = "29";
+int dia = ????;
+
+¿Qué puedes poner en lugar de ???? convertir el texto?
+
+Selecciona 2 alternativas
+Integer.parseInt(diaComoTexto)
+Correcto y sería la opción más adecuada porque devuelve un primitivo.
+
+Integer.valueOf(diaComoTexto)
+Correcto, pero no sería la mejor opción porque devuelve una referencia (y luego se realiza un unboxing).
+
+
+---------------------------------------------------------
+--------------06 Wrappers
+
+Cada tipo primitivo en Java tiene su propio representante en el mundo de los objetos
+Una característica para que se les sea más fácil recordar esto, es que el nombre del objeto siempre va a ser el mismo nombre que tiene su primitivo, solamente que con notación de objeto, esto es, con la primera letra mayúscula, y aquí a modo de información, pues tenemos la cantidad de bytes que soporta cada primitivo.
+
+8 bytes     - double    - java.lang.Double      ->
+4 bytes     - float     - java.lang.Float       ->
+8 bytes     - long      - java.lang.Long        ->
+4 bytes     - int       - java.lang.Int         ->  Todos los wrappers que representan caracteres númericos
+2 bytes     - short     - java.lang.Short       ->  extienden de Number  
+1 bytes     - byte      - java.lang.Byte        ->  <extends>
+2 bytes     - char      - java.lang.Char        ->  java.lang.Number 
+            - boolean   - java.lang.Boolean
+
+package com.bytebank.test;
+
+import com.bytebank.modelo.Cuenta;
+import com.bytebank.modelo.CuentaAhorros;
+import com.bytebank.modelo.CuentaCorriente;
+
+public class TestWrappers {
+	
+	public static void main(String[] args) {
+		
+		Double numeroDoble = 33.0; // autoboxing
+		Boolean verdadero = true; // autoboxing
+		
+		Double numeroDouble2 = Double.valueOf(33);
+		System.out.println(numeroDouble2);              // El 33, lo pasa como 33.0
+		
+		String numeroString = "43"; // autoboxing
+		String numeroString2 = new String("43");
+		
+		Double stringToDouble = Double.valueOf(numeroString);       // 
+		Integer stringToInteger = Integer.valueOf(numeroString);
+
+		System.out.println(stringToDouble);                         // 43.0     como double
+		System.out.println(stringToInteger);                        // 43       como string
+		
+		Number numero = Integer.valueOf(5);         // Todo Integer es un Number
+		
+		double numeroDoublePrim = numero.doubleValue(); // unboxing
+		
+		Boolean falso = Boolean.FALSE;
+		
+	}
+
+}
+
+
+--------------Ejercicio 07 ¿Qué primitivo?
+Vea el código a continuación.
+Character cRef = new Character('A');
+
+¿Cuál es el tipo primitivo de este wrapper?
+¿Cuál es el tipo primitivo de este wrapper?
+Correcto. Lo interesante es que el char es casi un tipo numérico. Tiene dos bytes, al igual que el tipo short, pero no usa el primer bit para almacenar el signo. En otras palabras, el char solo almacena números positivos. Esto significa que el char puede almacenar valores entre 0 y 65536 (2 ^ 16).
+
+
+
+
+--------------Ejercicio 08 ¿Conoces los wrappers?
+Quiere ayudar a Pedro, que está trabajando con Java pero nunca aprendió los genéricos. Él te mostró el siguiente código:
+
+List referencias = new ArrayList(); //AQUÍ
+referencias.add(Double.valueOf(30.9));
+referencias.add(Integer.valueOf(10));
+referencias.add(Float.valueOf(13.4f));
+
+¿Con qué código puedes reemplazar la línea con el comentario //AQUÍ para usar generics?
+Selecciona 2 alternativas:
+
+List<Object> referencias = new ArrayList<>();
+Correcto, todas las referencias también son Objetos.
+
+
+List<Number> referencias = new ArrayList<>();
+Correcto, todos los elementos de esa lista son números.
+
+
+
+-------------- 09 El Wrapper Integer
+En el último video vimos el primer Wrapper: java.lang.Integer
+
+En este contexto, ¿qué son los Wrappers?
+Seleccione una alternativa
+¡Son clases que contienen funcionalidades y encapsulan la variable de tipo primitivo!
+
+Correcto, creamos objetos de esas clases para envolver o envolver un valor primitivo. Hay varias funcionalidades en estas clases que ayudan en el día a día que veremos en el siguiente video.
+
+
+
+--------------10 Haga lo que hicimos en clase: Wrappers
+1) Dentro del paquete com.bytebank.test.util, cree una nueva clase TestWrapperInteger con el método main. Allí, prueba el autoboxing/unboxing usando el wrapper java.lang.Integer:
+//package e imports omitidos 
+
+public class TestWrapperInteger {
+
+    public static void main(String[] args) {
+
+        Integer edadRef = 29; //autoboxinng, es creado un objeto de tipo Integer
+        int primitivo = new Integer(21); //que locura!! unboxing
+
+        List<Integer> lista = new ArrayList<>();
+        lista.add(edadRef); //ok
+        lista.add(primitivo); //autoboxing
+
+        int i1 = lista.get(0);  //unboxing
+        Integer i2 = lista.get(1);  //ok
+
+        System.out.println(i1);  //29
+        System.out.println(i2); //21
+
+    }
+}
+
+
+2) Ahora vamos a practicar algunos métodos de la clase Integer. Agregue al final del método main:
+Integer valorRef = Integer.valueOf (33); // hereda la creación al método valueOf
+int valuePri = valueRef.intValue (); // desenvolver, tomando el valor primitivo del objeto contenedor
+
+System.out.println (valuePri); // 33
+
+
+3) Ahora probamos el parsing, que es la conversión de String a un tipo específico. Al final del método main, agregue:
+Integer iParseado1 = Integer.valueOf("42"); //parseando y devolviendo referencia
+int iParseado2 = Integer.parseInt("44");  //parseando y devolviendo primitivo
+
+System.out.println(iParseado1); //42
+System.out.println(iParseado2); //44
+
+
+4) Verifique las constantes de la clase Integer. Para hacer esto, agregue en el método main:
+System.out.println(Integer.MAX_VALUE); // 2^31 - 1
+System.out.println(Integer.MIN_VALUE); //-2^31
+
+System.out.println(Integer.SIZE); // 32 bits
+System.out.println(Integer.BYTES); //4 Bytes
+
+--------------Ejercicio 11 ¿Qué aprendimos?
+
+En esta clase nos enfocamos en las clases deWRAPPERS y aprendimos que.
+
+Para cada primitivo hay una clase llamada Wrapper.
+Para almacenar un primitivo en una colección, necesita crear un objeto que envuelva el valor.
+La creación del objeto Wrapper se llama autoboxing.
+La extracción del valor primitivo del objeto Wrapper se llama unboxing.
+El autoboxing y unboxing ocurren automáticamente.
+Las clases wrapper tienen varios métodos auxiliares, por ejemplo para el parsing.
+Todas las clases wrappers que representan un valor numérico tienen la clase java.lang.Number como madre.
+
+---------------------------------------------------------
+--------------02 Ordenando Listas
+
+package com.bytebank.test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;                  // Todas de java.util
+
+import com.bytebank.modelo.Cliente;
+import com.bytebank.modelo.Cuenta;
+import com.bytebank.modelo.CuentaAhorros;
+import com.bytebank.modelo.CuentaCorriente;
+
+public class TestOrdenarLista {
+	
+	public static void main(String[] args) {
+		
+		Cuenta cc1 = new CuentaCorriente(62, 33);
+        Cliente clienteCC1 = new Cliente();
+        clienteCC1.setNombre("Diego");
+        cc1.setTitular(clienteCC1);
+        cc1.deposita(333.0);
+
+        Cuenta cc2 = new CuentaAhorros(32, 44);
+        Cliente clienteCC2 = new Cliente();
+        clienteCC2.setNombre("Renato");
+        cc2.setTitular(clienteCC2);
+        cc2.deposita(444.0);
+
+        Cuenta cc3 = new CuentaCorriente(22, 11);
+        Cliente clienteCC3 = new Cliente();
+        clienteCC3.setNombre("Liam");
+        cc3.setTitular(clienteCC3);
+        cc3.deposita(111.0);
+
+        Cuenta cc4 = new CuentaAhorros(2, 22);
+        Cliente clienteCC4 = new Cliente();
+        clienteCC4.setNombre("Noel");
+        cc4.setTitular(clienteCC4);
+        cc4.deposita(222.0);
+
+
+        List<Cuenta> lista = new ArrayList<>();
+        lista.add(cc1);
+        lista.add(cc2);
+        lista.add(cc3);
+        lista.add(cc4);
+	    
+        System.out.println("Antes de ordenar");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	    
+	    // Ordenar las cuentas
+	    //              Cualquier clase hija de Cuenta
+	    // Comparator <  ?        extend Cuenta> c
+        // El Comparator es una interface..
+
+	    // Comparator<Cuenta> comparator = new OrdenadorPorNumeroCuenta(); // Implementacion de la interfaz
+	    //lista.sort(comparator);
+
+        	    
+	    System.out.println("Despues de ordenar por orden natural");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+
+}
+
+
+// Lo creamos en el mismo archivo a fines explicativos.. Las interfaces se implementan.
+class OrdenadorPorNumeroCuenta implements Comparator<Cuenta> {
+
+	@Override
+	public int compare(Cuenta o1, Cuenta o2) {
+		// Forma basica, para ordenar.. De manera manual.
+        // Con 0 1 -1 es lo que usa java al momento de ordenar..
+//		if (o1.getNumero() == o2.getNumero()) {
+//			return 0;
+//		} else if (o1.getNumero() > o2.getNumero()) {
+//			return 1;
+//		} else {
+//			return -1;
+//		}
+	
+}
+
+
+---------------------------------------------------------
+--------------03 Usando Wrappers
+
+package com.bytebank.test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import com.bytebank.modelo.Cliente;
+import com.bytebank.modelo.Cuenta;
+import com.bytebank.modelo.CuentaAhorros;
+import com.bytebank.modelo.CuentaCorriente;
+
+public class TestOrdenarLista {
+	
+	public static void main(String[] args) {
+		
+		Cuenta cc1 = new CuentaCorriente(62, 33);
+        Cliente clienteCC1 = new Cliente();
+        clienteCC1.setNombre("Diego");                  // Ahora cada cuenta tendrá su respectivo titular.
+        cc1.setTitular(clienteCC1);
+        cc1.deposita(333.0);
+
+        Cuenta cc2 = new CuentaAhorros(32, 44);
+        Cliente clienteCC2 = new Cliente();
+        clienteCC2.setNombre("Renato");
+        cc2.setTitular(clienteCC2);
+        cc2.deposita(444.0);
+
+        Cuenta cc3 = new CuentaCorriente(22, 11);
+        Cliente clienteCC3 = new Cliente();
+        clienteCC3.setNombre("Liam");
+        cc3.setTitular(clienteCC3);
+        cc3.deposita(111.0);
+
+        Cuenta cc4 = new CuentaAhorros(2, 22);
+        Cliente clienteCC4 = new Cliente();
+        clienteCC4.setNombre("Noel");
+        cc4.setTitular(clienteCC4);
+        cc4.deposita(222.0);
+
+
+        List<Cuenta> lista = new ArrayList<>();
+        lista.add(cc1);
+        lista.add(cc2);
+        lista.add(cc3);
+        lista.add(cc4);
+	    
+	    System.out.println("Antes de ordenar");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	    
+	    // Ordenar las cuentas
+	    //             Cualquier clase hija de Cuenta
+	    // Comparator <? extend Cuenta> c
+	    // Comparator<Cuenta> comparator = new OrdenadorPorNumeroCuenta(); // Implementacion de la interfaz
+	    //lista.sort(comparator);
+	    lista.sort(new Comparator<Cuenta>() {
+			@Override
+			public int compare(Cuenta o1, Cuenta o2) {
+				return Integer.compare(o1.getNumero(), o2.getNumero());
+			}
+		});
+	    
+	    System.out.println("Despues de ordenar");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	    
+// Ahora apuntamos al ordenarlo
+	    // Comparator<Cuenta> comparatorNombreTitular = new OrdenadorPorNombreTitular();
+	    //lista.sort(new OrdenadorPorNombreTitular());
+	    
+	    
+	    // Forma antigua
+	    Collections.sort(lista, new Comparator<Cuenta>() {
+			@Override
+			public int compare(Cuenta o1, Cuenta o2) {
+				return o1.getTitular().getNombre()
+						.compareTo(o2.getTitular().getNombre());
+			}	
+	    });
+	    
+	    
+	    
+	    System.out.println("Despues de ordenar por nombre titular");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	    
+	    Collections.sort(lista);
+	    
+	    System.out.println("Despues de ordenar por orden natural");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	}
+
+}
+
+class OrdenadorPorNumeroCuenta implements Comparator<Cuenta> {
+
+	@Override
+	public int compare(Cuenta o1, Cuenta o2) {
+		// Forma basica
+//		if (o1.getNumero() == o2.getNumero()) {
+//			return 0;
+//		} else if (o1.getNumero() > o2.getNumero()) {
+//			return 1;
+//		} else {
+//			return -1;
+//		}
+		
+		// Forma intermedia, más resumido..
+//		return o1.getNumero() - o2.getNumero();
+		
+		// Forma Wrapper, usando compare()
+		return Integer.compare(o1.getNumero(), o2.getNumero());
+	}
+	
+}
+
+// Ahora ordenamos de esta forma, .compareTo() usamos este método que devuelve un entero
+class OrdenadorPorNombreTitular implements Comparator<Cuenta> {
+
+	@Override
+	public int compare(Cuenta o1, Cuenta o2) {
+		return o1.getTitular().getNombre()
+			.compareTo(o2.getTitular().getNombre());
+	}
+	
+}
+
+
+---------------------------------------------------------
+--------------04 Orden Natural
+Ahora falta explorar, pues, cómo se hacía esto pre Java8
+
+¿Por qué es interfaz funcional?
+Interfaces funcionales en Java son aquellas que tienen un solo método para implementar.
+
+Para versiones antiguas..
+        // Forma antigua
+	    Collections.sort(lista, new Comparator<Cuenta>() {
+			@Override
+			public int compare(Cuenta o1, Cuenta o2) {
+				return o1.getTitular().getNombre()
+						.compareTo(o2.getTitular().getNombre());
+			}	
+	    });
+	    
+	    
+	    
+	    System.out.println("Despues de ordenar por nombre titular");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	    
+	    Collections.sort(lista);
+	    
+	    System.out.println("Despues de ordenar por orden natural");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+
+
+Debemos implementar la interface Comparable en nuestra clase Cuenta..
+Comparable, viene de java.lang no de utils.. Y acepta un <generico>
+Comparable, nos da el compareTo.. No es una interfaz funcional, estas salieron en java 8
+
+public abstract class Cuenta implements Comparable<Cuenta> {
+
+    // Y el metodo dentro de cuenta    
+        
+    @Override
+    public int compareTo(Cuenta o) {
+    	// Orden natural: Numero Agencia
+    	// return Integer.compare(this.agencia, o.getAgencia());    // Orden natural en base a la agencia
+    	// Orden natural: Saldo
+    	return Double.compare(this.getSaldo(), o.getSaldo());       // Orden natural en base al saldo
+    }
+
+--------------Ejercicio 05. Interfaces para ordenar
+En el mundo de Java, existen dos interfaces para definir los criterios para ordenar los elementos de una lista.
+
+Las interfaces son:
+Selecciona 2 alternativas
+
+java.lang.Comparable
+Correcto, para definir el orden natural de los elementos
+
+java.util.Comparator
+Correcto, el comparator es un parámetro del método sort de la lista y de la clase Collections.
+
+
+
+
+--------------Ejercicio  06. Orden natural
+En el contexto de la lección, ¿qué significa orden natural?
+
+Seleccione una alternativa
+Es el orden definido por el propio elemento de la lista.
+Correcto, en nuestro ejemplo, la clase Cuenta define sus propios criterios de ordenación implementando la interfaz java.lang.Comparable.
+En este caso, no se utiliza ningún Comparator.
+
+
+--------------Ejercicio  07. ¿Por qué no funciona?
+Su amigo está aprendiendo Java, pero por una razón el código siguiente no funciona. Primero, analice las dos clases (suponga que las importaciones son correctas):
+
+class Programa {
+    public static void main(String[] args) {
+        Leccion leccionIntro = new Leccion("Introducción a las Colecciones", 20);
+        Leccion leccionModelando = new Leccion("Modelando la clase Leccion", 18);
+        Leccion leccionSets = new Leccion("Trabajando con Conjuntos", 16);
+
+        List<Leccion> lecciones = new ArrayList<Leccion>();
+        lecciones.add(leccionIntro);
+        lecciones.add(leccionModelando);
+        lecciones.add(leccionSets);
+
+        Collections.sort(lecciones);
+
+        for (Leccion leccion : lecciones) {
+            System.out.println(leccion);
+        }
+    }
+}
+
+class Leccion {
+
+    private String titulo;
+    private int tiempo;
+
+    public Leccion(String titulo, int tiempo) {
+        this.titulo = titulo;
+        this.tiempo = tiempo;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public int getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(int tiempo) {
+        this.tiempo = tiempo;
+    }
+
+    public String toString() {
+        return "[título: " + titulo + ", tiempo: " + tiempo + " minutos]";
+    }
+}
+
+El problema es que el código ni siquiera compila. ¿Usted sabe por qué?
+
+Nota: En caso de duda, siempre pruebe, experimente y compruebe el resultado, no hay problema, ¡ya que estamos aprendiendo!
+Seleccione una alternativa
+
+La clase Leccion no implementa la interfaz Comparable y, por lo tanto, no implementa el método compareTo. Entonces el código ni siquiera compila.
+Correcto. ¡Eso mismo! La interfaz Comparable requiere una implementación del método compareTo, que necesita ser llamado por el algoritmo interno de el método sort() de la lista.
+
+
+
+--------------Ejercicio 08. Desafío de Collections
+Daré un desafío y te haré algunas preguntas relacionadas con las listas. Para responder, investigue la documentación oficial de la clase Collections dentro del paquete java.util:
+
+¿Cómo podemos invertir el orden de una lista?
+¿Cómo podemos mezclar todos los elementos de una lista?
+¿Cómo podemos rotar los elementos de una lista?
+¿Puedes averiguar los métodos?
+
+
+Para invertir el orden de la lista, puede utilizar el método reverse de la clase Collections:
+Collections.reverse(lista);
+
+Para mezclar existe el método shuffle y para girar existe el método de rotate:
+Collections.shuffle(lista);
+Collections.rotate(lista, 5); //rotar 5 posiciones
+
+
+-------------- 09 Ordenar Arrays
+Ordenar arrays tampoco es difícil, solo use el método de ordenación de la clase Arrays. La clase Arrays es similar a Collections en el sentido de que también une varios métodos de utilidad:
+import java.util.Arrays;
+
+public class TestSortArrays
+{
+    public static void main(String[] args)
+    {
+        int[] numeros = new int[]{43, 15, 64, 22, 89};
+
+        Arrays.sort(numeros); //método utilitário sort
+
+        System.out.println(Arrays.toString(numeros)); //método utilitário toString
+
+        //Salida : [15, 22, 43, 64, 89]
+    }
+}
+
+
+--------------10. Haga lo que hicimos en clase: Ordenación de listas
+1) Comenzaremos creando la clase Test dentro de nuestro paquete util. ¡No olvides poner el método main!
+
+2) Ahora para ahorrar tiempo, podemos copiar el siguiente código disponible dentro de nuestro main:
+
+Cuenta cc1 = new CuentaCorriente(22, 33);
+cc1.depositar(333.0);
+
+Cuenta cc2 = new CuentaAhorro(22, 44);
+cc2.depositar(444.0);
+
+Cuenta cc3 = new CuentaCorriente(22, 11);
+cc3.depositar(111.0);
+
+Cuenta cc4 = new CuentaAhorro(22, 22);
+cc4.depositar(222.0);
+
+List<Cuenta> lista = new ArrayList<>();
+lista.add(cc1);
+lista.add(cc2);
+lista.add(cc3);
+lista.add(cc4);
+
+¡No olvides importar las clases!
+
+3) Como hemos visto, necesitamos crear una clase que implemente la interfaz Comparator, lo haremos dentro del mismo archivo Test.java de la siguiente manera:
+
+class NumeroDeCuentaComparator implements Comparator<Cuenta> {
+
+    @Override
+    public int compare(Cuenta c1, Cuenta c2) {
+
+    }
+}
+
+4) Al observar el retorno del método compare(), aprendemos cómo hacer nuestra comparación, que se verá así:
+
+class NumeroDeCuentaComparator implements Comparator<Cuenta> {
+
+    @Override
+    public int compare(Cuenta c1, Cuenta c2) {
+        return Integer.compare(c1.getNumero(), c2.getNumero());
+    }
+}
+
+
+5) Ahora, en la clase Test, al final del método main, cree un objeto de la clase NumeroDeCuentaComparator y pase el comparator al método sort:
+
+NumeroDeCuentaComparator comparator = new NumeroDeCuentaComparator();
+lista.sort(comparator);
+
+
+6) Mostraremos en pantalla el resultado antes y después de ordenar de la siguiente manera:
+for (Cuenta cuenta : lista) {
+    System.out.println(cuenta);
+}
+
+NumeroDeCuentaComparator comparator = new NumeroDeCuentaComparator();
+lista.sort(comparator);
+
+System.out.println("---------");
+
+7) Tenga cuidado con los errores de compilación. Una vez funcionando, ejecute la clase Test y verifique el resultado.
+
+
+
+--------------11. Haga lo que hicimos en clase: Ordenar por String
+
+1) Ahora comenzaremos a implementar el método de ordenación basado en el nombre del titular de la cuenta. Para hacer esto, cree una nueva clase de prueba (o use la anterior) que tenga el bloque de código a continuación:
+Cuenta cc1 = new CuentaCorriente(22, 33);
+Cliente clienteCC1 = new Cliente();
+clienteCC1.setNombre("Nico");
+cc1.setTitular(clienteCC1);
+cc1.depositar(333.0);
+
+Cuenta ca2 = new CuentaAhorro(22, 44);
+Cliente clienteCC2 = new Cliente();
+clienteCC2.setNombre("Guilermo");
+ca2.setTitular(clienteCC2);
+ca2.depositar(444.0);
+
+Cuenta cc3 = new CuentaCorriente(22, 11);
+Cliente clienteCC3 = new Cliente();
+clienteCC3.setNombre("Paulo");
+cc3.setTitular(clienteCC3);
+cc3.depositar(111.0);
+
+Cuenta ca4 = new CuentaAhorro(22, 22);
+Cliente clienteCC4 = new Cliente();
+clienteCC4.setNombre("Ana");
+ca4.setTitular(clienteCC4);
+ca4.depositar(222.0);
+
+
+No olvide importar la clase Cliente, Cuenta, CuentaAhorro y CuentaCorriente.
+
+2) Cómo crearemos otro criterio de comparación, agregue otra clase que también implemente la interfaz Comparator. Ya implementando los criterios de ordenación, tendremos lo siguiente:
+class TitularDeCuentaComparator implements Comparator<Cuenta> {
+
+    @Override
+    public int compare(Cuenta c1, Cuenta c2) {
+        String nombreC1 = c1.getTitular().getNombre();
+        String nombreC2 = c2.getTitular().getNombre();
+        return nombreC1.compareTo(nombreC2);
+    }
+}
+
+3) Ahora necesitamos crear otro objeto Comparador y cambiar al método sort:
+
+lista.sort(new TitularDeCuentaComparator()); // Ya dejándolo mai delgado
+
+
+4) Para mostrar las cuentas y los nombres de sus titulares, haremos lo siguiente:
+for (Cuenta cuenta : lista) {
+    System.out.println(cuenta + ", " + cuenta.getTitular().getNombre());
+}
+
+
+Alternativamente, puede cambiar el método toString de la clase Cuenta.
+
+5) (Opcional) También pruebe la clasificación a través de la clase Collections:
+
+Collections.sort(lista, new TitularDeCuentaComparator());
+
+
+--------------12. Haga lo que hicimos en clase: Ordenar Natural
+1) Ahora definiremos el orden natural de orden de una Cuenta. Para hacer esto, primero abra la clase Cuenta.java y haga que implemente la interfaz Comparable .
+
+2) Tenga en cuenta que ahora estamos obligados a implementar el método que nos impone la interfaz, compareTo() e implementaremos nuestra lógica de comparación:
+
+@Override
+public int compareTo(Cuenta outra) {
+        return Double.compare(this.saldo, outra.saldo);
+}
+
+3) Ahora pruebe usando el método sort() de la clase Collections:
+
+Collections.sort(lista);
+
+4) Tenga en cuenta que ahora no tendremos ningún problema ya que hemos definido que tenemos un comparador estándar para la clase Cuenta.
+
+5) También podemos forzar el orden natural pasando null como parámetro en nuestra list.sort(null).
+
+
+--------------13. ¿Qué Aprendimos?
+En esta clase fundamental e importante aprendimos que:
+
+Para ordenar una lista necesita definir un criterio de ordenación
+Hay dos formas de definir este criterio
+A través de la interfaz del comparador
+A través de la interfaz Comparable (orden natural)
+El algoritmo de ordenación ya se ha implementado
+En la lista en el método de sort
+En la clase Collections por el método sort
+La clase Collections es una fachada con varios métodos auxiliares para trabajar con colecciones, principalmente listas
+
+---------------------------------------------------------
+--------------02 Clases anonimas
+
+package com.bytebank.test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import com.bytebank.modelo.Cliente;
+import com.bytebank.modelo.Cuenta;
+import com.bytebank.modelo.CuentaAhorros;
+import com.bytebank.modelo.CuentaCorriente;
+
+public class TestOrdenarLista {
+	
+	public static void main(String[] args) {
+		
+		Cuenta cc1 = new CuentaCorriente(62, 33);
+        Cliente clienteCC1 = new Cliente();
+        clienteCC1.setNombre("Diego");
+        cc1.setTitular(clienteCC1);
+        cc1.deposita(333.0);
+
+        Cuenta cc2 = new CuentaAhorros(32, 44);
+        Cliente clienteCC2 = new Cliente();
+        clienteCC2.setNombre("Renato");
+        cc2.setTitular(clienteCC2);
+        cc2.deposita(444.0);
+
+        Cuenta cc3 = new CuentaCorriente(22, 11);
+        Cliente clienteCC3 = new Cliente();
+        clienteCC3.setNombre("Liam");
+        cc3.setTitular(clienteCC3);
+        cc3.deposita(111.0);
+
+        Cuenta cc4 = new CuentaAhorros(2, 22);
+        Cliente clienteCC4 = new Cliente();
+        clienteCC4.setNombre("Noel");
+        cc4.setTitular(clienteCC4);
+        cc4.deposita(222.0);
+
+
+        List<Cuenta> lista = new ArrayList<>();
+        lista.add(cc1);
+        lista.add(cc2);
+        lista.add(cc3);
+        lista.add(cc4);
+	    
+	    System.out.println("Antes de ordenar");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	    
+	    // Ordenar las cuentas
+	    //             Cualquier clase hija de Cuenta
+	    // Comparator <? extend Cuenta> c
+	    // Comparator<Cuenta> comparator = new OrdenadorPorNumeroCuenta(); // Esto ahora no lo usamos
+	    //lista.sort(comparator);
+
+	    lista.sort(new Comparator<Cuenta>() {   // De esta manera construimos el método con su interfaz y el algoritmo para comparar.
+			@Override
+			public int compare(Cuenta o1, Cuenta o2) {
+				return Integer.compare(o1.getNumero(), o2.getNumero());
+			}
+		});
+	    
+	    System.out.println("Despues de ordenar");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	    
+	    // Comparator<Cuenta> comparatorNombreTitular = new OrdenadorPorNombreTitular();
+	    //lista.sort(new OrdenadorPorNombreTitular());
+	    
+	    
+	    // Forma antigua
+	    Collections.sort(lista, new Comparator<Cuenta>() {                      // Igual acá.
+			@Override
+			public int compare(Cuenta o1, Cuenta o2) {
+				return o1.getTitular().getNombre()
+						.compareTo(o2.getTitular().getNombre());
+			}	
+	    });
+	    
+	    
+	    
+	    System.out.println("Despues de ordenar por nombre titular");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	    
+	    Collections.sort(lista);
+	    
+	    System.out.println("Despues de ordenar por orden natural");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	}
+
+}
+
+// Las clases con sus respectivos métodos al final, ahora no las ocupamos.
+
+Entonces la clase Anónima la tenemos acá.. Entre los {}
+La clase anónima la implementa java ahí mismo, nosotros no las creamos.
+
+        Collections.sort(lista, new Comparator<Cuenta>()  {
+			@Override
+			public int compare(Cuenta o1, Cuenta o2) {
+				return o1.getTitular().getNombre()
+						.compareTo(o2.getTitular().getNombre());
+			}	
+	    });
+
+
+
+--------------Ejercicio  03 ¿Cual objeto?
+¿Cómo llamamos a este objeto que solo encapsula una función / método / procedimiento?
+
+Seleccione una alternativa
+Function Object
+Correcto, un objeto que creamos para encapsular una función o método. Las clases anónimas facilitan la creación de estos objetos.
+
+
+
+--------------Ejercicio  04 ¿Qué Sucede?
+Vea el código a continuación:
+Comparator<String> comp = new Comparator<String>() {
+
+  @Override
+  public int compare(String s1, String s2) {
+    return s1.compareTo(s2);
+  }
+};
+
+Y las declaraciones
+
+A) Se genera una clase anónima.
+
+B) Se crea un objeto de tipo Comparator.
+
+C) Se crea una instancia de la interfaz Comparator.
+
+D) Se genera una clase con el nombre ComparatorString.
+
+¿Qué afirmaciones son correctas?
+
+Seleccione una alternativa
+A y B
+Correcto, se genera una clase anónima (A) y se crea un objeto de tipo Comparador (B).
+
+
+
+
+
+---------------------------------------------------------
+--------------05 Lambdas
+
+Lo lambdas fueron creados para programar de manera más funcional.
+
+package com.bytebank.test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Consumer;
+
+import com.bytebank.modelo.Cliente;
+import com.bytebank.modelo.Cuenta;
+import com.bytebank.modelo.CuentaAhorros;
+import com.bytebank.modelo.CuentaCorriente;
+
+public class TestLambda {
+
+public static void main(String[] args) {
+		
+		Cuenta cc1 = new CuentaCorriente(62, 33);
+        Cliente clienteCC1 = new Cliente();
+        clienteCC1.setNombre("Diego");
+        cc1.setTitular(clienteCC1);
+        cc1.deposita(333.0);
+
+        Cuenta cc2 = new CuentaAhorros(32, 44);
+        Cliente clienteCC2 = new Cliente();
+        clienteCC2.setNombre("Renato");
+        cc2.setTitular(clienteCC2);
+        cc2.deposita(444.0);
+
+        Cuenta cc3 = new CuentaCorriente(22, 11);
+        Cliente clienteCC3 = new Cliente();
+        clienteCC3.setNombre("Liam");
+        cc3.setTitular(clienteCC3);
+        cc3.deposita(111.0);
+
+        Cuenta cc4 = new CuentaAhorros(2, 22);
+        Cliente clienteCC4 = new Cliente();
+        clienteCC4.setNombre("Noel");
+        cc4.setTitular(clienteCC4);
+        cc4.deposita(222.0);
+
+        List<Cuenta> lista = new ArrayList<>();
+        lista.add(cc1);
+        lista.add(cc2);
+        lista.add(cc3);
+        lista.add(cc4);
+	    
+	    System.out.println("Antes de ordenar");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	    
+	    // Usando Lambdas                                           // Acá aplicamos el lambdas ->, enviamos los parámetros.
+	    lista.sort((Cuenta o1, Cuenta o2) -> 
+	    	Integer.compare(o1.getNumero(), o2.getNumero())	
+		);
+	    
+	    System.out.println("Despues de ordenar");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	    
+	    Collections.sort(lista, (c1, c2) -> 
+	    	c1.getTitular().getNombre()
+	    			.compareTo(c2.getTitular().getNombre())
+	    );
+	    
+	    
+	    System.out.println("Despues de ordenar por nombre titular");
+//	    for (Cuenta cuenta : lista) {
+//	    	System.out.println(cuenta);
+//	    }
+	    
+	    lista.forEach(cuenta -> System.out.println(cuenta));                       // Usando lambdas con forearch
+	    
+	    Collections.sort(lista);
+	    
+	    System.out.println("Despues de ordenar por orden natural");
+	    for (Cuenta cuenta : lista) {
+	    	System.out.println(cuenta);
+	    }
+	}
+	
+}
+
+Al entender la programación Funcional, luego viene entender las interfaces.. Como pueden encadenarse y demás.
+
+
+--------------Ejercicio  06 ¿Y si fuera lambda?
+
+Consulte el código heredado escrito a continuación con una versión de Java anterior a 1.8. Tenga en cuenta que este código todavía usa aún una clase anónima en el método sort:
+List<String> nombres = new ArrayList<>();
+nombres.add("Super Mario");
+nombres.add("Yoshi"); 
+nombres.add("Donkey Kong"); 
+
+Collections.sort(nombres, new Comparator<String>() {
+
+    @Override
+    public int compare(String s1, String s2) {
+        return s1.length() - s2.length();
+    }
+});
+
+System.out.println(nombres);
+
+¿Cómo sería la implementación de la llamada al método sort con lambda? Verifique las implementaciones correctas:
+
+2 Correctas:
+nombres.sort((s1, s2) ->  {return s1.length() - s2.length();} );
+Correcto! También puede utilizar el método sort de la lista. También tenga en cuenta que el return es opcional (siempre que también saquemos el {}):
+nombres.sort((s1, s2) ->  s1.length() - s2.length());
+
+
+Collections.sort(nombres, (s1, s2) ->  s1.length() - s2.length());
+Correcto. ¡Fíjate que no es necesaria ningún return! Mucho más sencillo y conciso.
+
+
+
+
+---------------------------------------------------------
+
+--------------Ejercicio 07 - Foreach con lambda
+
+Vea el código usando un for "tradicional" para:
+List<String> nombres = new ArrayList<>();
+nombres.add("Super Mario");
+nombres.add("Yoshi"); 
+nombres.add("Donkey Kong"); 
+
+for(int i = 0; i < nombres.size(); i++) {
+    System.out.println(nombres.get(i));
+}
+
+Te gustaron las lambdas y te gustaría usarlas en el momento del bucle. ¿Qué alternativa usa correctamente la expresión lambda para iterar los elementos de la lista?
+
+Nota: todas las alternativas a continuación realmente funcionan, pero sólo una usa lambdas.
+
+Seleccione una alternativa
+nombres.forEach((nombre) -> System.out.println(nombre));
+Correcto. El lenguaje ha evolucionado mucho como muestra este ejercicio. En las primeras versiones, era muy burocrático recorrer las listas. Con lambdas, el bucle (for) se ha convertido en una simple llamada a un método. ¡Muy bueno!
+
+
+
+
+Las demás también funcionan, pero con lambdas es la anterior:
+
+Opcion a:
+for (String nombre : nombres) {
+    System.out.println(nombre);
+}
+
+Opcion b:
+ for(int i = 0; i < nombres.size(); i++) {
+    System.out.println(nombres.get(i));
+}
+
+Opcion c:
+for (Iterator<String> i = nombres.iterator(); i.hasNext();) {
+    String nombre = i.next();
+    System.out.println(nombre);
+}
+
+---------------------------------------------------------
+
+--------------08 El patron Iterator
+
+Ahora sabes que hay muchas colecciones. Solo en este entrenamiento vimos ArrayList, LinkedList y Vector. Si aún ve el curso dedicado a las colecciones, aprenderá las interfaces para cola (Queue), conjunto (Set) y mapa (Map) cada una con varias implementaciones.
+
+Aquí viene una pregunta: ¿Cómo puedo acceder (iterar) a todas estas implementaciones de manera uniforme sin conocer los detalles de cada implementación? La respuesta está en el "cuadro de patrón de diseño" y se llama Iterador.
+
+Un Iterador es un objeto que tiene al menos dos métodos: hasNext() y next(). Es decir, puede usarlo para preguntar si hay un próximo elemento y pedir el próximo elemento. La buena noticia es que funciona con TODAS las implementaciones y esa es la gran ventaja.
+
+Vea el código para usar el Iterador de una lista:
+
+List<String> nombres = new ArrayList<>();
+nombres.add("Super Mario");
+nombres.add("Yoshi"); 
+nombres.add("Donkey Kong"); 
+
+Iterator<String> it = nombres.iterator();
+
+while(it.hasNext()) {
+  System.out.println(it.next());
+}
+
+
+Si comprende este código, ya ha aprendido a iterar con colas, conjuntos o mapas. Vea el uso de Iterator a través de un conjunto:
+
+Set<String> nombres = new HashSet<>();
+nombres.add("Super Mario");
+nombres.add("Yoshi"); 
+nombres.add("Donkey Kong"); 
+
+Iterator<String> it = nombres.iterator();
+
+while(it.hasNext()) {
+  System.out.println(it.next());
+}
+
+
+
+---------------------------------------------------------
+--------------09 Haga lo que hicimos en clase: Clases anónimas
+1) Comencemos por organizar la casa como en el video (si ya lo hizo, pase al elemento 2).
+
+¡renombre la clase Test a TestOrdenacion!
+copie la clase TestOrdenacion y renombre la copia a Test.
+en el archivo Test.java cambie provisionalmente el nombre de las clases comparator a NumeroDeCuentaComparator2 y TitularDeCuentaComparator2
+2) Escribe la primera clase anónima. Elimine el comparador del método sort y déjelo de la siguiente manera:
+
+lista.sort(new Comparator<Cuenta>() {
+
+    @Override
+    public int compare(Cuenta c1, Cuenta c2) {
+        return Integer.compare(c1.getNumero(), c2.getNumero());
+    }
+} //fin de la clase anónima
+
+);//fin del método
+
+3) (Opcional) De manera análoga a la clase TitularDeCuentaComparator, pruebe lo siguiente:
+
+Comparator<Cuenta> comp = new Comparator<Cuenta>() {
+
+    @Override
+    public int compare(Cuenta c1, Cuenta c2) {
+        String nombreC1 = c1.getTitular().getNombre();
+        String nombreC2 = c2.getTitular().getNombre();
+        return nombreC1.compareTo(nombreC2);
+    }
+};
+
+4) Prueba el código. Todo debería compilarse y ejecutarse normalmente.
+
+---------------------------------------------------------
+
+--------------10 Haga lo que hicimos en clase: Lambdas
+1) Aún en la clase de Test, reduciremos la burocracia de nuestro código. Comenzaremos a usar una expresión lambda para reemplazar cualquier clase anónima. Cambiar el método de clasificación:
+
+lista.sort( (c1, c2) -> Integer.compare(c1.getNumero(), c2.getNumero()) );
+
+2) De manera similar para el fragmento de código:
+
+Comparator<Cuenta> comp = new Comparator<Cuenta> {
+
+    @Override
+    public int compare(Cuenta c1, Cuenta c2) {
+        String nombreC1 = c1.getTitular().getNombre();
+        String nombreC2 = c2.getTitular().getNombre();
+        return nombreC1.compareTo(nombreC2);
+    }
+};
+
+Utilice lo siguiente:
+
+
+Comparator<Cuenta> comp = (Cuenta c1, Cuenta c2) -> {
+                String nombreC1 = c1.getTitular().getNombre();
+                String nombreC2 = c2.getTitular().getNombre();
+                return nombreC1.compareTo(nombreC2);
+        };
+
+
+3) También podemos hacer lo mismo con nuestro System.out.println, haciéndolo mucho más elegante y legible.
+
+Haz el bucle de la siguiente manera:
+
+lista.forEach( (cuenta) -> System.out.println(cuenta + ", " + cuenta.getTitular().getNombre()));
+
+Una vez que nos acostumbramos a la sintaxis de lambdas, escribimos menos código sin comprometer la legibilidad.
+
+---------------------------------------------------------
+
+--------------12. Conclusión.
+
+Arrays.
+ArrayList.  -> La lista se transforma como un objeto, hijo de la List.
+
+
