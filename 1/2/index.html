@@ -6,7 +6,7 @@
     <title>Introducción Java</title>
     <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
     <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../../css/styleRed.css">
 
 </head>
 <body>
@@ -130,6 +130,20 @@
     <pre>
         <li>Presentación</li>
         <li>Introducción a orientación de objetos</li>
+        <p>
+            Ventajas de POO
+        - Representamos el mundo real a nivel de programación
+        - Comprender conecptos básicos de encapsulamiento
+        - Creación de código reutilizable
+        - Ampliamente utilizado por la mayoría de lenguajes de programación
+        - Técnicas para consumir código creado en otras librerías
+
+        Ejemplo: System es una librería de la JVM
+
+        Los datos y la funcionalidad de una entidad van de la mano.
+        (por ejemplo, numeroIdentidad + validación). Son los atributos y métodos.
+        </p>
+
         <li>Idea central del paradigma OO</li>
         <li>Un poco de programación procedural</li>
         <li>Sea bienvenido, Fulano</li>
@@ -147,15 +161,105 @@
     <h2 id="2">Introducción a Orientación a objetos</h2>
     <pre>
         <li>Definición del proyecto</li>
+        <p>
+            Objeto, representación de conjunto de atributos que definen una entidad.
+
+            Cuenta --------------------------------
+            Cuenta es la abstracción..
+            
+            Campo                   Valor
+            Saldo
+            Agencia 
+            Numero
+            Titular
+            
+            
+            Para crear una instancia, es obligatorio completar los valores de todos los atributos.            
+        </p>
+
         <li>Características de los objetos</li>
         <li>Clase cuenta</li>
         <li>Definiendo tipos</li>
         <li>Instancias parte 1</li>
+        <p>
+            Una instancia usa el esqueleto de la clase, desde ahí creamos objetos.
+
+            - Archivo Cuenta.java
+        </p>
+            <code>
+            public class Cuenta{
+                // Podemos imprimir valores por defecto dentro de la clase
+            
+                double saldo;
+                int agencia;
+                int numero;
+                String titular;
+            }
+            
+                    - Archivo CrearCuenta.java
+            
+            public class CrearCuenta {
+            
+                public static void main(String[] args) {
+            
+                    // primeraCuenta va a representar una nueva Cuenta, es una INSTANCIA
+                    Cuenta primeraCuenta = new Cuenta();
+                    // Debemos acceder a los atributos que anteriormente creamos
+                    primeraCuenta.saldo = 1000.00;
+            
+                    System.out.println(primeraCuenta.saldo);
+                }
+            
+            }    
+        </code>        
+        
         <li>Establecer valor de atributo</li>
+
         <li>Instancias parte 2</li>
+        <code>
+            public class CrearCuenta {
+    
+                public static void main(String[] args) {
+                    // primeraCuenta va a representar una nueva Cuenta
+                    Cuenta primeraCuenta = new Cuenta();
+                    primeraCuenta.saldo = 1000.00;
+                    
+                    System.out.println(primeraCuenta.saldo);
+                    
+                    // Creamos otra cuenta, guardamos memoria para otra cuenta
+                    // El segundo objeto no se ve afectado por el primero
+                    // Cuando procede el new de un objeto, se inicializan sus atributos, saldo, agencia, etc..
+                    Cuenta segundaCuenta = new Cuenta();
+                    segundaCuenta.saldo = 500.00;
+            
+                    System.out.println(segundaCuenta.saldo);
+                    System.out.println(primeraCuenta.saldo);
+            
+                }
+            
+            }            
+        </code>
         <li>Referencias a objetos</li>
         <li>Valores default</li>
         <li>Referencias parte 1</li>
+
+        <code>
+            public class TestReferencia {
+    
+                public static void main(String[] args) {
+                    Cuenta primeraCuenta = new Cuenta ();
+                    primeraCuenta.saldo = 200;
+            
+                    // Cualquier modificacion sobre la segunda que apunta a la primera, modificaremos a las dos
+                    //     Varirbale           Valor
+                    Cuenta segundaCuenta = primeraCuenta;
+                    segundaCuenta.saldo = 100;
+            
+                }
+                
+            }            
+        </code>
+
         <li>Referencias parte 2</li>
         <li>Haga lo que hicimos en el aula: Creando las primeras clases</li>
         <li>Lo que aprendimos</li>
@@ -175,13 +279,221 @@
         <li>Creacion metodo</li>
         <li>Métodos</li>
         <li>Implementacion metodo</li>
+        <p>
+            Comportamientos de la cuenta..
+            - Depositar
+            - Retirar
+            - Transferir            
+        </p>
+        <code>
+            En el archivo Cuenta.java    
+            public class Cuenta{
+                double saldo;
+                int agencia;
+                int numero;
+                String titular;
+            
+                // Void no espera retornar nada
+                void depositar(double valor){
+                    saldo = saldo + valor;                    
+                }
+            
+            }
+                
+            En el archivo PruebaMetodos.java
+            public interface PruebaMetodos {
+            
+                public static void main(String[] args) {
+                    Cuenta miCuenta = new Cuenta();
+            
+                    miCuenta.saldo = 300;
+            
+                    miCuenta.depositar(200);
+            
+                    System.out.println(miCuenta.saldo);
+                }
+            
+            }         
+        </code>
+        
+        <p>
+            Es posible que un método no tenga parámetros.
+            Correcto. Un método puede tener ninguno, uno o más parámetros.
+            
+            
+            Un método define el comportamiento o la forma de hacer algo.
+            Correcto. Este es el objetivo de los métodos, definir lo que un objeto sabe hacer. El comportamiento se implementa dentro del método.
+            
+            Por convención, el nombre del método en el mundo Java debe comenzar con una letra minúscula.
+            Correcto. Los ejemplos de nombres de métodos son: transferir transferirPara transferisParaOtroTitular
+            
+            Tenga en cuenta que todos los nombres comienzan con una letra minúscula y luego usan "CamelCase".            
+        </p>
+        <p>
+            ¿Cuál es la sintaxis y el orden correctos para llamar a un método con Java?
+            nombreDeReferencia.nombreDelMetodo();
+        </p>
+
         <li>¿Cómo llamar a un método?</li>
+        
         <li>Uso this</li>
+        <p>
+            Para mejor lectura e interpretacion.
+
+            El this es una palabra clave.
+            Correcto. El this es una palabra clave igual al void, class, new, int y varias otras. El IDE Eclipce muestra todas las palabras claves en un color diferente, el color "púrpura".
+            
+            El this es una referencia.
+            Correcto. El this esta es una referencia, es decir, "apunta" a un objeto.    
+        </p>
+        <code>
+            public class Cuenta{
+                double saldo;
+                int agencia;
+                int numero;
+                String titular;
+            
+                // Void no espera retornar nada
+                void depositar(double valor){
+                    // Esta cuenta      Esta cuenta
+                    // This account     This account
+                    // This Object      This Object
+                    this.saldo = this.saldo + valor;
+            
+                    // El saldo solido viene como parametro, no es un atributo propio de la clase
+                }
+            
+            }            
+        </code>
+
         <li>¿Conoces this?</li>
         <li>Metodo con retorno</li>
+        <code>
+            // Agregamos el método de retiro
+            public class Cuenta{
+                double saldo;
+                int agencia;
+                int numero;
+                String titular;
+            
+                // Void no espera retornar nada
+                void depositar(double valor){
+                    // Esta cuenta      Esta cuenta
+                    // This account     This account
+                    // This Object      This Object
+                    this.saldo = this.saldo + valor;
+            
+                    // El saldo solido viene como parametro, no es un atributo propio de la clase
+                }
+            
+                // Retorna valor y lo especificamos en el tipo de método, es boolean
+                // Boolean devuelve un true o false
+                public boolean retirar(double valor){
+                    if (this.saldo >= valor){
+                        this.saldo = this.saldo - valor;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            
+            public interface PruebaMetodos {
+            
+                public static void main(String[] args) {
+                    Cuenta miCuenta = new Cuenta();
+            
+                    miCuenta.saldo = 300;
+            
+                    miCuenta.depositar(200);
+            
+                    System.out.println(miCuenta.saldo);      // 500
+                    
+            
+                    miCuenta.retirar(100);
+                    System.out.println(miCuenta.saldo);     // 400
+                }
+            
+            }            
+        </code>
         <li>Métodos validos</li>
         <li>¿Dónde usar this?</li>
         <li>Referenciando objetos</li>
+        <code>
+            public class Cuenta{
+                double saldo;
+                int agencia;
+                int numero;
+                String titular;
+            
+                // Void no espera retornar nada
+                void depositar(double valor){
+                    // Esta cuenta      Esta cuenta
+                    // This account     This account
+                    // This Object      This Object
+                    // this.saldo = this.saldo + valor;
+                    this.saldo += valor;
+            
+                    // El saldo solido viene como parametro, no es un atributo propio de la clase
+                }
+            
+                // Retorna valor y lo especificamos en el tipo de método, es boolean
+                // Boolean devuelve un true o false
+                public boolean retirar(double valor){
+                    if (this.saldo >= valor){
+                        // this.saldo = this.saldo - valor;
+                        this.saldo -= valor;
+                        return true;
+                    } 
+                    return false;
+                }
+            
+                // Como parametro le pasamos un objeto que es la otra cuenta
+                public boolean transferir(double valor, Cuenta cuenta){
+                    if (this.saldo >= valor){
+                        this.saldo = this.saldo - valor;
+                        cuenta.depositar(valor);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            
+            
+            public interface PruebaMetodos {
+            
+                public static void main(String[] args) {
+                    Cuenta miCuenta = new Cuenta();
+            
+                    miCuenta.saldo = 300;
+            
+                    miCuenta.depositar(200);
+                    System.out.println(miCuenta.saldo);             // 500.0
+                    
+            
+                    miCuenta.retirar(100);
+                    System.out.println(miCuenta.saldo);             // 400.0
+            
+            
+                    Cuenta cuentaDeJimena = new Cuenta();
+                    cuentaDeJimena.depositar(1000);
+                    cuentaDeJimena.transferir(400, miCuenta);
+                    boolean puedeTransferir = cuentaDeJimena.transferir(400, miCuenta);
+                    if(puedeTransferir){
+                        System.out.println("Puede transferir");     
+                    }else{
+                        System.out.println("No Puede transferir");     
+            
+                    }
+                    System.out.println(cuentaDeJimena.saldo);       // 600.0
+                    System.out.println(miCuenta.saldo);             // 800.0        
+            
+                }
+            
+            }            
+        </code>
+
         <li>Declaración de método</li>
         <li>Haga lo que hicimos en el aula: Creando métodos</li>
         <li>Lo que aprendimos</li>    
@@ -200,9 +512,171 @@
         
         <li>Proyecto del aula anterior</li>
         <li>Referencia objetos</li>
+        <code>
+            Creamos un nuevo archivo para Cliente.java
+
+            public class Cliente {
+                String nombre;
+                String documento;
+                String telefono;
+                
+            }
+            
+            En el archivo Cuenta.java
+            public class Cuenta{
+                double saldo;
+                int agencia;
+                int numero;
+                Cliente titular;        // Le pasamos al cliente como titular
+            
+                // Void no espera retornar nada
+                void depositar(double valor){
+                    // Esta cuenta      Esta cuenta
+                    // This account     This account
+                    // This Object      This Object
+                    // this.saldo = this.saldo + valor;
+                    this.saldo += valor;
+            
+                    // El saldo solido viene como parametro, no es un atributo propio de la clase
+                }
+            
+                // Retorna valor y lo especificamos en el tipo de método, es boolean
+                // Boolean devuelve un true o false
+                public boolean retirar(double valor){
+                    if (this.saldo >= valor){
+                        // this.saldo = this.saldo - valor;
+                        this.saldo -= valor;
+                        return true;
+                    } 
+                    return false;
+                }
+            
+                // Como parametro le pasamos un objeto que es la otra cuenta
+                public boolean transferir(double valor, Cuenta cuenta){
+                    if (this.saldo >= valor){
+                        this.saldo = this.saldo - valor;
+                        cuenta.depositar(valor);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            
+            Desde un archivo TestReferencia2.Java
+            
+            public class TestReferencia2 {
+                
+                public static void main(String[] args) {
+                    Cliente maat = new Cliente();
+                    maat.nombre = "Matias";
+                    maat.documento = "232424";
+                    maat.telefono = "164232";
+            
+                    Cuenta cuentaDeMaat = new Cuenta();
+                    cuentaDeMaat.agencia = 1;
+                    cuentaDeMaat.titular = maat;
+            
+                    System.out.println(cuentaDeMaat.titular.documento);
+                    System.out.println(cuentaDeMaat.titular);               // Cliente@5acf9800 dirección de memoria
+                    System.out.println(cuentaDeMaat);               // Cliente@5acf9800 Mismo objeto
+                }
+            }            
+        </code>
+        <p>
+            -------Otro ejemplo
+            Marque la única alternativa verdadera que modifica correctamente las clases Persona y Empresa para usar la clase Direccion.            
+        </p>
+        <code>
+            public class Persona {
+
+                String nombre;
+                String numeroIdentidad;
+                int edad;
+                Direccion direccion;
+            }
+            
+            public class Empresa {
+            
+                String razonSocial;
+                String numeroIdentidadSocial;
+                Direccion direccion;
+            }            
+        </code>
+
         <li>Extrayendo lo que es común</li>
         <li>Valores null</li>
+        <code>
+            - Nada, no hay referencia en la memoria.
+
+            public class TestReferencia3 {
+            
+                public static void main(String[] args) {
+                    Cuenta cuentaDeMaat = new Cuenta();
+            
+                    // Si obtenemos null debemos rellenar los valores que necesistemos.
+                    Cliente cliente = new Cliente();
+                    cuentaDeMaat.titular = cliente;
+                    cuentaDeMaat.titular.nombre = "Maat";
+            
+                    System.out.println(cuentaDeMaat.titular.nombre);
+                }
+            }            
+        </code>
+
         <li>Referencias inicializacion</li>
+        <code>
+            public class Direccion {
+
+                String calle;
+                String complemento;
+                String numero;
+                String vecindario;
+                String ciudad;
+                String codigoPostal;
+            
+            }
+            
+            public class Persona {
+            
+                String nombre;
+                String numeroIdentidad;
+                int edad;
+                Direccion direccion;
+            }
+            
+            public class Programa {
+            
+                public static void main(String args[]) {
+            
+                    Persona p = new Persona();
+                    p.nombre = "Paulo";
+                    p.direccion.calle  = "Aveninda XYZ";
+                }
+            }            
+        </code>
+        <code>
+            public class Persona {
+
+                String nombre;
+                String numeroIdentidad;
+                int edad;
+                Direccion direccion = new Direccion();
+            }
+            Correcto. La inicialización de la propiedad de direccion se lleva a cabo en la propia clase. De esa manera, el programador no tendrá que recordar iniciarlo.
+            
+            
+            public class Programa {
+                public static void main(String args[]) {
+            
+                    Persona p = new Persona();
+                    p.nombre = "Paulo";
+                    p.direccion = new Direccion();
+                    p.direccion.calle  = "Aveninda XYZ";
+                }
+            }
+            Correcto. El cliente de la clase Persona, es decir, quien lo esté usando, tuvo que asignar una instancia de Direccion a la propiedad p.direccion para que no hubiera NullPointerException.
+        </code>
         <li>Problema inesperado</li>
         <li>Solucionando el problema en el código</li>
         <li>Haga lo que hicimos en el aula: Referencias</li>
@@ -222,13 +696,261 @@
     <pre>
         <li>Proyecto del aula anterior</li>
         <li>Escapsulamiento</li>
+        <p>
+            El motor de un auto está encapsulado, interactuamos con el motor pero no directamente.
+
+            Los modificadores de acceso en java restringen el uso o no, de un método
+            
+            public  -> Hace que un método sea visible de cualquier parte del código.
+            private -> Escondemos o restringimos el acceso a variables o métodos.            
+        </p>
         <li>Público x Privado</li>
         <li>Getter</li>
+        <p>
+            Por convención, si todo método que usemos para acceder al valor de un atributo private..
+            Lleva por nombre getSaldo()            
+        </p>
+        <code>
+            public class Cuenta{
+                private double saldo;                   // Privamos la variable
+                int agencia;
+                int numero;
+                Cliente titular = new Cliente();
+            
+                // Void no espera retornar nada
+                void depositar(double valor){
+                    // Esta cuenta      Esta cuenta
+                    // This account     This account
+                    // This Object      This Object
+                    // this.saldo = this.saldo + valor;
+                    this.saldo += valor;
+            
+                    // El saldo solido viene como parametro, no es un atributo propio de la clase
+                }
+            
+                // Retorna valor y lo especificamos en el tipo de método, es boolean
+                // Boolean devuelve un true o false
+                public boolean retirar(double valor){
+                    if (this.saldo >= valor){
+                        // this.saldo = this.saldo - valor;
+                        this.saldo -= valor;
+                        return true;
+                    } 
+                    return false;
+                }
+            
+                // Como parametro le pasamos un objeto que es la otra cuenta
+                public boolean transferir(double valor, Cuenta cuenta){
+                    if (this.saldo >= valor){
+                        this.saldo = this.saldo - valor;
+                        cuenta.depositar(valor);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            
+                public double getSaldo(){               // Creamos un método para acceder a la variable que está privada
+                    return this.saldo;
+                }
+            }
+            
+            En el archivo PruebaAcceso.Java
+            
+            public class PruebaAcceso {
+                
+                public static void main(String[] args) {
+                    Cuenta cuenta = new Cuenta();
+                    cuenta.depositar(400);
+                    cuenta.retirar(300);
+                    // cuenta.saldo = 200;   No podemos acceder a la variable privada
+            
+                    // System.out.println(cuenta.saldo);
+                    System.out.println(cuenta.getSaldo());
+                }
+            
+            }
+            
+            
+            Ahora usamos el método dentro de la clase para acceder SOLO POR EL al atributo privado.            
+        </code>
+
         <li>Setter</li>
+        <code>
+            public class Cuenta{
+                private double saldo;
+                private int agencia;
+                private int numero;
+                Cliente titular = new Cliente();
+            
+                // Void no espera retornar nada
+                void depositar(double valor){
+                    // Esta cuenta      Esta cuenta
+                    // This account     This account
+                    // This Object      This Object
+                    // this.saldo = this.saldo + valor;
+                    this.saldo += valor;
+            
+                    // El saldo solido viene como parametro, no es un atributo propio de la clase
+                }
+            
+                // Retorna valor y lo especificamos en el tipo de método, es boolean
+                // Boolean devuelve un true o false
+                public boolean retirar(double valor){
+                    if (this.saldo >= valor){
+                        // this.saldo = this.saldo - valor;
+                        this.saldo -= valor;
+                        return true;
+                    } 
+                    return false;
+                }
+            
+                // Como parametro le pasamos un objeto que es la otra cuenta
+                public boolean transferir(double valor, Cuenta cuenta){
+                    if (this.saldo >= valor){
+                        this.saldo = this.saldo - valor;
+                        cuenta.depositar(valor);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            
+                public double getSaldo(){
+                    return this.saldo;
+                }
+            
+                public void setAgencia(int agencia){                // Creamos este método para setear el valor de la agencia que está privado.
+                    if(agencia > 0){                                // Ademas valdiamos que debe ser mayor a 0
+                        this.agencia = agencia;
+                    } else{
+                        System.out.println("Agencia debe ser mayor a 0");
+                    }
+                }
+            
+                public int getAgencia(){
+                    return agencia;
+                }
+            }
+            
+            
+            En el archivo PruebaAcceso
+            public class PruebaAcceso {
+                
+                public static void main(String[] args) {
+                    Cuenta cuenta = new Cuenta();
+                    cuenta.setAgencia(22);                      // Seteamos el valor de la agencia que debe ser mayor a 0
+                    cuenta.depositar(400);
+                    cuenta.retirar(300);
+                    // cuenta.saldo = 200;   No podemos acceder a la variable privada
+            
+                    // System.out.println(cuenta.saldo);
+                    System.out.println(cuenta.getSaldo());
+                    System.out.println(cuenta.getAgencia());    // Nos traemos el valor de la agencia
+                }
+            
+            }            
+        </code>
+        <p>
+        ---------Ejemplo
+        Paulo está creando getters y setters para la siguiente clase:
+            public class Alumno {
+                private String nombre;
+                private String matricula;
+            }
+            ¿Cómo sería, siguiendo la convención explicada en el video anterior, la declaración de getters y setters para los dos atributos de la clase?
+        </p>            
+        <code>
+            Selecciona una alternativa
+            
+            public String getNombre(){
+                return this.nombre;
+             }
+             
+             public String getMatricula(){
+                return this.matricula;
+             }
+             
+             public void setMatricula(String matricula){
+                this.matricula = matricula;
+             }
+             
+             public void setNombre(String nombre){
+                this.nombre = nombre;
+             }            
+        </code>
         <li>Creando Getters e Setters</li>
+        <code>
+            En el archivo de Cliente.java le damos el atributo de private a todos
+            Y además generamos los set y get
+            
+            public class Cliente {
+                private String nombre;
+                private String documento;
+                private String telefono;
+                
+                public String getNombre() {
+                    return nombre;
+                }
+                public void setNombre(String nombre) {
+                    this.nombre = nombre;
+                }
+            
+                
+                public String getDocumento() {
+                    return documento;
+                }
+                public void setDocumento(String documento) {
+                    this.documento = documento;
+                }
+            
+            
+                public String getTelefono() {
+                    return telefono;
+                }
+                public void setTelefono(String telefono) {  
+                    this.telefono = telefono;
+                }
+            }
+            
+            En el archivo PruebaEncapsulamiento.Java
+            
+            public class PurebaEncapsulamiento {
+                
+                public static void main(String[] args) {
+                    Cuenta cuenta = new Cuenta();
+                    Cliente cliente = new Cliente();
+                    cliente.setNombre("Maat");                  // Accedemos a través del set
+                    cliente.setDocumento("1212121");
+                }
+            
+            }            
+        </code>
         <li>Generando getter setter</li>
         <li>Referencias</li>
+        <code>
+            public class PurebaEncapsulamiento {
+    
+                public static void main(String[] args) {
+                    Cuenta cuenta = new Cuenta();
+                    Cliente cliente = new Cliente();                            // Hacen referencia a este objeto
+                    cliente.setNombre("Maat");
+                    cliente.setDocumento("1212121");
+            
+                    cuenta.setTitular(cliente);
+            
+                    System.out.println(cliente.getNombre());                    // Accedemos al mismo objeto
+                    System.out.println(cuenta.getTitular().getNombre());        // Accedemos al mismo objeto
+            
+                }
+            
+            }            
+        </code>
         <li>Ventajas de los atributos privados.</li>
+        <p>
+            ¿Cuál de las opciones define mejor la ventaja de usar atributos privados?
+            La implementación interna se puede modificar sin afectar ningún código fuera de la clase misma.            
+        </p>
         <li>Para aprender más: Cuidado con el modelo anémico</li>
         <li>Haga lo que hicimos en el aula: Creando Getters y Setters</li>
         <li>Lo que aprendimos</li>
@@ -247,11 +969,457 @@
     <pre>
         <li>Proyecto del aula anterior</li>
         <li>Constructor</li>
+        <p>
+            Los constructores se utilizan para inicializar los atributos.
+        </p>
         <li>Utilizando constructores</li>
         <li>Constructor personalizado</li>
+        <p>
+            Se pueden usar setter pero con el constructor nos "obligamos" a informar parametros al momento de creación del objeto.
+            En el caso del setter es opcional.            
+        </p>
+        <code>
+            public class Cuenta{
+                private double saldo;
+                private int agencia;
+                private int numero;
+                Cliente titular = new Cliente();
+            
+                
+                // Acá construimos nuestro constructor personalizado
+                public Cuenta(int agencia) {
+                    
+                    // this.saldo = saldo;
+                    // this.agencia = agencia;
+                    // this.numero = numero;
+                    
+                    if (agencia <= 0){
+                        System.out.println("No se permite 0");
+                        this.agencia = 1;
+                    } else {
+                        this.agencia = agencia;
+                    }
+                }
+            
+                // Void no espera retornar nada
+                void depositar(double valor){
+                    // Esta cuenta      Esta cuenta
+                    // This account     This account
+                    // This Object      This Object
+                    // this.saldo = this.saldo + valor;
+                    this.saldo += valor;
+            
+                    // El saldo solido viene como parametro, no es un atributo propio de la clase
+                }
+            
+                // Retorna valor y lo especificamos en el tipo de método, es boolean
+                // Boolean devuelve un true o false
+                public boolean retirar(double valor){
+                    if (this.saldo >= valor){
+                        // this.saldo = this.saldo - valor;
+                        this.saldo -= valor;
+                        return true;
+                    } 
+                    return false;
+                }
+            
+                // Como parametro le pasamos un objeto que es la otra cuenta
+                public boolean transferir(double valor, Cuenta cuenta){
+                    if (this.saldo >= valor){
+                        this.saldo = this.saldo - valor;
+                        cuenta.depositar(valor);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            
+                public double getSaldo(){
+                    return this.saldo;
+                }
+            
+                // Este no lo necesitamos con el constructor personalizdo
+                // Solo es manipulable al momento de crear el objeto en sí
+                // public void setAgencia(int agencia){
+                //     if(agencia > 0){
+                //         this.agencia = agencia;
+                //     } else{
+                //         System.out.println("Agencia debe ser mayor a 0");
+                //     }
+                // }
+            
+                public int getAgencia(){
+                    return agencia;
+                }
+            
+                public void setTitular(Cliente titular){
+                    this.titular = titular;
+                }
+            
+                public Cliente getTitular(){
+                    return titular;
+                }
+            }            
+        </code>
+        <p>
+            Aca probamos el constructor que acabamos de crear
+        </p>
+        <code>
+            public class PruebaConstructor {
+    
+                public static void main(String[] args) {
+                    Cuenta cuenta = new Cuenta(60);
+                    // cuenta.setAgencia(4);
+            
+                    System.out.println(cuenta.getAgencia());
+                }
+            
+            }            
+        </code>
+        <code>
+            ------------------------------- Ejemplo
+            public class Juego {
+                //Código omitido
+            
+                private Componente comp;
+                public Juego(Usuario usuario){
+                   this.comp = usuario;
+                }
+            }
+            
+            Todavía en el juego de Luan, tenemos otro fragmento de código:
+            Se asignan objetos de diferentes tipos.            
+        </code>
+
         <li>¿Dónde está el error?</li>
         <li>Variables estaticas</li>
+        <code>
+            public class Cuenta{
+                private double saldo;
+                private int agencia;
+                private int numero;
+                Cliente titular = new Cliente();
+                
+                // Static, no es accedida por la instancia, solo por medio de la clase.
+                // Con static indicamos que la variable no es de la instancia, sino de la clase.
+                private static int total = 0;
+            
+                
+                // Acá construimos nuestro constructor personalizado
+                public Cuenta(int agencia) {
+                    
+                    // this.saldo = saldo;
+                    // this.agencia = agencia;
+                    // this.numero = numero;
+                    
+                    
+            
+                    if (agencia <= 0){
+                        System.out.println("No se permite 0");
+                        this.agencia = 1;
+                    } else {
+                        this.agencia = agencia;
+                    }
+                    total++;
+                }
+            
+                // Void no espera retornar nada
+                void depositar(double valor){
+                    // Esta cuenta      Esta cuenta
+                    // This account     This account
+                    // This Object      This Object
+                    // this.saldo = this.saldo + valor;
+                    this.saldo += valor;
+            
+                    // El saldo solido viene como parametro, no es un atributo propio de la clase
+                }
+            
+                // Retorna valor y lo especificamos en el tipo de método, es boolean
+                // Boolean devuelve un true o false
+                public boolean retirar(double valor){
+                    if (this.saldo >= valor){
+                        // this.saldo = this.saldo - valor;
+                        this.saldo -= valor;
+                        return true;
+                    } 
+                    return false;
+                }
+            
+                // Como parametro le pasamos un objeto que es la otra cuenta
+                public boolean transferir(double valor, Cuenta cuenta){
+                    if (this.saldo >= valor){
+                        this.saldo = this.saldo - valor;
+                        cuenta.depositar(valor);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            
+                public double getSaldo(){
+                    return this.saldo;
+                }
+            
+                // Este no lo necesitamos con el constructor personalizdo
+                // public void setAgencia(int agencia){
+                //     if(agencia > 0){
+                //         this.agencia = agencia;
+                //     } else{
+                //         System.out.println("Agencia debe ser mayor a 0");
+                //     }
+                // }
+            
+                public int getAgencia(){
+                    return agencia;
+                }
+            
+                public void setTitular(Cliente titular){
+                    this.titular = titular;
+                }
+            
+                public Cliente getTitular(){
+                    return titular;
+                }
+            }            
+        </code>
+
         <li>Miembros estáticos</li>
+        <code>
+            public class Cuenta{
+                private double saldo;
+                private int agencia;
+                private int numero;
+                Cliente titular = new Cliente();
+                
+                // Creamos el atributo de manera estática
+                private static int total = 0;
+                
+                public Cuenta(int agencia) {
+                    if (agencia <= 0){
+                        System.out.println("No se permite 0");
+                        this.agencia = 1;
+                    } else {
+                        this.agencia = agencia;
+                    }
+                    total++;
+                }
+            
+                void depositar(double valor){
+                    this.saldo += valor;
+                }
+            
+                public boolean retirar(double valor){
+                    if (this.saldo >= valor){
+                        this.saldo -= valor;
+                        return true;
+                    } 
+                    return false;
+                }
+            
+                public boolean transferir(double valor, Cuenta cuenta){
+                    if (this.saldo >= valor){
+                        this.saldo = this.saldo - valor;
+                        cuenta.depositar(valor);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            
+                public double getSaldo(){
+                    return this.saldo;
+                }
+            
+                public int getAgencia(){
+                    return agencia;
+                }
+            
+                public void setTitular(Cliente titular){
+                    this.titular = titular;
+                }
+            
+                public Cliente getTitular(){
+                    return titular;
+                }
+            
+                // Transformamos el método en estático
+                public static int getTotal(){
+                    return Cuenta.total;
+                }
+            }
+            
+            
+            Desde PruebaConstructor
+            
+            public class PruebaConstructor {
+                
+                public static void main(String[] args) {
+                    Cuenta cuenta = new Cuenta(60);
+                    Cuenta cuenta2 = new Cuenta(333);
+                    // cuenta.setAgencia(4);
+            
+                    // De esta manera accedemos al metodo get privado y no podemos modificarlo desde fuera de la clase Cuenta
+                    System.out.println(Cuenta.getTotal());
+                }
+            
+            }            
+        </code>
+        <p>
+            El total debe ser estático, por lo que cada vez que se crea un nuevo objeto de tipo Cuenta, no se crea un nuevo total, manteniendo el valor correcto.
+        </p> 
+
+        <code>
+            El total debe ser estático, ada vez que se crea un nuevo objeto de tipo Jugador, no se crea un nuevo total, manteniendo el valor correcto.
+
+            public class Carro{
+                private int ano;
+                private String modelo;
+                private double precio;
+            
+                public Carro(int ano, String modelo, double precio){
+                    if(ano >= 1891){
+                        this.ano = ano;
+                    }else{
+                        System.out.println("El año informado no es válido. Por eso usaremos 2017!");
+                        this.ano = 2017;
+                    }
+            
+                    if( modelo != null){
+                        this.modelo = modelo;
+                    }else{
+                        System.out.println("El modelo no fue informado. Por eso usaremos Gol!");
+                        this.modelo = "Gol";
+                    }
+            
+                    if(precio > 0){
+                        this.precio = precio;
+                    }else{
+                        System.out.println("EL precio no es válido. Por eso usaremos 40000.0!");
+                        this.precio = 40000.0;
+                    }
+                }
+            
+                //Nuevo constructor AQUI!
+                public Carro(String modelo, double precio){
+                    this(2017, modelo, precio);
+                }
+            
+                //getters e setters omitidos
+            
+            }
+            ----------------------------------------
+            Por lo tanto:
+            
+            Nuestra clase Cuenta:
+            public class Cuenta {
+            
+                private double saldo;
+                private int agencia;
+                private int numero;
+                private Cliente titular;
+                private static int total = 0;
+            
+                public Cuenta(int agencia, int numero){
+                    Cuenta.total++;
+                    System.out.println("Total de cuentas es " + Cuenta.total);
+                    this.agencia = agencia;
+                    this.numero = numero;
+                    this.saldo = 100;
+                    System.out.println("Estoy creando una cuenta" + this.numero);
+                }
+            
+                public void deposita(double valor) {
+                    this.saldo = this.saldo + valor;
+                }
+            
+                public boolean saca(double valor) {
+                    if(this.saldo >= valor) {
+                        this.saldo -= valor;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            
+                public boolean transfiere(double valor, Cuenta destino) {
+                    if(this.saldo >= valor) {
+                        this.saldo -= valor;
+                        destino.deposita(valor);
+                        return true;
+                    }
+                    return false;
+                }
+            
+                public double getSaldo(){
+                    return this.saldo;
+                }
+            
+                public int getNumero(){
+                    return this.numero;
+                }
+            
+                public void setNumero(int numero){
+                    if(numero <= 0) {
+                        System.out.println("No pueder ser el valor menor o igual a 0");
+                        return;
+                    }
+                    this.numero = numero;
+                }
+            
+                public int getAgencia(){
+                    return this.agencia;
+                }
+            
+                public void setAgencia(int agencia){
+                    if(agencia <= 0) {
+                        System.out.println("No pueder ser el valor menor o igual a ");
+                        return;
+                    }
+                    this.agencia = agencia;
+                }
+            
+                public void setTitular(Cliente titular){
+                    this.titular = titular;
+                }
+            
+                public Cliente getTitular(){
+                    return this.titular;
+                }
+            
+                public static int getTotal(){
+                    return Cuenta.total;
+                }
+            
+            }
+            
+            Nuestra clase Cliente:
+            public class Cliente {
+            
+                private String nombre;
+                private String numeroIdentidad;
+                private String profesion;
+            
+                public String getNombre() {
+                    return nombre;
+                }
+                public void setNombre(String nombre) {
+                    this.nombre = nombre;
+                }
+                public String getNumeroIdentidad() {
+                    return numeroIdentidad;
+                }
+                public void setNumeroIdentidad(String numeroIdentidad) {
+                    this.numeroIdentidad = numeroIdentidad;
+                }
+                public String getProfesion() {
+                    return profesion;
+                }
+                public void setProfesion(String profesion) {
+                    this.profesion = profesion;
+                }
+            
+            }            
+        </code>
         <li>¿Por qué no suma?</li>
         <li>Para obtener más información: reutilizar entre constructores</li>
         <li>Haga lo que hicimos en el aula: Creando constructores y variables estáticas.</li>

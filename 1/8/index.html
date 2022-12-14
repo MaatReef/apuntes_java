@@ -6,7 +6,8 @@
     <title>Introducción Java</title>
     <link rel="shortcut icon" type=image/jpg href="../../img/logo/favicon.ico"/>
     <link href="https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap" rel="stylesheet"> 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../../css/styleRed.css">
+
 
 </head>
 <body>
@@ -147,6 +148,9 @@
     <pre>
         <li>Proyecto del aula anterior</li>
         <li>Definiciones</li>
+        <p>
+            Entonces aquí aparecen campos y registros. Vamos a hablar, cuando hablemos de campos, ustedes ya van a entender que estamos haciendo alusión a las columnas, y cuando hablemos de registros, entonces ustedes ya van a saber que estamos hablando de las filas. Entonces campos y filas.
+        </p>
         <li>Localización de la tabla</li>
         <li>Conociendo Workbench</li>
         <li>Componentes de las tablas</li>
@@ -159,6 +163,70 @@
         <li>MySQL por línea de comando</li>
         <li>Eliminación de una base de datos</li>
         <li>Haga lo que hicimos en aula</li>
+        <p>
+            1) Accede al Workbench.
+
+            2) En la esquina izquierda, tenemos una estructura en forma de árbol donde vemos la base de datos, o los esquemas.
+            
+            3) Abriendo una de las bases de datos podemos ver algunos de sus componentes.
+            
+            4) En el menú del Workbench, tenemos el botón + SQL donde una área de edición será creada para que podamos incluir los comandos de SQL para administrar nuestra base de datos.
+            
+            5) Haz doble clic en la base de datos world. Luego ejecuta el siguiente comando en el área de edición:
+            
+            SELECT * FROM city;
+            
+            6) Haz clic en el botón que tiene un rayo y la consulta es ejecutada.
+            
+            7) Digita, abajo, un nuevo comando:
+            
+            SELECT * FROM country;
+            
+            8) Haz clic en el botón que tiene un rayo y las dos consultas serán ejecutadas.
+            
+            9) Si tú seleccionas un área con algunos comandos y haces click sobre el botón que tiene un rayo, solamente aquel comando seleccionado es el que será ejecutado.
+            
+            10) En caso de que el comando esté incorrecto, abajo verás el resultado de cada ejecución (si fue exitosa o no).
+            
+            11) Vamos a crear una base de datos. Para ello, crea un nuevo script en el Workbench y digita:
+            
+            CREATE DATABASE jugos;
+            
+            12) Ejecuta el comando. Ten en cuenta que la base de datos está siendo creada.
+            
+            13) De la misma manera, podemos crear la base de datos a través de un asistente. Para ello, haz clic con el botón de derecho del mouse sobre un área cualquiera donde está localizada la lista de la base de datos. Entonces, seleciona la opción Create Schema.
+            
+            14) Incluye el nombre de la base de datos (ex: jugos2).
+            
+            15) Haz clic en la opción Apply.
+            
+            16) El comando SQL será exhibido. Haz clic nuevamente en Apply y la nueva base de datos será creada.
+            
+            17) También, podemos borrar la base de datos. Ejecuta el comando:
+            
+            DROP SCHEMA jugos;
+            
+            
+            18) Ten en cuenta que la base no aparece más en la lista de las bases de datos.
+            
+            19) Si escogemos la base de datos jugos2, con el botón derecho del mouse, podemos también borrar la misma haciendo clic sobre Drop Schema.
+            
+            20) Es posible acceder a MySQL por líneas del command prompt. Dirígete hacia el subdirectorio c:\Program Files\MySQL\MySQL Server 8.0\bin.
+            
+            21) Digita el comando: mysql.exe -h localhost -u root -p
+            
+            Teclea ENTER y después incluye la contraseña.
+            
+            22) Digita el comando: create database jugos;
+            
+            Si vas a comprobar en Workbench verás que la base de datos jugos se ha añadido a la lista de bases disponibles.
+            
+            23) Para ejecutar una consulta en la base de ejemplo world digita: use world; Presiona ENTER, y ahora digita: select * from cities; y digita ENTER nuevamente.
+            
+            24) Verás que la lista de ciudades será mostrada en el command prompt.
+            
+            25) Para salir digita: exit.            
+        </p>
         <li>Lo que aprendimos</li>        
     </pre>
     <br>
@@ -173,12 +241,162 @@
     <pre>
         <li>Proyecto del aula anterior</li>
         <li>Tipos de datos</li>
+        <p>
+            Int
+            De acuerdo al tipo de entero que utilicemos, asimismo también será la capacidad del mismo.
+            
+            Float            
+        </p>
         <li>Tipo fecha</li>
         <li>Creando la primera tabla</li>
         <li>Mejor tipo de variable</li>
         <li>Creando la tabla con el asistente</li>
         <li>Creando tabla de vendedores</li>
+        <p>
+            Nuestro sistema de ventas solicita la creación de una tabla más para los vendedores.
+
+            Información importante:
+            
+            El nombre de la tabla debe ser TABLA_DE_VENDEDORES.
+            
+            El vendedor tiene el número interno de la matrícula, que será almacenado en el campo MATRÍCULA, que debe ser un string de 5 posiciones.
+            
+            El nombre del vendedor deberá ser almacenado en el campo NOMBRE, y debe ser un string de 100 posiciones.
+            
+            Crear el campo PORCENTAJE_COMISION que representa el porcentaje de comisión que el vendedor gana sobre cada venta.
+            
+            Crear esta tabla en la base de datos jugos.
+            
+            CREATE TABLE TABLA_DE_VENDEDORES (
+                MATRICULA varchar(5), 
+                NOMBRE varchar(100), 
+                PORCENTAJE_COMISION float);            
+        </p>
         <li>Eliminando las tablas</li>
+        <p>
+            1) Accede a MySQL Workbench.
+
+            2) Crea la tabla de clientes digitando el siguiente comando:
+            
+            USE JUGOS;
+            CREATE TABLE TBCLIENTES(
+            DNI VARCHAR(20),
+            NOMBRE VARCHAR(150),
+            DIRECCION1 VARCHAR(150),
+            DIRECCION2 VARCHAR(150),
+            BARRIO VARCHAR(50),
+            CIUDAD VARCHAR(50),
+            ESTADO VARCHAR(50),
+            CP VARCHAR(10),
+            EDAD SMALLINT,
+            SEXO VARCHAR(1),
+            LIMITE_CREDITO FLOAT,
+            VOLUMEN_COMPRA FLOAT,
+            PRIMERA_COMPRA BIT(1));
+            
+            3) Ejecuta el comando y después actualiza el árbol de Workbench para observar la nueva tabla creada.
+            
+            4) Podemos crear una tabla utilizando el asistente también. (Botón derecho del mouse sobre Tables, abajo de la base de datos jugos, y escoge la opción Create table.
+            
+            5) Digita el nombre de la tabla como tbproductos.
+            
+            6) Incluye los campos de acuerdo con lo que se muestra abajo:
+            
+            CREATE TABLE tbproductos
+            (PRODUCTO VARCHAR (20) ,
+            NOMBRE VARCHAR (150) ,
+            ENVASE VARCHAR (50) ,
+            VOLUMEN VARCHAR (50) ,
+            SABOR VARCHAR (50) ,
+            PRECIO FLOAT);
+            
+            7) Haz clic en el botón Apply.
+            
+            8) Verifica el comando que será ejecutado. Haz clic en Apply nuevamente y la tabla será creada.
+            
+            9) La tabla puede ser eliminada. Para eso digita el comando para crear nuevas tablas.
+            
+            CREATE TABLE TBCLIENTES2(
+            DNI VARCHAR(20),
+            NOMBRE VARCHAR(150),
+            DIRECCION1 VARCHAR(150),
+            DIRECCION2 VARCHAR(150),
+            BARRIO VARCHAR(50),
+            CIUDAD VARCHAR(50),
+            ESTADO VARCHAR(50),
+            CP VARCHAR(10),
+            EDAD SMALLINT,
+            SEXO VARCHAR(1),
+            LIMITE_CREDITO FLOAT,
+            VOLUMEN_COMPRA FLOAT,
+            PRIMERA_COMPRA BIT(1));
+            
+            CREATE TABLE TBCLIENTES3(
+            DNI VARCHAR(20),
+            NOMBRE VARCHAR(150),
+            DIRECCION1 VARCHAR(150),
+            DIRECCION2 VARCHAR(150),
+            BARRIO VARCHAR(50),
+            CIUDAD VARCHAR(50),
+            ESTADO VARCHAR(50),
+            CP VARCHAR(10),
+            EDAD SMALLINT,
+            SEXO VARCHAR(1),
+            LIMITE_CREDITO FLOAT,
+            VOLUMEN_COMPRA FLOAT,
+            PRIMERA_COMPRA BIT(1));
+            
+            
+            10) Fueron creadas dos tablas. Ahora vamos a eliminarlas. La primera por el script de comando:
+            
+            11) A través del asistente, basta hacer clic con el botón derecho del mouse sobre el nombre de la tabla, TBCLIENTES2, y seleccionar la opción Drop Table...            
+        </p>
+        <code>
+            Vamos a crear un vendedor en la tabla de vendedores. La información es la siguiente:
+
+            Matrícula: 00233
+            
+            Nombre: Joan Geraldo de la Fonseca
+            
+            Comisión: 10%
+            
+            Digite el nombre de inclusión.
+            
+            INSERT INTO TABLA_DE_VENDEDORES
+            (MATRICULA, NOMBRE, PORCENTAJE_COMISION)
+            VALUES
+            ('00233', 'Joan Geraldo de la Fonseca', 0.10);
+            
+            
+            Vamos a crear dos vendedores más, en el mismo script SQL:
+            
+            Matrícula: 00235
+            
+            Nombre: Márcio Almeida Silva
+            
+            Comision: 8%
+            
+            y
+            
+            Matrícula: 00236
+            
+            Nombre: Cláudia Morais
+            
+            Comision: 8%
+            
+            Digite los comandos de inclusión.
+            
+            
+            INSERT INTO TABLA_DE_VENDEDORES
+            (MATRICULA, NOMBRE, PORCENTAJE_COMISION)
+            VALUES
+             ('00235','Márcio Almeida Silva',0.08);
+            
+            INSERT INTO TABLA_DE_VENDEDORES
+            (MATRICULA, NOMBRE, PORCENTAJE_COMISION)
+            VALUES
+            ('00236','Cláudia Morais',0.08);            
+        </code>
         <li>Eliminando tabla de vendedores</li>
         <li>Haga lo que hicimos en aula</li>
         <li>Lo que aprendimos</li>
@@ -202,13 +420,251 @@
         <li>Incluyendo dos vendedores más</li>
         <li>Alterando registros</li>
         <li>Actualizando la información sobre los vendedores</li>
+        <p>
+            Recibimos la siguiente información:
+
+            Claudia Moral(00236) recibió un aumento y su comisión pasó a ser 11%. Joan Geraldo de la Fonseca(00233) reclamó que su nombre real es Joan Geraldo de la Fonseca Junior.
+            
+            Efectúe estas correcciones en la base de datos.
+            
+            UPDATE TABLA_DE_VENDEDORES SET PORCENTAJE_COMISION = 0.11
+            WHERE MATRICULA = '00236';
+            
+            UPDATE TABLA_DE_VENDEDORES SET NOME = 'Joan Geraldo de la Fonseca Junior'
+            WHERE MATRICULA = '00233';                        
+        </p>
+
         <li>Excluyendo registros</li>
         <li>Eliminando un vendedor</li>
+        <p>
+            El vendedor Joan Geraldo de la Fonseca Junior matrícula(00233) fue despedido.
+
+            Hay que retirarlo de la tabla de vendedores.
+            
+            DELETE FROM TABLA_DE_VENDEDORES WHERE MATRICULA = '00233';            
+        </p>
         <li>Incluyendo la clave primaria</li>
+        <p>
+            ¿Cuál es el propósito de incluir una clave primaria al momento de crear una tabla?
+
+            Seleccione una alternativa
+            Todas las alternativa.
+            ¡Alternativa correcta! Así es. Es muy útil para evitar la duplicidad en los registros y para garantizar la integridad de los datos.            
+        </p>
         <li>Importancia de la clave primaria</li>
         <li>Manipulando fechas y campos lógicos</li>
         <li>Modificando la tabla de vendedores</li>
+        <p>
+            Vamos a incluir nuevos campos en la tabla de vendedores. Ellos serán la fecha de admisión. (Nombre del campo FECHA_ADMISION), y si el vendedor está o no de vacaciones. (Nombre del campo DE_VACACIONES). No olvides recrear la clave primaria y después incluye la siguiente información:
+
+            Matrícula - 00235
+            Nombre: Márcio Almeida Silva
+            Comision: 8%
+            Fecha de admisión: 15/08/2014
+            ¿Está de vacaciones? No
+            Matrícula - 00236
+            Nombre: Cláudia Morais
+            Comision: 8%
+            Fecha de admisión: 17/09/2013
+            ¿Está de vacaciones? Si
+            Matrícula - 00237
+            Nombre: Roberta Martins
+            Comision: 11%
+            Fecha de admisión: 18/03/2017
+            ¿Está de vacaciones? Si
+            Matrícula - 00238
+            Nombre: Péricles Alves
+            Comision: 11%
+            Fecha de admisión: 21/08/2016
+            ¿Está de vacaciones? No
+            Tips:
+            
+            Elimina la tabla.
+            Crea la tabla nuevamente incluyendo los nuevos campos.
+            Crea la clave primaria.
+            Incluye los comandos de INSERT.
+            
+            
+            DROP TABLE TABLA_DE_VENDEDORES;
+            
+            CREATE TABLE TABLA_DE_VENDEDORES
+            ( MATRICULA varchar(5),
+            NOMBE varchar(100),
+            PORCENTAJE_COMISION float,
+            FECHA_ADMISION date,
+            DE_VACACIONES bit);
+            
+            ALTER TABLE TABLA_DE_VENDEDORES ADD PRIMARY KEY (MATRICULA);
+            
+            INSERT INTO TABLA_DE_VENDEDORES
+            (MATRICULA, NOMBRE, FECHA_ADMISION, PORCENTAJE_COMISION, DE_VACACIONES) VALUES ('00235','Márcio Almeida Silva','2014-08-15',0.08,0);
+            
+            INSERT INTO TABLA_DE_VENDEDORES
+            (MATRICULA, NOMBRE, FECHA_ADMISION, PORCENTAJE_COMISION, DE_VACACIONES) VALUES ('00236','Cláudia Morais','2013-09-17',0.08,1);
+            
+            INSERT INTO TABLA_DE_VENDEDORES
+            (MATRICULA, NOMBRE, FECHA_ADMISION, PORCENTAJE_COMISION, DE_VACACIONES) VALUES ('00238','Pericles Alves','2016-08-21',0.11,0);            
+        </p>
+
         <li>Haga lo que hicimos en aula</li>
+        <p>
+            1) Accesa al Workbench.
+
+            2) Crea una nueva consulta y digita el comando de abajo:
+            
+            USE jugos;
+            
+            INSERT INTO tbproductos(
+            producto, nombre, envase, volumen, sabor,
+            precio) VALUES ('773912', 'clean', 'botella pet',
+            '1 litro', 'naranja', 8.01);
+            
+            El comando de arriba insertará un registro en la tabla.
+            
+            3) Ejecuta el comando:
+            
+            SELECT * FROM tbproductos;
+            
+            Verás que el registro fue insertado en la tabla.
+            
+            4) Crea un nuevo script en Workbench.
+            
+            5) Digita los siguientes comandos:
+            
+            USE jugos;
+            
+            INSERT INTO tbproductos(
+            producto, nombre, envase, volumen, sabor,
+            precio) VALUES ('838819', 'clean', 'botella pet',
+            '1.5 litros', 'naranja', 12.01);
+            
+            INSERT INTO tbproductos(
+            producto, nombre, envase, volumen, sabor,
+            precio) VALUES ('1037797', 'clean', 'botella pet',
+            '2 litros', 'naranja', 16.01);
+            
+            INSERT INTO tbproductos(
+            producto, nombre, envase, volumen, sabor,
+            precio) VALUES ('8128292', 'clean', 'latat',
+            '350 ml', 'naranja', 2.81);
+            
+            
+            Ahora el comando de arriba insertará diversos productos en la tabla.
+            
+            6) Ejecuta el comando:
+            
+            SELECT * FROM tbproductos;
+            
+            Verás que varios registros fueron insertados en la tabla.
+            
+            7) Crea un nuevo script en Workbench.
+            
+            8) Digita el comando de abajo para insertar otros registros en la tabla:
+            
+            USE jugos;
+            
+            INSERT INTO tbproductos(
+            producto, nombre, envase, volumen, sabor,
+            precio) VALUES ('695594', 'Festival de Sabores', 'Botella PET',
+            '1.5 Litros', 'Asaí', 18.51);
+            
+            INSERT INTO tbproductos(
+            producto, nombre, envase, volumen, sabor,
+            precio) VALUES ('1041119', 'Línea Citrus', 'Botella de Vidrio',
+            '700 ml', 'Lima', 4.90);
+            
+            9) Ahora vamos a actualizar la información de los registros incluidos previamente. Digita:
+            
+            UPDATE tbproductos SET producto = '812829', envase = 'lata'
+            WHERE volumen = '350 ml';
+            
+            UPDATE tbproductos SET precio = 28.51
+            WHERE producto = '695594';
+            
+            UPDATE tbproductos SET sabor = 'Lima/Limón', precio = 4.90
+            WHERE producto = '1041119';
+            
+            10) Verás que los registros fueron actualizados ejecutando:
+            
+            SELECT * FROM tbproductos;
+            
+            11) También, podemos eliminar registros ya existentes en la tabla. Para ello digita, en otro Script, los siguientes comandos:
+            
+            USE jugos;
+            
+            DELETE FROM tbproductos WHERE producto = '773912';
+            
+            12) Verás que el registro fue eliminado ejecutando:
+            
+            
+            SELECT * FROM tbproductos;
+            
+            13) Aprendimos en las definiciones sobre la base de datos, que una tabla puede tener una clave primaria. Veamos abajo, cómo crear una clave primaria para la tabla de productos. Hazlo en un nuevo Script del Workbench:
+            
+            
+            USE jugos;
+            
+            ALTER TABLE tbproductos ADD PRIMARY KEY(PRODUCTO);
+            
+            14) Ejecuta el comando siguiente dos veces:
+            
+            
+            
+            INSERT INTO tbproductos(
+            producto, nombre, envase, volumen, sabor,
+            precio) VALUES ('773912', 'clean', 'botella pet',
+            '1 litro', 'naranja', 8.01);
+            
+            INSERT INTO tbproductos(
+            producto, nombre, envase, volumen, sabor,
+            precio) VALUES ('773912', 'clean', 'botella pet',
+            '1 litro', 'naranja', 8.01);
+            
+            
+            Observa que, la segunda vez que lo ejecutaste, MySQL mostrará un error porque se sale de los parámetros de la clave primaria, ya que el mismo registro en el campo producto no puede introducirse más de una vez.
+            
+            15) En caso que desees cambiar el precio en este registro, debes actualizarlo:
+            
+            UPDATE tbproductos SET precio = 28.51
+            WHERE producto = '773912';
+            
+            16) Crea un nuevo script e incluye una clave primaria en la tabla de clientes.
+            
+            
+            
+            USE jugos;
+            
+            ALTER TABLE tbclientes ADD PRIMARY KEY (DNI);
+            
+            17) Asimismo, con la tabla ya creada, podemos incluir nuevas columnas con el comando:
+            
+            
+            ALTER TABLE tbclientes ADD COLUMN(FECHA_NACIMIENTO DATE);
+            
+            18) A continuación, encontrarás el comando para incluir un nuevo cliente. Ten en cuenta cómo tratamos la inclusión de un campo de tipo fecha (FECHA_NACIMIENTO) y uno de tipo lógico (PRIMERA_COMPRA):
+            
+            
+            
+            INSERT INTO tbclientes( 
+            DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO,
+            CIUDAD, ESTADO, CP, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, 
+            PRIMERA_COMPRA, FECHA_NACIMIENTO) VALUES(
+            '456879548', 'Pedro el Escamoso', 'Calle del Sol, 25', '', 'Los Laureles', 'CDMX', 'México', '65784', 55, 'M',
+            1000000, 2000, 0, '1971-05-25');
+            
+            
+            Lo que aprendimos en esta aula:
+            
+            A incluir datos en una tabla, de diversas formas.
+            
+            Vimos cómo cambiar un dato ya existente en la tabla.
+            
+            Vimos cómo eliminar una fila de la tabla.
+            
+            Conocimos la importancia de las claves primarias y el cuidado que debemos tener al crearlas.
+            
+            Aprendimos a manipular campos del tipo lógicos y del tipo fecha.            
+        </p>
         <li>Lo que aprendimos</li>
     </pre>
 
@@ -226,16 +682,264 @@
         <li>Incluyendo datos en la tabla</li>
         <li>Descargar el archivo</li>
         <li>Seleccionando a todos los vendedores</li>
+        <p>
+            Seleccionar el nombre y matrícula de los vendedores.
+
+            SELECT NOMBRE, MATRICULA FROM TABLA_DE_VENDEDORES;            
+        </p>
         <li>Filtrando registros</li>
         <li>Seleccionando a un vendedor</li>
+        <p>
+            Verifica los datos registrados de la vendedora Claudia Morais.
+            SELECT * FROM TABLA_DE_VENDEDORES WHERE NOMBRE = 'Claudia Morais';            
+        </p>
         <li>Filtrando usando mayor que menor que y diferente</li>
         <li>Seleccionando vendedores por el valor de la comisión</li>
+        <p>
+            Investiga cuáles son los vendedores que poseen comisión superior al 10%.
+
+            SELECT * FROM TABLA_DE_VENDEDORES WHERE PORCENTAJE_COMISIÓN > 0.10;            
+        </p>
         <li>Filtrando fechas</li>
         <li>Seleccionando a un vendedor por fecha</li>
+        <p>
+            Investiga cuáles son los vendedores que fueron admitidos en la empresa a partir del 2016.
+
+            SELECT * FROM TABLA_DE_VENDEDORES WHERE YEAR(FECHA_ADMISION) >= 2016;            
+        </p>
         <li>Filtros compuestos</li>
         <li>Selección compuesta</li>
+        <p>
+            Revisa cuáles son los vendedores que están de vacaciones y que fueron admitidos antes del 2016.
+
+            SELECT * FROM TABLA_DE_VENDEDORES WHERE YEAR(FECHA_ADMISION) < 2016 AND DE_VACACIONES = 1;            
+        </p>
         <li>Seleccionar a todos los vendedores</li>
+        <p>
+            Selecciona el nombre y matrícula de los vendedores.
+
+            SELECT NOMBRE, MATRICULA FROM TABLA_DE_VENDEDORES;            
+        </p>
         <li>Haga lo que hicimos en aula</li>
+        <p>
+            1) Accede al Workbench y crea un nuevo script SQL.
+
+            2) Abre el archivo sql5.1.sql y ejecuta el script. Las tablas serán eliminadas, recreadas y nuevos registros serán incluídos. El contenido del script es reproducido a continuación:
+            
+            USE jugos;
+            
+            DROP TABLE tbclientes;
+            
+            DROP TABLE tbproductos;
+            
+            CREATE TABLE tbcliente
+            (DNI VARCHAR (11) ,
+            NOMBRE VARCHAR (100) ,
+            DIRECCION1 VARCHAR (150) ,
+            DIRECCION2 VARCHAR (150) ,
+            BARRIO VARCHAR (50) ,
+            CIUDAD VARCHAR (50) ,
+            ESTADO VARCHAR (4) ,
+            CP VARCHAR (8) ,
+            FECHA_NACIMIENTO DATE,
+            EDAD SMALLINT,
+            SEXO VARCHAR (1) ,
+            LIMITE_CREDITO FLOAT ,
+            VOLUMEN_COMPRA FLOAT ,
+            PRIMERA_COMPRA BIT );
+            
+            ALTER TABLE tbcliente ADD PRIMARY KEY (DNI);
+            
+            CREATE TABLE tbproducto
+            (PRODUCTO VARCHAR (20) ,
+            NOMBRE VARCHAR (150) ,
+            ENVASE VARCHAR (50) ,
+            TAMANO VARCHAR (50) ,
+            SABOR VARCHAR (50) ,
+            PRECIO_LISTA FLOAT);
+            
+            ALTER TABLE tbproducto ADD PRIMARY KEY (PRODUCTO);
+            
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('9283760794', 'Edson Calisaya', 'Sta Úrsula Xitla', '', 'Barrio del Niño Jesús', 'Ciudad de México', 'CDMX', '22002002', '1995-01-07', 25, 'M', 150000, 250000, 1);
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('7771579779', 'Marcelo Perez', 'F.C. de Cuernavaca 13', '', 'Carola', 'Ciudad de México', 'CDMX', '88202912', '1992-01-25', 29, 'M', 120000, 200000, 1);
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('5576228758', 'Pedro Olivera', 'Pachuca 75', '', 'Condesa', 'Ciudad de México', 'CDMX', '88192029', '1995-01-14', 25, 'F', 70000, 160000, 1);
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('8502682733', 'Luis Silva', 'Prol. 16 de Septiembre 1156', '', 'Contadero', 'Ciudad de México', 'CDMX', '82122020', '1995-01-07', 25, 'M', 110000, 190000, 0);
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('1471156710', 'Erica Carvajo', 'Heriberto Frías 1107', '', 'Del Valle', 'Ciudad de México', 'CDMX', '80012212', '1990-01-01', 30, 'F', 170000, 245000, 0);
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('3623344710', 'Marcos Rosas', 'Av. Universidad', '', 'Del Valle', 'Ciudad de México', 'CDMX', '22002012', '1995-01-13', 26, 'M', 110000, 220000, 1);
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('50534475787', 'Abel Pintos', 'Carr. México-Toluca 1499', '', 'Cuajimalpa', 'Ciudad de México', 'CDMX', '22000212', '1995-01-11', 25, 'M', 170000, 260000, 0);
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('5840119709', 'Gabriel Roca', 'Eje Central Lázaro Cárdenas 911', '', 'Del Valle', 'Ciudad de México', 'CDMX', '80010221', '1985-01-16', 36, 'M', 140000, 210000, 1);
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('94387575700', 'Walter Soruco', 'Calz. de Tlalpan 2980', '', 'Ex Hacienda Coapa', 'Ciudad de México', 'CDMX', '22000201', '1989-01-20', 31, 'M', 60000, 120000, 1);
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('8719655770', 'Carlos Santivañez', 'Calz. del Hueso 363', '', 'Floresta Coyoacán', 'Ciudad de México', 'CDMX', '81192002', '1983-01-20', 37, 'M', 200000, 240000, 0);
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('5648641702', 'Paolo Mendez', 'Martires de Tacubaya 65', '', 'Héroes de Padierna', 'Ciudad de México', 'CDMX', '21002020', '1991-01-30', 29, 'M', 120000, 220000, 0);
+            INSERT INTO tbcliente (DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO, CP, FECHA_NACIMIENTO, EDAD, SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA) VALUES ('492472718', 'Jorge Castro', 'Federal México-Toluca 5690', '', 'Locaxco', 'Ciudad de México', 'CDMX', '22012002', '1994-01-19', 26, 'M', 75000, 95000, 1);
+            
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('773912', 'Clean', '1 Litro', 'Naranja', 'Botella PET', 8.01);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('838819', 'Clean', '1,5 Litros', 'Naranja', 'Botella PET', 12.01);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1037797', 'Clean', '2 Litros', 'Naranja', 'Botella PET', 16.01);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('812829', 'Clean', '350 ml', 'Naranja', 'Lata', 2.81);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('479745', 'Clean', '470 ml', 'Naranja', 'Botella de Vidrio', 3.77);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('695594', 'Festival de Sabores', '1,5 Litros', 'Asaí', 'Botella PET', 28.51);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('243083', 'Festival de Sabores', '1,5 Litros', 'Maracuyá', 'Botella PET', 10.51);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1022450', 'Festival de Sabores', '2 Litros', 'Asái', 'Botella PET', 38.01);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('231776', 'Festival de Sabores', '700 ml', 'Asaí', 'Botella de Vidrio', 13.31);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('723457', 'Festival de Sabores', '700 ml', 'Maracuyá', 'Botella de Vidrio', 4.91);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('746596', 'Light', '1,5 Litros', 'Sandía', 'Botella PET', 19.51);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1040107', 'Light', '350 ml', 'Sandía', 'Lata', 4.56);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1002334', 'Línea Citrus', '1 Litro', 'Lima/Limón', 'Botella PET', 7);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1088126', 'Línea Citrus', '1 Litro', 'Limón', 'Botella PET', 7);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1041119', 'Línea Citrus', '700 ml', 'Lima/Limón', 'Botella de Vidrio', 4.9);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1042712', 'Línea Citrus', '700 ml', 'Limón', 'Botella de Vidrio', 4.9);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('520380', 'Pedazos de Frutas', '1 Litro', 'Manzana', 'Botella PET', 12.01);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('788975', 'Pedazos de Frutas', '1,5 Litros', 'Manzana', 'Botella PET', 18.01);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('229900', 'Pedazos de Frutas', '350 ml', 'Manzana', 'Lata', 4.21);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1101035', 'Refrescante', '1 Litro', 'Frutilla/Limón', 'Botella PET', 9.01);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1086543', 'Refrescante', '1 Litro', 'Mango', 'Botella PET', 11.01);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('326779', 'Refrescante', '1,5 Litros', 'Mango', 'Botella PET', 16.51);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('826490', 'Refrescante', '700 ml', 'Frutilla/Limón', 'Botella de Vidrio', 6.31);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1096818', 'Refrescante', '700 ml', 'Mango', 'Botella de Vidrio', 7.71);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('394479', 'Sabor da Montaña', '700 ml', 'Cereza', 'Botella de Vidrio', 8.41);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('783663', 'Sabor da Montaña', '700 ml', 'Frutilla', 'Botella de Vidrio', 7.71);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1000889', 'Sabor da Montaña', '700 ml', 'Uva', 'Botella de Vidrio', 6.31);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('544931', 'Verano', '350 ml', 'Limón', 'Lata', 2.46);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('235653', 'Verano', '350 ml', 'Mango', 'Lata', 3.86);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1051518', 'Verano', '470 ml', 'Limón', 'Botella de Vidrio', 3.3);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1078680', 'Verano', '470 ml', 'Mango', 'Botella de Vidrio', 5.18);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1004327', 'Vida del Campo', '1,5 Litros', 'Sandía', 'Botella PET', 19.51);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1013793', 'Vida del Campo', '2 Litros', 'Cereza/Manzana', 'Botella PET', 24.01);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('290478', 'Vida del Campo', '350 ml', 'Sandía', 'Lata', 4.56);
+            INSERT INTO tbProducto (PRODUCTO, NOMBRE, TAMANO, SABOR, ENVASE, PRECIO_LISTA) VALUES ('1002767', 'Vida del Campo', '700 ml', 'Cereza/Manzana', 'Botella de Vidrio', 8.41);
+            
+            3) Verifica el contenido de las tablas de productos y de clientes digitando:
+            
+            SELECT * FROM tbproducto;
+            
+            SELECT * FROM tbcliente;
+            
+            4) Crea un nuevo script. Vamos a hacer algunas consultas a la base de datos.
+            
+            5) Digita:
+            
+            
+            SELECT * FROM tbcliente;
+            
+            SELECT DNI, NOMBRE, DIRECCION1, DIRECCION2, BARRIO, CIUDAD, ESTADO,CP, FECHA_NACIMIENTO, EDAD, 
+            SEXO, LIMITE_CREDITO, VOLUMEN_COMPRA, PRIMERA_COMPRA FROM tbcliente;
+            
+            
+            Ten en cuenta que los dos comandos retornan el mismo output.
+            
+            Podemos usar el * para seleccionar todos los campos o discriminar uno por uno.
+            
+            6) Podemos seleccionar apenas algunos campos:
+            
+            
+            SELECT DNI, NOMBRE FROM tbcliente;
+            
+            SELECT NOMBRE, SEXO, EDAD, DIRECCION1 FROM tbcliente;
+            
+            7) También es posible limitar la salida de registros:
+            
+            SELECT NOMBRE, SEXO, EDAD, DIRECCION1 FROM tbcliente LIMIT 6;
+            
+            8) O también crear un rótulo (que también llamamos alias) para cada campo:
+            
+            
+            SELECT NOMBRE AS Nombre_Completo, SEXO AS Género, EDAD AS Años, DIRECCION1 AS Domicilio FROM tbcliente;
+            
+            9) Los registros pueden ser filtrados utilizando el mismo tipo de cláusula WHERE usada con los comandos UPDATE y DELETE.
+            
+            SELECT * FROM tbproducto PRODUCTO = '1042712';
+            
+            
+            10) Pero no es sólo a través de la llave primaria que podemos filtrar las consultas:
+            
+            SELECT * FROM tbproducto WHERE SABOR = 'Maracuyá';
+            
+            SELECT * FROM tbproducto WHERE ENVASE = 'Botella de Vidrio';
+            
+            11) Inclusive, este tipo de filtro WHERE se puede utilizar conlos comandos UPDATE y DELETE. Digita el siguiente comando UPDATE para realizar un cambio en varios registros al mismo tiempo:
+            
+            UPDATE tbproducto SET SABOR = 'Cítrico' WHERE SABOR = 'Limón';
+            
+            12) Podemos hacer consultas usando condiciones basadas en números (decimales o enteros). Crea un nuevo script y vamos a realizar algunos ejemplos:
+            
+            
+            
+            SELECT * FROM tbcliente WHERE EDAD = 27;
+            
+            Aquí vemos una igualdad.
+            
+            13) Pero podemos usar también los signos de mayor que, menor que, mayor o igual que, menor o igual que. Observa algunos ejemplos:
+            
+            
+            SELECT * FROM tbcliente WHERE EDAD > 27;
+            
+            SELECT * FROM tbcliente WHERE EDAD < 27;
+            
+            SELECT * FROM tbcliente WHERE EDAD <= 27;
+            
+            
+            14) Tenemos el signo diferente que se expresa como <>. Míralo a continuación:
+            
+            SELECT * FROM tbcliente WHERE EDAD <> 27;
+            
+            15) Las condiciones de mayor que, menor que, mayor o igual a, menor o igual a, o diferente de pueden ser aplicables a textos. El criterio será el orden alfabético:
+            
+            SELECT * FROM tbcliente WHERE  NOMBRE > 'Erica Carvajo';
+            
+            SELECT * FROM tbcliente WHERE  NOMBRE <= 'Erica Carvajo';
+            
+            
+            16) Las condiciones de igual, mayor que, menor que, mayor o igual a, menor o igual a, y diferente de, no se aplican muy bien a los campos FLOAT:
+            
+            
+            SELECT * FROM tbproducto WHERE PRECIO_LISTA = 28.51;
+            
+            SELECT * FROM tbproducto WHERE PRECIO_LISTA < 28.51;
+            
+            SELECT * FROM tbproducto WHERE PRECIO_LISTA > 28.51;
+            
+            SELECT * FROM tbproducto WHERE PRECIO_LISTA <> 28.51;
+            
+            17) El comando BETWEEN puede ser aplicado.
+            
+            
+            
+            SELECT * FROM tbproducto WHERE PRECIO_LISTA BETWEEN 28.49 AND 28.52;
+            
+            18) Podemos usar como filtro fechas. Mira algunos ejemplos:
+            
+            
+            SELECT * FROM tbcliente WHERE FECHA_NACIMIENTO = '1995-01-13';
+            
+            SELECT * FROM tbcliente WHERE FECHA_NACIMIENTO < '1995-01-13';
+            
+            SELECT * FROM tbcliente WHERE FECHA_NACIMIENTO >= '1995-01-13';
+            
+            
+            19) Existen algunas funciones de fecha que pueden ser usadas como filtros.
+            
+            
+            SELECT * FROM tbcliente WHERE YEAR(FECHA_NACIMIENTO) = 1995;
+            
+            SELECT * FROM tbcliente WHERE DAY(FECHA_NACIMIENTO) = 20;
+            
+            20) Podemos utilizar filtros compuestos usando, entre cada prueba, los comandos AND u OR. Observa a a continuación algunos ejemplos que se pueden ejecutar en Workbench:
+            
+            
+            
+            SELECT * FROM tbproducto WHERE PRECIO_LISTA BETWEEN 28.49 AND 28.52;
+            
+            SELECT * FROM tbproducto WHERE PRECIO_LISTA >= 28.49 AND  PRECIO_LISTA <=28.52;
+            
+            SELECT * FROM tbproducto WHERE ENVASE = 'Lata' OR ENVASE = 'Botella PET';
+            
+            SELECT * FROM tbproducto WHERE PRECIO_LISTA >= 15 AND  PRECIO_LISTA <=25;
+            
+            SELECT * FROM tbproducto WHERE (PRECIO_LISTA >= 15 AND  PRECIO_LISTA <=25) OR (ENVASE = 'Lata' OR ENVASE = 'Botella PET');
+            
+            SELECT * FROM tbproducto WHERE (PRECIO_LISTA >= 15 AND  TAMANO = '1 Litro') OR (ENVASE = 'Lata' OR ENVASE = 'Botella PET');            
+        </p>
         <li>Proyecto Final</li>
         <li>Lo que aprendimos</li>
         <li>Conclusión</li>    
