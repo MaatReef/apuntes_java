@@ -134,13 +134,194 @@
     <pre>
         <li>Presentación</li>
         <li>Entorno y versiones</li>
+        <p>
+            PostgreSQL 
+            SQL Server 
+            ORACLE database
+            - Mysql
+            
+            Desde Consola:
+            
+                C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -p
+                Ingresamos la contraseña: Solocuestavida1!
+            
+                create database control_de_stock;
+                use control_de_stock;
+            
+            Creamos la tabla:
+            mysql> create table producto(
+                -> id INT AUTO_INCREMENT,
+                -> nombre VARCHAR(50) NOT NULL,
+                -> descripcion VARCHAR(255),
+                -> cantidad INT NOT NULL DEFAULT 0,
+                -> PRIMARY KEY(id)
+                -> )Engine=InnoDB;                      
+            
+            // Data 
+            mysql> select * from producto;
+            
+            // Ingresamos data
+            mysql> insert into producto(nombre, descripcion, cantidad) values("Mesa", "Mesa de4 lugares", 10);
+            mysql> insert into producto(nombre, descripcion, cantidad) values("Celular", "Samsung", 40);
+            
+            mysql> select * from producto;
+            +----+---------+------------------+----------+
+            | id | nombre  | descripcion      | cantidad |
+            +----+---------+------------------+----------+
+            |  1 | Mesa    | Mesa de4 lugares |       10 |
+            |  2 | Celular | Samsung          |       40 |
+            +----+---------+------------------+----------+            
+        </p>
+
         <li>Preparando el ambiente</li>
+
         <li>Como conectar una aplicación a una base de datos</li>
+        <p>
+            Usamos la librería.. Para el puente entre Java y Mysql
+
+            Librería: Conocida como Driver, en este caso driver de Mysql.
+            
+            
+            Java provee una capa de abstracción para la conexión.. 
+            Hacia cualquier driver de conexión que necesitemos.
+                Se llama JDBC de Java Database Connectivity.
+                El JDBC es una lib que contiene las interfaces de comunicación y operación con la base de datos.
+                El driver de cualquier otra base de datos que tenga una librería para Java, todas sus clases implementan las interfaces de JDBC.
+                Solo con la abstracción de JDBC vamos a poder conectarnos a cualquier base de datos sin tener que cambiar ninguna línea de código
+            
+                Con el JDBC, si queremos conectarnos a una base de datos vamos a estar utilizando la clase DriverManager y el método getConnection.
+                En este método vamos a estar enviando los parámetros que son la URL de conexión con la base de datos, el usuario y la contraseña.
+            
+                jdbc:mysql://localhost:3306/base_de_pruebas
+                jdbc:mysql://localhost:3306/base_de_pruebas?(Podemos agregar parámetros opcionales)            
+        </p>
         <li>API e Interfaces</li>
+        <p>
+            ¿Cuál es la ventaja de utilizar una API como la JDBC, basada en interfaces, para realizar la comunicación entre el código y una base de datos relacional?
+
+            Seleccione una alternativa:
+            Transparencia a la hora de elegir la base de datos o cambiar de una para otra, con muy pocos cambios de código.
+            ¡Alternativa correcta! Lo único que va a ser necesario hacer es cambiar la dependencia del driver de base datos y el JDBC se encarga de todo.            
+        </p>
+
         <li>Los primeros pasos con JDBC</li>
+        <p>
+            En el Eclipse vamos a crear un proyecto Maven, entonces vamos a hacer un file new project. 
+            Aquí voy a escribir el Maven, Maven Project. 
+            Create simple project.
+            El artifact va a ser control-de-stock y hago un finish. Listo, ya creamos el proyecto. 
+            Ahora vamos a hacer un clic derecho aquí en el proyecto, y vamos a properties. 
+            Y aquí, cuando abrimos las propiedades del proyecto, vamos aquí a la opción de Java build path. ¿Por qué?
+            Siempre que estoy creando un proyecto en eclipse, me está creando con la versión 1.5 de Java y aquí lo vamos a hacer un cambio para que sigamos con la versión 11 como habíamos combinado.
+            
+            Ahora lo que vamos a hacer es expandir acá el proyecto y vamos a abrir el archivo pom.xml.
+            Aquí en este archivo tenemos todas las configuraciones del proyecto..
+            Tenemos 2 formas:
+            O podemos utilizar el archivo .jar que bajamos desde internet para agregar aquí manualmente el proyecto 
+            o nosotros podemos utilizar herramientas de control de dependencias, de manejo de dependencias, como es el caso de Maven. Aquí vamos a hacer unas configuraciones iniciales que van a ser las siguientes.
+            
+            
+            <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+              <modelVersion>4.0.0</modelVersion>
+              <groupId>com.alura</groupId>
+              <artifactId>control-de-stock</artifactId>
+              <version>0.0.1-SNAPSHOT</version>
+              <name>Control de Stock</name>
+              <description>Proyecto para trabajar con bases de datos con JDBC</description>
+              <properties>
+                  <java.version>11</java.version>
+              </properties>
+              
+              <dependencies>
+                  <dependency>
+                      <groupId>mysql</groupId>
+                      <artifactId>mysql-connector-java</artifactId>
+                      <version>8.0.26</version>
+                  </dependency>	
+              </dependencies>
+              
+              <build>
+                  <plugins>
+                      <plugin>
+                          <groupId>org.apache.maven.plugins</groupId>
+                          <artifactId>maven-compiler-plugin</artifactId>
+                          <version>3.7.0</version>
+                          <configuration>
+                              <source>${java.version}</source>
+                              <target>${java.version}</target>
+                              <optimize>true</optimize>
+                          </configuration>
+                      </plugin>
+                  </plugins>
+              </build>
+            </project>            
+        </p>
+        <code>
+            Ahora aquí en el proyecto, vamos a crear un paquete.
+            Va a hacer un clic acá, "Ctrl + N" package.
+            Vamos a crear un paquete llamado com.alura.tests en donde vamos a estar creando nuestras clases de pruebas para hacer las operaciones con la base de datos.
+            Aquí, en este paquete, vamos a estar creando una clase. 
+            Esta clase va a llamarse pruebaConexion..
+            
+            package com.alura.tests;
+            
+            import java.sql.Connection;
+            import java.sql.DriverManager;
+            import java.sql.SQLException;
+            
+            public class PruebaConexion {
+                                                // En caso de error arrojamos la excepción o podemos usar un try y catch
+                public static void main(String[] args) throws SQLException {
+                                                // Con getConnection manejamos la conexión, usuario y también conexión.
+                    Connection con = DriverManager.getConnection(
+                            "jdbc:mysql://localhost/control_de_stock?useTimeZone=true&serverTimeZone=UTC", 
+                            "root",
+                            "Solocuestavida1!");
+                    
+                    System.out.println("Cerrando la conexión");
+                    
+                    con.close();
+                }
+            }            
+        </code>
+
         <li>Excepción cuando se recupera la conexión</li>
+        <code>
+            José ha desarrollado el siguiente código para abrir y cerrar una conexión con la base de datos:
+            public class PruebaConexionConBaseDeDatos {
+                public static void main(String[] args) throws SQLException {
+                    Connection con = DriverManager
+                        .getConnection("jdbc:mysql://localhost/control_de_stock?useTimezone=true&serverTimezone=UTC");
+            
+                    con.close();
+                }
+            }
+            
+            Pero cuando va a ejecutar el código le aparece la siguiente excepción: Access denied for user.
+            
+            ¿Qué falta hacer para lograr conectarse con éxito a la base de datos?
+            
+            Seleccione una alternativa
+            Se necesita agregar los parámetros de usuario y contraseña en el método de conexión.
+            DriverManager
+                        .getConnection("jdbc:mysql://localhost/control_de_stock?useTimezone=true&serverTimezone=UTC", "root", "root1234");            
+        </code>
+
         <li>Haga lo que hicimos en aula</li>
+
         <li>Lo que aprendimos</li>
+        <p>
+            Lo que aprendimos en esta aula:
+
+            Para acceder a una base de datos necesitamos del driver de conexión;
+            Un driver es simplemente una librería .jar.
+            JDBC significa Java DataBase Connectivity;
+            El JDBC define una capa de abstracción entre la aplicación y el driver de la base de datos.
+            Esta capa es compuesta de interfaces que el driver implementa.
+            Para abrir una conexión con la base de datos debemos utilizar el método getConnection de la clase DriverManager;
+            El método getConnection recibe tres parámetros. Son ellos la URL de conexión JDBC, el usuario y la contraseña.            
+        </p>
+
     </pre>
 
     <br>
@@ -155,18 +336,504 @@
     <pre>
         <li>Proyecto del aula anterior</li>
         <li>Conociendo la view de la aplicación</li>
+        <p>
+            Cómo importar un proyecto nuevo en el Maven:
+            En la opción import project vamos a buscar existing Maven projects.
+            
+            Esta aplicación está utilizando el Java swing para crear las pantallas.
+            Este es un recurso propio del Java para el desarrollo de aplicaciones desktop.
+            Por ejemplo, para una aplicación web estaríamos utilizando el HTML con CSS y Javascript.
+            
+            Así que con el Swing vamos a aprender un poco este flujo y estructura del proyecto en donde tenemos una view acá, esta view, que es el front-end del proyecto, como una página HTML.            
+        </p>
         <li>Download del proyecto con las views</li>
         <li>Listado con Statement #1</li>
+        <p>
+            Ahora dentro del ProductoController, creamos la clase correspondiente..
+            Las sentencias sql en Java son consideradas como Statement            
+        </p>
+        <code>
+            package com.alura.jdbc.controller;
+
+            import java.sql.Connection;
+            import java.sql.ResultSet;
+            import java.sql.SQLException;
+            import java.sql.Statement;
+            import java.util.ArrayList;
+            import java.util.HashMap;
+            import java.util.List;
+            import java.util.Map;
+            
+            import com.alura.jdbc.factory.ConnectionFactory;
+            
+            public class ProductoController {
+            
+                public List<Map<String, String>> listar() throws SQLException {
+                    ConnectionFactory factory = new ConnectionFactory();
+                    Connection con = factory.recuperaConexion();
+            
+                    // STATEMENT, con el execute con el query correspondiente.
+                    Statement statement = con.createStatement();
+                    statement.execute("SELECT ID, NOMBRE, DESCRIPCION, CANTIDAD FROM PRODUCTO");
+            
+                    ResultSet resultSet = statement.getResultSet();
+            
+                    List<Map<String, String>> resultado = new ArrayList<>();
+            
+                    while (resultSet.next()) {
+                        Map<String, String> fila = new HashMap<>();
+                        fila.put("ID", String.valueOf(resultSet.getInt("ID")));
+                        fila.put("NOMBRE", resultSet.getString("NOMBRE"));
+                        fila.put("DESCRIPCION", resultSet.getString("DESCRIPCION"));
+                        fila.put("CANTIDAD", String.valueOf(resultSet.getInt("CANTIDAD")));
+            
+                        resultado.add(fila);
+                    }
+            
+                    con.close();
+            
+                    return resultado;
+                }
+            
+            }
+            
+            Dentro del ControlDeStockFrame.java
+            package com.alura.jdbc.view;
+            
+            import java.awt.Color;
+            import java.awt.Container;
+            import java.awt.event.ActionEvent;
+            import java.awt.event.ActionListener;
+            import java.sql.SQLException;
+            import java.util.ArrayList;
+            import java.util.HashMap;
+            import java.util.List;
+            import java.util.Map;
+            import java.util.Optional;
+            
+            import javax.swing.JButton;
+            import javax.swing.JComboBox;
+            import javax.swing.JFrame;
+            import javax.swing.JLabel;
+            import javax.swing.JOptionPane;
+            import javax.swing.JTable;
+            import javax.swing.JTextField;
+            import javax.swing.table.DefaultTableModel;
+            
+            import com.alura.jdbc.controller.CategoriaController;
+            import com.alura.jdbc.controller.ProductoController;
+            
+            public class ControlDeStockFrame extends JFrame {
+            private void cargarTabla() {
+                    List<Map<String, String>> productos = new ArrayList<Map<String, String>>();
+            
+                    try {
+                        productos = this.productoController.listar();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        throw new RuntimeException(e);
+                    }
+            
+                    productos.forEach(producto -> modelo.addRow(
+                            new Object[] {
+                                    producto.get("ID"),
+                                    producto.get("NOMBRE"),
+                                    producto.get("DESCRIPCION"),
+                                    producto.get("CANTIDAD") }));
+                }
+            }            
+        </code>
+
         <li>Listado con Statement #2</li>
+        <code>
+            public class ProductoController {
+
+                public List<Map<String, String>> listar() throws SQLException {
+                    ConnectionFactory factory = new ConnectionFactory();
+                    Connection con = factory.recuperaConexion();
+            
+                    // STATEMENT, con el execute con el query correspondiente.
+                    Statement statement = con.createStatement();
+                    statement.execute("SELECT ID, NOMBRE, DESCRIPCION, CANTIDAD FROM PRODUCTO");
+            
+                    // Hacemos el getResultSet
+                    ResultSet resultSet = statement.getResultSet();
+            
+                    List<Map<String, String>> resultado = new ArrayList<>();
+            
+            
+                    // Usamos el .next.. del Set
+                    while (resultSet.next()) {
+                        // Armamos una fila con el map
+                        Map<String, String> fila = new HashMap<>();
+                                                                // getInt, es el número del id
+                        // Y a l fila le vamos agregando con put..                                                    
+                        fila.put("ID", String.valueOf(resultSet.getInt("ID")));
+                                                        // Para el string es .getString
+                        fila.put("NOMBRE", resultSet.getString("NOMBRE"));
+                        fila.put("DESCRIPCION", resultSet.getString("DESCRIPCION"));
+                                                        // cantidad como el int
+                        fila.put("CANTIDAD", String.valueOf(resultSet.getInt("CANTIDAD")));
+                        // Le agregamos la fila al resultado, que es el map
+                        resultado.add(fila);
+                    }
+            
+                    con.close();
+            
+                    return resultado;
+                }
+            
+            }
+            
+            Ahora en .. ControlDeStockFrame
+            
+            public class ControlDeStockFrame extends JFrame {
+            private void cargarTabla() {
+                    List<Map<String, String>> productos = new ArrayList<Map<String, String>>();
+                    
+                    try {
+                        productos = this.productoController.listar();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException(e);
+                    }
+            
+                    productos.forEach(producto -> modelo.addRow(
+                        new Object[] {
+                            producto.get("ID"),
+                            producto.get("NOMBRE"),
+                            producto.get("DESCRIPCION"),
+                            producto.get("CANTIDAD") }));
+                            }
+            }
+            
+            Y dentro de .. ControlDeStockFrame
+            private void configurarTablaDeContenido(Container container) {
+                    tabla = new JTable();
+            
+                    // Armamos el modelo de la tabla
+                    modelo = (DefaultTableModel) tabla.getModel();
+                    modelo.addColumn("Identificador del Producto");
+                    modelo.addColumn("Nombre del Producto");
+                    modelo.addColumn("Descripción del Producto");
+                    modelo.addColumn("Cantidad");
+            
+                    cargarTabla();
+            
+                    tabla.setBounds(10, 205, 760, 280);
+            
+                    botonEliminar = new JButton("Eliminar");
+                    botonModificar = new JButton("Modificar");
+                    botonReporte = new JButton("Ver Reporte");
+                    botonEliminar.setBounds(10, 500, 80, 20);
+                    botonModificar.setBounds(100, 500, 80, 20);
+                    botonReporte.setBounds(190, 500, 80, 20);
+            
+                    container.add(tabla);
+                    container.add(botonEliminar);
+                    container.add(botonModificar);
+                    container.add(botonReporte);
+            
+                    setSize(800, 600);
+                    setVisible(true);
+                    setLocationRelativeTo(null);
+                }            
+        </code>
+
         <li>Connection, Statement y ResulSet</li>
+        <p>
+            ¿Que hay en común entre las clases java.sql.Connection, java.sql.Statement y java.sql.ResultSet?
+
+            Seleccione una alternativa
+            Todas son interfaces.
+            ¡Alternativa correcta! 
+            Connection, Statement y ResultSet son algunas de las interfaces del paquete java.sql.                        
+        </p>
+
         <li>Creando la ConnectionFactory</li>
+        <code>
+            Esto es para evitar repetir duplicar código.
+
+            // Esto se mete dentro de un paquete llamado factory
+            package com.alura.jdbc.factory;
+            
+            import java.sql.Connection;
+            import java.sql.DriverManager;
+            import java.sql.SQLException;
+            
+            // Patrón el cual concentra la lógica en un punto, el Factory
+            public class ConnectionFactory {
+            
+                public Connection recuperaConexion() throws SQLException {
+                    // Hacemos el return
+                    return DriverManager.getConnection(
+                            "jdbc:mysql://localhost/control_de_stock?useTimeZone=true&serverTimeZone=UTC",
+                            "root",
+                            "Solocuestavida1!");
+                }
+            
+            }            
+        </code>
+
         <li>El estándar Factory</li>
+        <p>
+            ¿Cuál es la ventaja de utilizar una ConnectionFactory en nuestra aplicación?
+
+            Seleccione una alternativa
+            Proveer una forma más sencilla de crear un objeto.
+            ¡Alternativa correcta! 
+            Los objetos son creados sin exponer la lógica o las configuraciones de creación al cliente. 
+            Además, es posible referirnos al objeto recién creado utilizando una interfaz (una abstracción), desacoplando la implementación.            
+        </p>
+
         <li>INSERT con Statement</li>
+        <code>
+            Hasta acá..
+            Ya estamos recuperando la conexión y listando los productos de la base de datos en la pantalla.
+            
+            private void guardar() {
+                    if (textoNombre.getText().isBlank() || textoDescripcion.getText().isBlank()) {
+                        JOptionPane.showMessageDialog(this, "Los campos Nombre y Descripción son requeridos.");
+                        return;
+                    }
+            
+                    Integer cantidadInt;
+            
+                    try {
+                        cantidadInt = Integer.parseInt(textoCantidad.getText());
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this, String
+                                .format("El campo cantidad debe ser numérico dentro del rango %d y %d.", 0, Integer.MAX_VALUE));
+                        return;
+                    }
+            
+                    // Hacemos un map con el producto..
+                    var producto = new HashMap<String, String>();
+                    producto.put("NOMBRE", textoNombre.getText());
+                    producto.put("DESCRIPCION", textoDescripcion.getText());
+                    producto.put("CANTIDAD", String.valueOf(cantidadInt));
+                    
+                    var categoria = comboCategoria.getSelectedItem();
+            
+                    // Ahora el producto lo enviamos al metodo guardar..
+                    try {
+                        this.productoController.guardar(producto);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        throw new RuntimeException(e);
+                    }
+            
+                    JOptionPane.showMessageDialog(this, "Registrado con éxito!");
+            
+                    this.limpiarFormulario();
+                }
+            
+            El método guardar se encuentra dentro de la clase ProductoController
+            
+                                //Recibimos un map.. Lo anterior
+            public void guardar(Map<String, String> producto) throws SQLException {
+                // Instanciamos la conexion.
+                ConnectionFactory factory = new ConnectionFactory();
+                Connection con = factory.recuperaConexion();
+            
+                // Ahora le damos lugar al statement, la query..
+                // A partir del producto que nos envía el método guardar desde el ControlDeStockFrame
+                Statement statement = con.createStatement();
+                statement.execute(
+                        "INSERT INTO PRODUCTO (nombre, descripcion, cantidad)"
+                                + " VALUES ('" + producto.get("NOMBRE") + "', '"
+                                + producto.get("DESCRIPCION") + "', '" 
+                                + producto.get("CANTIDAD") + "')",
+                                Statement.RETURN_GENERATED_KEYS);
+                                // Con este valor, tomamos el id..
+                
+                ResultSet resultSet = statement.getGeneratedKeys();
+                
+                while(resultSet.next()) {
+                    System.out.println(String.format(
+                            "Fue insertado el producto de ID: %d",
+                            resultSet.getInt(1)));
+                }
+            }            
+        </code>
+
         <li>DELETE con Statement</li>
+        <code>
+            Ahora desde el ControlDeStockFrame
+            private void eliminar() {
+                if (tieneFilaElegida()) {
+                    JOptionPane.showMessageDialog(this, "Por favor, elije un item");
+                    return;
+                }
+            
+                Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
+                        .ifPresentOrElse(fila -> {
+                            Integer id = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 0).toString());
+                            
+                            // Aca vemos la cantidad que eliminamos.
+                            int filasModificadas;
+            
+                            try {       // Debemos armar el try catch
+                                                                        // Este metodo es el que armamos ahora..
+                                filasModificadas = this.productoController.eliminar(id);
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                                throw new RuntimeException(e);
+                            }
+            
+                            modelo.removeRow(tabla.getSelectedRow());
+            
+                            // Lo corroboramos desde acá..
+                            JOptionPane.showMessageDialog(this, String.format("%d item eliminado con éxito!", filasModificadas));
+                        }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+            }
+            
+            Ahora en el productoController armamos el método correspondiente..
+                                            // Arrojamos la excepeción
+            public int eliminar(Integer id) throws SQLException {
+                // Instanciamos la conexion
+                ConnectionFactory factory = new ConnectionFactory();
+                Connection con = factory.recuperaConexion();
+            
+                Statement statement = con.createStatement();
+                
+                // Creamos el execute, con la query necesaria..
+                statement.execute("DELETE FROM PRODUCTO WHERE ID = " + id);
+                
+                // Esto nos sirve para corroborar el registro eliminado.. En vez de hacer print.
+                int updateCount = statement.getUpdateCount();
+                
+                con.close();
+                
+                return updateCount;     // Devolvemos la cantidad eliminada.
+            }
+            
+            
+            Ahora armamos una prueba dentro del paquete de pruebas..
+            package com.alura.jdbc.pruebas;
+            
+            import java.sql.Connection;
+            import java.sql.SQLException;
+            import java.sql.Statement;
+            
+            import com.alura.jdbc.factory.ConnectionFactory;
+            
+            public class PruebaDelete {
+            
+                public static void main(String[] args) throws SQLException {
+                    ConnectionFactory factory = new ConnectionFactory();
+                    Connection con = factory.recuperaConexion();
+            
+                    Statement statement = con.createStatement();
+            
+                    statement.execute("DELETE FROM PRODUCTO WHERE ID = 10");            // Si el id no existe, la app devuelve 0.
+            
+                    int updateCount = statement.getUpdateCount();
+            
+                    System.out.println(String.format("%d registros eliminados", updateCount));
+            
+                    con.close();
+                }
+            
+            }                        
+        </code>
+
         <li>Retorno del método execute()</li>
+        <p>
+            ¿Para qué sirve el retorno del método execute de la interfaz java.sql.Statement?
+
+            Seleccione una alternativa
+            El método devuelve true cuando el resultado devuelve un java.sql.ResultSet (resultado de un SELECT) y false cuando el resultado no devuelve contenido (resultado de un DELETE, UPDATE o DELETE).
+            ¡Alternativa correcta!            
+        </p>
+
         <li>Desafío: Modificando un registro con Statement</li>
+        <code>
+            En el vídeo anterior agregamos un registro con un error de escritura. En lugar de escribir "cuchara" fue escrito "cucaracha". Para modificar el valor de este registro es posible hacer doble click en la columna que queremos actualizar, escribir el nuevo valor y hacer click en el botón Modificar.
+
+            Ahora es tu turno de poner en práctica lo que aprendimos en las clases anteriores para completar la funcionalidad de modificar un registro del depósito.
+            
+            Lo primero que tenemos que hacer aquí es arreglar el problema de java.lang.ClassCastException que vimos en la clase anterior cambiando el código con problemas por:
+            
+            Integer id = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 0).toString());
+            
+            También tenemos que agregar el campo de cantidad, que no está presente en la lógica pero es importante que también pueda ser modificado.
+            
+            Integer cantidad = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 3).toString());
+            Luego, tenemos que ver cómo está configurado el evento del botonModificar en el método configurarAccionesDelFormulario(). Vemos dos métodos conocidos: limpiarTabla() y cargarTabla(). Vamos a ver el detalle del método modificar().
+            
+            Aquí estamos recibiendo los valores de la fila elegida y enviando como parámetro en el método productoController.modificar(nombre, descripcion, id). Este es el método que debemos completar.
+            
+            La lógica para hacer un UPDATE es muy similar a la lógica del DELETE, empezamos tomando la conexión de la ConnectionFactory y creando un Statement statement = con.createStatement().
+            
+            Luego ejecutamos el método execute con el código SQL de UPDATE, cerramos la conexión y retornamos la cantidad de líneas modificadas. No olvidemos de las comillas simples para modificar valores del tipo String.
+            
+            statement.execute("UPDATE PRODUCTO SET "
+                + " NOMBRE = '" + nombre + "'"
+                + ", DESCRIPCION = '" + descripcion + "'"
+                + ", CANTIDAD = " + cantidad
+                + "WHERE ID = " + id);
+            
+            No podemos dejar pasar el detalle de la SQLException y, por fin, vamos a mostrar un cartel informando cuántos registros fueron modificados con éxito. Parecido con el cartel de eliminar registros.
+            
+            Así quedan los códigos de resultado:    
+            
+            // Clase ProductoController
+            public int modificar(String nombre, String descripcion, Integer cantidad, Integer id) throws SQLException {
+                ConnectionFactory factory = new ConnectionFactory();
+                Connection con = factory.recuperaConexion();
+                Statement statement = con.createStatement();
+                statement.execute("UPDATE PRODUCTO SET "
+                        + " NOMBRE = '" + nombre + "'"
+                        + ", DESCRIPCION = '" + descripcion + "'"
+                        + ", CANTIDAD = " + cantidad
+                        + " WHERE ID = " + id);
+            
+                int updateCount = statement.getUpdateCount();
+            
+                con.close();   
+            
+                return updateCount;
+            }
+            // Clase ControlDeStockFrame
+            private void modificar() {
+                if (tieneFilaElegida()) {
+                    JOptionPane.showMessageDialog(this, "Por favor, elije un item");
+                    return;
+                }
+            
+                Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
+                        .ifPresentOrElse(fila -> {
+                            Integer id = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 0).toString());
+                            String nombre = (String) modelo.getValueAt(tabla.getSelectedRow(), 1);
+                            String descripcion = (String) modelo.getValueAt(tabla.getSelectedRow(), 2);
+                            Integer cantidad = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 3).toString());
+            
+                            int filasModificadas;
+            
+                            try {
+                                filasModificadas = this.productoController.modificar(nombre, descripcion, cantidad, id);
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                                throw new RuntimeException(e);
+                            }
+            
+                            JOptionPane.showMessageDialog(this, String.format("%d item modificado con éxito!", filasModificadas));
+                        }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+            }            
+        </code>
+
         <li>Haga lo que hicimos en aula</li>
         <li>Lo que aprendimos</li>
+        <p>
+            Para simplificar y encapsular la creación de la conexión debemos utilizar una clase ConnectionFactory;
+
+            Esta clase sigue el estándar de creación Factory Method, que encapsula la creación de un objeto.
+            Podemos utilizar la interfaz java.sql.Statement para ejecutar un comando SQL en la aplicación;
+            
+            El método execute envía el comando para la base de datos.
+            A depender del comando SQL, podemos recuperar la clave primaria o los registros buscados.            
+        </p>
     </pre>
     <br>
     <div class="context">
@@ -180,17 +847,654 @@
     <pre>
         <li>Proyecto del aula anterior</li>
         <li>Evitando SQL Injection utilizando PreparedStatement</li>
+        <code>
+            SQL Injection, esto es el hecho de intentar inyectar scripts SQL en un campo de formulario o URL para intentar romper una aplicación o buscar informaciones que son críticas y que son sensibles.
+            ¿Entonces, qué podemos hacer para protegernos?
+            De esta manera evitamos pasar los parámetros al usar el prepareStatement y le dejamos la responsabilidad al Jdbc
+                - Evitamos el sql Injection
+                - Todo String desde el formulario, es tratado como Strin no como una query
+                - Mejor legibilidad del código.
+            
+            Bueno, nosotros podríamos crear una validación para detectar caracteres especiales y comandos de SQL y agregarla en todos los locales que se conecten a la base de datos.
+            
+            public void guardar(Map<String, String> producto) throws SQLException {
+                var nombre = producto.get("NOMBRE");
+                var descripcion = producto.get("DESCRIPCION");
+                var cantidad = Integer.valueOf(producto.get("CANTIDAD"));
+                final var maximoCantidad = 50;
+                
+                ConnectionFactory factory = new ConnectionFactory();
+                
+                final Connection con = factory.recuperaConexion();
+                
+                try(con) {
+                    con.setAutoCommit(false);
+            
+                                                        // Preparamos el statement
+                    final PreparedStatement statement = con.prepareStatement(
+                            "INSERT INTO PRODUCTO "
+                                + "(nombre, descripcion, cantidad)"
+                                + " VALUES (?, ?, ?)",                  // Le indicamos, pero no le precisamos como lo haciamos antes.
+                                Statement.RETURN_GENERATED_KEYS);
+                    
+                    try(statement) {
+                        do {
+                            int cantidadParaGuardar = Math.min(cantidad, maximoCantidad);
+            
+                            ejecutaRegistro(nombre, descripcion, cantidadParaGuardar, statement);
+            
+                            cantidad -= maximoCantidad;
+                        } while (cantidad > 0);
+            
+                        con.commit();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("ROLLBACK de la transacción");
+                    con.rollback();
+                }
+                
+            }
+            
+            Y luego agregamos el método..
+            
+            private void ejecutaRegistro(String nombre, String descripcion, Integer cantidad, PreparedStatement statement) throws SQLException {
+                statement.setString(1, nombre);         // Estos values los seteamos desde acá, sin precisarlos.. 
+                statement.setString(2, descripcion);
+                statement.setInt(3, cantidad);
+            
+                if (cantidad < 50) {
+                    throw new RuntimeException("Ocurrió un error");
+                }
+            
+                statement.execute();
+            
+                final ResultSet resultSet = statement.getGeneratedKeys();
+            
+                try(resultSet) {
+                    while (resultSet.next()) {
+                        System.out.println(String.format("Fue insertado el producto de ID: %d", resultSet.getInt(1)));
+                    }
+                }
+            }
+            
+            
+            // Ahora hacemos lo mismo para el método de listar(), usando el prepareStatement
+            
+            public List<Map<String, String>> listar() throws SQLException {
+                List<Map<String, String>> resultado = new ArrayList<>();
+                
+                ConnectionFactory factory = new ConnectionFactory();
+                final Connection con = factory.recuperaConexion();
+                
+                try(con) {
+                    final PreparedStatement statement = con
+                            .prepareStatement("SELECT ID, NOMBRE, DESCRIPCION, CANTIDAD FROM PRODUCTO");
+                    
+                    try(statement) {
+                        statement.execute();
+                
+                        final ResultSet resultSet = statement.getResultSet();
+                        
+                        try(resultSet) {
+                            while (resultSet.next()) {
+                                Map<String, String> fila = new HashMap<>();
+                                fila.put("ID", String.valueOf(resultSet.getInt("ID")));
+                                fila.put("NOMBRE", resultSet.getString("NOMBRE"));
+                                fila.put("DESCRIPCION", resultSet.getString("DESCRIPCION"));
+                                fila.put("CANTIDAD", String.valueOf(resultSet.getInt("CANTIDAD")));
+                    
+                                resultado.add(fila);
+                            }
+                        }
+                    }
+            
+                    return resultado;
+                }
+            }
+            
+            // También para el método de eliminar(), usando el prepareStatement
+            
+            public int eliminar(Integer id) throws SQLException {
+                ConnectionFactory factory = new ConnectionFactory();
+                final Connection con = factory.recuperaConexion();
+                
+                try(con) {
+                    final PreparedStatement statement = con
+                    .prepareStatement("DELETE FROM PRODUCTO WHERE ID = ?");
+                    
+                    try(statement) {
+                        statement.setInt(1, id);
+                        statement.execute();
+                        
+                        int updateCount = statement.getUpdateCount();
+                        
+                        return updateCount;
+                        }
+                        }
+            }
+            
+            
+            // También para el método de modificar(), usando el prepareStatement
+            public int modificar(String nombre, String descripcion, Integer cantidad, Integer id) throws SQLException {
+                ConnectionFactory factory = new ConnectionFactory();
+                final Connection con = factory.recuperaConexion();
+                
+                try(con) {
+                    final PreparedStatement statement = con
+                        .prepareStatement("UPDATE PRODUCTO SET "
+                                + " NOMBRE = ?, "
+                                + " DESCRIPCION = ?,"
+                                + " CANTIDAD = ?"
+                                + " WHERE ID = ?");
+                    
+                    try(statement) {
+                        statement.setString(1, nombre);
+                        statement.setString(2, descripcion);
+                        statement.setInt(3, cantidad);
+                        statement.setInt(4, id);
+                        statement.execute();
+                
+                        int updateCount = statement.getUpdateCount();
+                
+                        return updateCount;
+                    }
+                }
+            }            
+        </code>
+
         <li>Sobre el PreparedStatement</li>
+        <p>
+            ¿Cuál es el riesgo de utilizar un Statement en lugar del PreparedStatement?
+
+            Seleccione una alternativa
+            El Statement no mantiene una versión de la query compilada en la base de datos.
+            ¡Alternativa correcta! 
+            El PreparedStatement mantiene la query compilada en la base de datos, de forma parametrizada.
+            Así el usuario puede ejecutar la misma consulta diversas veces con parámetros distintos.            
+        </p>
+
         <li>Desafío: Utilizando PreparedStatement en las demás operaciones</li>
+        <code>
+            Ya vimos cómo dejar nuestra aplicación más segura y legible utilizando el PreparedStatement. 
+            Con eso eliminamos la vulnerabilidad de sufrir ataques de SQL Injection.
+            
+            Ahora vamos a replicar esta solución para las demás operaciones de modificar, eliminar y listar productos.
+            
+            Podemos seguir el ejemplo visto en la clase anterior para realizar los cambios necesarios en los demás métodos de la clase ProductoController:
+            
+            public int modificar(String nombre, String descripcion, Integer cantidad, Integer id) throws SQLException {
+                ConnectionFactory factory = new ConnectionFactory();
+                Connection con = factory.recuperaConexion();
+            
+                PreparedStatement statement = con
+                        .prepareStatement("UPDATE PRODUCTO SET "
+                                + " NOMBRE = ?, "
+                                + " DESCRIPCION = ?,"
+                                + " CANTIDAD = ?"
+                                + " WHERE ID = ?");
+            
+                statement.setString(1, nombre);
+                statement.setString(2, descripcion);
+                statement.setInt(3, cantidad);
+                statement.setInt(4, id);
+                statement.execute();
+            
+                int updateCount = statement.getUpdateCount();
+            
+                con.close();
+            
+                return updateCount;
+            }
+            
+            public int eliminar(Integer id) throws SQLException {
+                ConnectionFactory factory = new ConnectionFactory();
+                Connection con = factory.recuperaConexion();
+            
+                PreparedStatement statement = con
+                        .prepareStatement("DELETE FROM PRODUCTO WHERE ID = ?"); 
+                statement.setInt(1, id);
+                statement.execute();
+            
+                int updateCount = statement.getUpdateCount();
+            
+                con.close();
+            
+                return updateCount;
+            }
+            
+            public List<Map<String, String>> listar() throws SQLException {
+                ConnectionFactory factory = new ConnectionFactory();
+                Connection con = factory.recuperaConexion();
+            
+                PreparedStatement statement = con
+                        .prepareStatement("SELECT ID, NOMBRE, DESCRIPCION, CANTIDAD FROM PRODUCTO");
+                statement.execute();
+            
+                ResultSet resultSet = statement.getResultSet();
+            
+                List<Map<String, String>> resultado = new ArrayList<>();
+            
+                while (resultSet.next()) {
+                    Map<String, String> fila = new HashMap<>();
+                    fila.put("ID", String.valueOf(resultSet.getInt("ID")));
+                    fila.put("NOMBRE", resultSet.getString("NOMBRE"));
+                    fila.put("DESCRIPCION", resultSet.getString("DESCRIPCION"));
+                    fila.put("CANTIDAD", String.valueOf(resultSet.getInt("CANTIDAD")));
+            
+                    resultado.add(fila);
+                }
+            
+                con.close();
+            
+                return resultado;
+            }            
+        </code>
+
         <li>Migrando para el PreparedStatement</li>
+        <p>
+
+            José estaba actualizando su aplicación para utilizar el PreparedStatement y aprovechar los beneficios que esta interfaz provee. Su código quedó de esta forma:
+
+            Statement stm = con.prepareStatement("DELETE FROM CLIENTE WHERE NOMBRE = ? AND DNI = ?");
+            
+            stm.setString(1, "Jose");
+            stm.setString(2, "12345678");
+            
+            Pero su código no compila correctamente. El Eclipse dice que hay un error en las líneas que setean valores a los atributos de la query. ¿Qué sería necesario arreglar para que el código compile?
+            
+            Seleccione una alternativa
+            José necesita actualizar la interfaz del objeto de Statement para PreparedStatement.
+            ¡Alternativa correcta! 
+            La interfaz Statement no conoce el método setString. Este método pertenece a la interfaz PreparedStatement.            
+        </p>
+
         <li>Tomando el control de la transacción</li>
+        <code>
+            Ahora vamos a modificar la cantidad de stock para cada producto, 50.. AL momento de insertar.
+
+
+            public void guardar(Map<String, String> producto) throws SQLException {
+                var nombre = producto.get("NOMBRE");
+                var descripcion = producto.get("DESCRIPCION");
+                var cantidad = Integer.valueOf(producto.get("CANTIDAD"));
+                final var maximoCantidad = 50;
+                
+                ConnectionFactory factory = new ConnectionFactory();
+                
+                final Connection con = factory.recuperaConexion();
+                
+                try(con) {
+                    con.setAutoCommit(false);
+            
+                    final PreparedStatement statement = con.prepareStatement(
+                            "INSERT INTO PRODUCTO "
+                                + "(nombre, descripcion, cantidad)"
+                                + " VALUES (?, ?, ?)",
+                                Statement.RETURN_GENERATED_KEYS);
+                    
+                    try(statement) {
+                        do {
+                            // En este caso usamos el valor minimo, siempre usando como referencia el 50
+                            int cantidadParaGuardar = Math.min(cantidad, maximoCantidad);
+            
+                            ejecutaRegistro(nombre, descripcion, cantidadParaGuardar, statement);
+            
+                            cantidad -= maximoCantidad;
+                        } while (cantidad > 0);
+            
+                        con.commit();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("ROLLBACK de la transacción");
+                    con.rollback();
+                }
+                
+            }
+            
+            Del metodo de arriba, desglosamos a un nuevo método..
+            ejecutaRegistro(nombre, descripcion, cantidadParaGuardar, statement);
+            
+                private void ejecutaRegistro(String nombre, String descripcion, Integer cantidad, PreparedStatement statement)
+                throws SQLException {
+                    statement.setString(1, nombre);
+                    statement.setString(2, descripcion);
+                    statement.setInt(3, cantidad);
+            
+                    if (cantidad < 50) {
+                        throw new RuntimeException("Ocurrió un error");
+                    }
+            
+                    statement.execute();
+            
+                    final ResultSet resultSet = statement.getGeneratedKeys();
+            
+                    try(resultSet) {
+                        while (resultSet.next()) {
+                            System.out.println(String.format("Fue insertado el producto de ID: %d", resultSet.getInt(1)));
+                        }
+                    }
+                }
+            
+            //Con esta lógica guardamos 50 productos como máximo y el resto irá con otro Id.. Como productos restantes.
+            En este punto simulamos un error.. Para luego tomar el control de la transacción, la cual ejecutará la query
+                - con.setAutoCommit(false);
+            
+                Ahora, nosotros sacamos la responsabilidad del JDBC para concluir la transacción pero ahora nosotros no podemos registrar ningún producto.    
+            
+            public void guardar(Map<String, String> producto) throws SQLException {
+                var nombre = producto.get("NOMBRE");
+                var descripcion = producto.get("DESCRIPCION");
+                var cantidad = Integer.valueOf(producto.get("CANTIDAD"));
+                final var maximoCantidad = 50;
+                
+                ConnectionFactory factory = new ConnectionFactory();
+                
+                final Connection con = factory.recuperaConexion();
+                
+                try(con) {
+                    con.setAutoCommit(false);                                       // El setAutoCommit lo dejamos en false..
+            
+                    final PreparedStatement statement = con.prepareStatement(
+                            "INSERT INTO PRODUCTO "
+                                + "(nombre, descripcion, cantidad)"
+                                + " VALUES (?, ?, ?)",
+                                Statement.RETURN_GENERATED_KEYS);
+                    
+                    try(statement) {
+                        do {
+                            int cantidadParaGuardar = Math.min(cantidad, maximoCantidad);
+            
+                            ejecutaRegistro(nombre, descripcion, cantidadParaGuardar, statement);
+            
+                            cantidad -= maximoCantidad;
+                        } while (cantidad > 0);
+            
+                        con.commit();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("ROLLBACK de la transacción");
+                    con.rollback();
+                }
+                
+                }            
+        </code>
+
         <li>JDBC y transacciones</li>
+        <p>
+            ¿Cuál es el estándar de JDBC (del driver) para manejar transacciones de base de datos?
+
+            Seleccione una alternativa
+            Auto-Commit.
+            ¡Alternativa correcta! 
+            Este es el estándar, que puede ser modificado por el método setAutoCommit, de la interfaz Connection.            
+        </p>
+
         <li>Manejando el commit y el rollback</li>
+        <code>
+            Considerando lo siguiente, si hay un error en el medio del proceso, todas las operaciones de la base de datos deben ser revertidas.
+            con.commit();       // De esta manera garantizamos que todos los comandos del loop hayan sido garantizados correctamente.
+        
+            con.rollback();     // Volvemos todo hacia atrás.
+        
+        public void guardar(Map<String, String> producto) throws SQLException {
+            var nombre = producto.get("NOMBRE");
+            var descripcion = producto.get("DESCRIPCION");
+            var cantidad = Integer.valueOf(producto.get("CANTIDAD"));
+            final var maximoCantidad = 50;
+            
+            ConnectionFactory factory = new ConnectionFactory();
+            
+            final Connection con = factory.recuperaConexion();
+            
+            try(con) {
+                con.setAutoCommit(false);                                       // El setAutoCommit lo dejamos en false..
+        
+                final PreparedStatement statement = con.prepareStatement(
+                        "INSERT INTO PRODUCTO "
+                            + "(nombre, descripcion, cantidad)"
+                            + " VALUES (?, ?, ?)",
+                            Statement.RETURN_GENERATED_KEYS);
+                
+                try(statement) {
+                    do {
+                        int cantidadParaGuardar = Math.min(cantidad, maximoCantidad);
+        
+                        ejecutaRegistro(nombre, descripcion, cantidadParaGuardar, statement);
+        
+                        cantidad -= maximoCantidad;
+                    } while (cantidad > 0);
+        
+                    con.commit();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("ROLLBACK de la transacción");
+                con.rollback();                                             // Acá agregamos el rollback
+            }
+            
+        }
+        
+        // En el caso de haber un error en la ejecución, nada es guardado y se hace un rollback de la transacción. 
+        Ahora garantizamos que la transacción o guarda todo o no guarda nada.        
+        </code>
+
         <li>Auto-Commit</li>
+        <p>
+            José ha decidido que iría manejar las transacciones de la aplicación en lugar de JDBC y realizó el seteo del Auto-Commit para false ¿Que más es necesario para que Jose tenga el control total de las transacciones?
+
+            Seleccione una alternativa
+            Hay que explicitar el commit y el rollback.
+            ¡Alternativa correcta! 
+            Si la transacción es exitosa, José necesita realizar el commit explícito. 
+            Pero si hay un error en la transacción, José también necesita realizar el rollback explícito.            
+        </p>
+
+
         <li>Utilizando el try-with-resources</li>
+        <code>
+            Debemos cerrar cada una de las aperturas hacia la base de datos..
+            Por suerte, porque desde la versión 7 de Java hay un recurso llamado Try With Resources. 
+            El Try With Resources nos permite declarar recursos que van a ser utilizados en un bloque de try catch con la certeza de que estos recursos van a ser cerrados o finalizados automáticamente después de la ejecución del bloque.
+            
+            Versión 7
+            ejecutaRegistro(nombre, descripcion, cantidadParaGuardar, statement);
+            
+                private void ejecutaRegistro(String nombre, String descripcion, Integer cantidad, PreparedStatement statement)
+                throws SQLException {
+                    statement.setString(1, nombre);
+                    statement.setString(2, descripcion);
+                    statement.setInt(3, cantidad);
+            
+                    if (cantidad < 50) {
+                        throw new RuntimeException("Ocurrió un error");
+                    }
+            
+                    statement.execute();
+            
+                    // De esta manera  la propia JVM se ocupa de estar cerrando estos recursos.
+                    try(ResulSet resultSet = statement.getGeneratedKeys();) {              
+                        while (resultSet.next()) {
+                            System.out.println(String.format("Fue insertado el producto de ID: %d", resultSet.getInt(1)));
+                        }
+                    }
+                }
+            
+            Verisón 9
+            private void ejecutaRegistro(String nombre, String descripcion, Integer cantidad, PreparedStatement statement)
+            throws SQLException {
+                statement.setString(1, nombre);
+                statement.setString(2, descripcion);
+                statement.setInt(3, cantidad);
+            
+                if (cantidad < 50) {
+                    throw new RuntimeException("Ocurrió un error");
+                }
+            
+                statement.execute();
+            
+                final ResultSet resultSet = statement.getGeneratedKeys();       // Declaramos el final
+            
+                try(resultSet) {                    // Más legible.
+                    while (resultSet.next()) {
+                        System.out.println(String.format("Fue insertado el producto de ID: %d", resultSet.getInt(1)));
+                    }
+                }
+            }
+            
+            
+            Y ahora que ya hicimos eso con el resultSet, vamos a hacer lo mismo con la conexión y el statement acá del método guardar
+            public void guardar(Map<String, String> producto) throws SQLException {
+                var nombre = producto.get("NOMBRE");
+                var descripcion = producto.get("DESCRIPCION");
+                var cantidad = Integer.valueOf(producto.get("CANTIDAD"));
+                final var maximoCantidad = 50;
+                
+                ConnectionFactory factory = new ConnectionFactory();
+                
+                final Connection con = factory.recuperaConexion();                          // Agregamos el final
+                
+                try(con) {
+                    con.setAutoCommit(false);                                       
+            
+                    final PreparedStatement statement = con.prepareStatement(               // Agregamos el final
+                            "INSERT INTO PRODUCTO "
+                                + "(nombre, descripcion, cantidad)"
+                                + " VALUES (?, ?, ?)",
+                                Statement.RETURN_GENERATED_KEYS);
+                    
+                    try(statement) {                                                        // Intentamos el statement
+                        do {
+                            int cantidadParaGuardar = Math.min(cantidad, maximoCantidad);
+            
+                            ejecutaRegistro(nombre, descripcion, cantidadParaGuardar, statement);
+            
+                            cantidad -= maximoCantidad;
+                        } while (cantidad > 0);
+            
+                        con.commit();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("ROLLBACK de la transacción");
+                    con.rollback();
+                }
+                
+            }
+            
+            Ahora nosotros podemos hacer lo mismo para las otras operaciones de listado.
+            public List<Map<String, String>> listar() throws SQLException {
+                List<Map<String, String>> resultado = new ArrayList<>();
+                
+                ConnectionFactory factory = new ConnectionFactory();
+                final Connection con = factory.recuperaConexion();                          // Agregamos el final
+                
+                try(con) {                                                                  // Le pasamos la instancia de con
+                    final PreparedStatement statement = con                                 // Agregamos el final
+                            .prepareStatement("SELECT ID, NOMBRE, DESCRIPCION, CANTIDAD FROM PRODUCTO");
+                    
+                    try(statement) {
+                        statement.execute();
+                
+                        final ResultSet resultSet = statement.getResultSet();               // Agregamos el final
+                        
+                        try(resultSet) {
+                            while (resultSet.next()) {
+                                Map<String, String> fila = new HashMap<>();
+                                fila.put("ID", String.valueOf(resultSet.getInt("ID")));
+                                fila.put("NOMBRE", resultSet.getString("NOMBRE"));
+                                fila.put("DESCRIPCION", resultSet.getString("DESCRIPCION"));
+                                fila.put("CANTIDAD", String.valueOf(resultSet.getInt("CANTIDAD")));
+                    
+                                resultado.add(fila);
+                            }
+                        }
+                    }
+            
+                    return resultado;
+                }
+            }
+            
+            
+            Siguiendo acá tenemos el de eliminar
+            
+            public int eliminar(Integer id) throws SQLException {
+                ConnectionFactory factory = new ConnectionFactory();
+                final Connection con = factory.recuperaConexion();
+                
+                try(con) {
+                    final PreparedStatement statement = con
+                        .prepareStatement("DELETE FROM PRODUCTO WHERE ID = ?");
+                    
+                    try(statement) {
+                        statement.setInt(1, id);
+                        statement.execute();
+                
+                        int updateCount = statement.getUpdateCount();
+                
+                        return updateCount;
+                    }
+                }
+            }
+            
+            
+            Tambien para el de modificación..
+            public int modificar(String nombre, String descripcion, Integer cantidad, Integer id) throws SQLException {
+                ConnectionFactory factory = new ConnectionFactory();
+                final Connection con = factory.recuperaConexion();          // Final 
+                
+                try(con) {                                                  // El try psando el con
+                    final PreparedStatement statement = con                 // Final 
+                        .prepareStatement("UPDATE PRODUCTO SET "
+                                + " NOMBRE = ?, "
+                                + " DESCRIPCION = ?,"
+                                + " CANTIDAD = ?"
+                                + " WHERE ID = ?");
+                    
+                    try(statement) {
+                        statement.setString(1, nombre);
+                        statement.setString(2, descripcion);
+                        statement.setInt(3, cantidad);
+                        statement.setInt(4, id);
+                        statement.execute();
+                
+                        int updateCount = statement.getUpdateCount();
+                
+                        return updateCount;
+                    }
+                }
+            }
+            
+            De esta forma nosotros ya no tenemos más que preocuparnos con estos comandos de close que ya fueron todos eliminados y no tenemos que estar preocupándonos más con abrí un recurso, lo tengo que cerrarr.            
+        </code>
+
         <li>try-with-resources y el método close()</li>
+        <p>
+            ¿Por qué cuando utilizamos el try-with-resources no hay más la necesidad de explicitar el comando close para cerrar los recursos (PreparedStatement, Connection, PreparedStatement)?
+
+            Seleccione una alternativa
+            Por el hecho de que estos recursos extienden la interfaz AutoCloseable.
+            ¡Alternativa correcta! 
+            Como estas interfaces extienden la interfaz AutoCloseable, el try-with-resources ejecuta el comando close implícitamente.            
+        </p>
+
         <li>Haga lo que hicimos en aula</li>
+
         <li>Lo que aprendimos</li>
+        <p>
+            Cuando ejecutamos una query SQL como Statement tenemos un riesgo de seguridad llamado SQL Injection;
+            SQL Injection es el hecho de enviar comandos SQL como parámetro de las solicitudes en una aplicación.
+            Para evitar el fallo por SQL Injection debemos utilizar la interfaz PreparedStatement;
+            Diferente del Statement, el PreparedStatement trata los parámetros del comando SQL para que caracteres y comandos especiales sean tratados como strings.
+            Las bases de datos ofrecen un recurso llamado transacción, que junta muchas operaciones SQL como un conjunto de ejecución;
+            Si el conjunto falla no es aplicada ninguna modificación y ocurre el rollback de la transacción.
+            Todos los comandos del conjunto necesitan funcionar para que la transacción sea finalizada con un commit.
+            Para garantizar el cierre de los recursos abiertos en el código, Java provee un recurso llamado try-with-resources para ayudarnos;
+            Para utilizar este recurso es necesario que la clase utilizada (como la Connection) implemente la interfaz Autocloseable.            
+        </p>
+        
     </pre>
 
     <br>
