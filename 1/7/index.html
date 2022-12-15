@@ -24,7 +24,7 @@
     <ol>
         <li>
             <a href="#1">Trabajando con ArrayList</a>
-            <ol>
+            <ul>
                 <li>Presentación</li>
                 <li>Preparando el ambiente</li>
                 <li>Conociendo de ArrayList</li>
@@ -35,11 +35,11 @@
                 <li>Ordenar una lista de String</li>
                 <li>Haga lo que hicimos en aula</li>
                 <li>Lo que aprendimos</li>
-            </ol>        
+            </ul>        
         </li>
         <li>
             <a href="#2">Listas de Objetos</a>
-            <ol>
+            <ul>
                 <li>Proyecto del aula anterior</li>
                 <li>Creando listas con Objetos</li>
                 <li>Adicionar un Objeto a una lista</li>
@@ -47,11 +47,11 @@
                 <li>Ordenando listas</li>
                 <li>Haga lo que hicimos en aula</li>
                 <li>Lo que aprendimos</li>
-            </ol>
+            </ul>
         </li>
         <li>
             <a href="#3">Relacionando Listas de Objetos</a>
-            <ol>
+            <ul>
                 <li>Proyecto del aula anterior</li>
                 <li>Conociendo la interface List</li>
                 <li>Tipos de List</li>
@@ -61,11 +61,11 @@
                 <li>Diferencias entre un ArrayList y LinkedList</li>
                 <li>Haga lo que hicimos en aula</li>
                 <li>Lo que aprendimos</li>
-            </ol>
+            </ul>
         </li>
         <li>
             <a href="#4">Conociendo más de Listas</a>
-            <ol>
+            <ul>
                 <li>Proyecto del aula anterior</li>
                 <li>Métodos tradicionales usando Collections y Streams</li>
                 <li>Métodos de la clase Collections</li>
@@ -73,11 +73,11 @@
                 <li>Métodos de la interfaz Stream</li>
                 <li>Haga lo que hicimos en aula</li>
                 <li>Lo que aprendimos</li>
-            </ol>
+            </ul>
         </li>
         <li>
             <a href="#5">Usando la interface Set</a>
-            <ol>
+            <ul>
                 <li>Proyecto del aula anterior</li>
                 <li>Conociendo la interface Set</li>
                 <li>Implementaciones de la interfaz Set</li>
@@ -87,11 +87,11 @@
                 <li>Métodos de la interfaz Set</li>
                 <li>Haga lo que hicimos en aula</li>
                 <li>Lo que aprendimos</li>
-            </ol>
+            </ul>
         </li>
         <li>
             <a href="#6">Métodos equals y hashCode</a>
-            <ol>
+            <ul>
                 <li>Proyecto del aula anterior</li>
                 <li>Porque usar equals o hashCode</li>
                 <li>Métodos equals y hashCode</li>
@@ -99,11 +99,11 @@
                 <li>Métodos de la interfaz Set</li>
                 <li>Haga lo que hicimos en aula</li>
                 <li>Lo que aprendimos</li>
-            </ol>
+            </ul>
         </li>
         <li>
             <a href="#7">Otros tipos de Sets y Iterators</a>
-            <ol>
+            <ul>
                 <li>Proyecto del aula anterior</li>
                 <li>Otros tipos de Sets y Iterators</li>
                 <li>Conociendo de Iterator</li>
@@ -111,11 +111,11 @@
                 <li>Conociendo de Iterator</li>
                 <li>Haga lo que hicimos en aula</li>
                 <li>Lo que aprendimos</li>
-            </ol>
+            </ul>
         </li>
         <li>
             <a href="#8">Maps</a>
-            <ol>
+            <ul>
                 <li>Proyecto del aula anterior</li>
                 <li>Definición de mapas</li>
                 <li>Conociendo de Mapas</li>
@@ -125,7 +125,7 @@
                 <li>Proyecto Final</li>
                 <li>Lo que aprendimos</li>
                 <li>Conclusión</li>
-            </ol>
+            </ul>
         </li>
 
     </ol>
@@ -318,8 +318,37 @@
         <li>Referencias y encapsulamento entre listas</li>
         <p>
             listas
-            Clase 7            
+            Clase 7          
         </p>
+        <code>
+            package com.alura;
+
+            import com.alura.model.Aula;
+            import com.alura.model.Curso;
+            
+            import java.util.ArrayList;
+            import java.util.List;
+            
+            public class Clase7 {
+            
+                public static void main(String[] args) {
+            
+                    Curso curso1 = new Curso("Java",30) ;
+                    curso1.addAula(new Aula("ArrayList"));
+                    curso1.addAula(new Aula("List"));
+                    curso1.addAula(new Aula("LinkedList"));
+                    curso1.addAula(new Aula("Inmutable"));
+            
+                    List< Aula> aulaList = curso1.getAulaList();
+            
+            
+                    ArrayList< Curso> cursos = new ArrayList<>();
+                    cursos.add(curso1);
+            
+                    System.out.println(aulaList);
+                }
+            }            
+        </code>
 
         <li>Creando listas</li>
         <p>
@@ -335,6 +364,76 @@
             LinkedList
             Clase 8            
         </p>
+        <code>
+            package com.alura;
+
+
+            import java.util.ArrayList;
+            import java.util.LinkedList;
+            import java.util.List;
+            
+            public class Clase8 {
+            
+                public static final List<List<Integer>> listas = new ArrayList<List<Integer>>(){
+                    {
+                        add(new LinkedList<>());
+                        add(new ArrayList<>());
+                    }
+                };
+            
+                public static void main(String[] args) {
+                    for(List<Integer> lista : listas){
+                        final String nombreImplementacion = lista.getClass().getSimpleName();
+                        //add
+                        long inicio = System.currentTimeMillis(); // Vemos el tiempo transcurrido
+                        for (int i=0; i < 100000; i++){
+                            lista.add(i);
+                        }
+                        long fin = System.currentTimeMillis();
+                        long duracion = fin - inicio;
+                        System.out.println(nombreImplementacion + " add: " + duracion);
+            
+                        //get
+                        inicio = System.currentTimeMillis();
+                        for(int i = 0; i < 100000; i++){
+                            lista.get(i);
+                        }
+                        fin = System.currentTimeMillis();
+                        duracion = fin - inicio;
+                        System.out.println(nombreImplementacion + " get: " + duracion);
+            
+                        //remove
+                        inicio = System.currentTimeMillis();
+                        for(int i = 99999; i >= 0; i--){
+                            lista.remove(i);
+                        }
+                        fin = System.currentTimeMillis();
+                        duracion = fin - inicio;
+                        System.out.println(nombreImplementacion + " remove: " + duracion);
+            
+            
+                        //LINKEDLIST  A <-> B1 <-> B2 <-> C <-> D
+                        // Crea una relación entre ellas, las entrelaza.
+                        // LinkedList add: 15           -> El add un poco más
+                        // LinkedList get: 5742         -> El get tarda más
+                        // LinkedList remove: 4         -> Los remove casi iguales
+                        // ArrayList add: 6
+                        // ArrayList get: 4
+                        // ArrayList remove: 4
+            
+            
+                        //ARRAYLIST A -> B1 -> B -> C -> D
+                        // El arraylist solo lo hace en un sentido.
+            
+            
+                        // Entonces cada uno tiene sus ventajas, pero por eso también estuvimos viendo utilizar las interfaces.
+                        // ¿Por qué? Porque imaginémonos que ya tenemos una lista, ya tenemos el sistema y utilizamos ArrayList y vemos que está demorando bastante. ¿Qué hacemos? Vamos a cambiarlo para el LinkedList.
+                        // La parte de adicionar las posiciones está demorando bastante, entonces cambiamos para LinkedList. Y automáticamente toda nuestra lista se convirtió en LinkedList. Por eso es una gran ventaja trabajar prácticamente con nuestra interface lista y todas las implementaciones que usemos, las podemos cambiar de aquí a un tiempo.
+                    }
+            
+                }
+            }            
+        </code>
         <li>Diferencias entre un ArrayList y LinkedList</li>
         <p>
             ¿Cuál es una de las principales diferencias entre un ArrayList y LinkedList?
@@ -379,6 +478,60 @@
             Collections y Streams
             Clase 9            
         </p>
+        <code>
+            package com.alura;
+
+
+            import com.alura.model.Curso;
+            
+            import java.util.*;
+            import java.util.stream.Collectors;
+            
+            public class Clase9 {
+            
+                public static final List<List<Integer>> listas = new ArrayList<List<Integer>>(){
+                    {
+                        add(new LinkedList<>());
+                        add(new ArrayList<>());
+                    }
+                };
+            
+                public static void main(String[] args) {
+                    Curso curso1 = new Curso("Historia",30) ;
+                    Curso curso2 = new Curso("Algebra",10) ;
+                    Curso curso3 = new Curso("Aritmetica",20) ;
+                    Curso curso4 = new Curso("Geometria",50) ;
+            
+            
+                    ArrayList<Curso> cursos = new ArrayList<>();
+                    cursos.add(curso1);
+                    cursos.add(curso2);
+                    cursos.add(curso3);
+                    cursos.add(curso4);
+            
+                    //System.out.println(cursos);
+            
+                    Collections.sort(cursos,Comparator.comparing(Curso::getNombre).reversed());
+            
+                    int suma = 0;
+                    for(Curso curso: cursos){
+                        if(!curso.getNombre().equalsIgnoreCase("Historia")) {
+                            suma += curso.getTiempo();
+                        }
+                    }
+            
+                    System.out.println(suma);
+            
+                    //System.out.println(cursos);
+            
+                    List<Curso> cursoList = cursos.stream().filter(curso -> !curso.getNombre().equalsIgnoreCase("Ruby")).sorted(Comparator.comparingInt(Curso::getTiempo)).collect(Collectors.toList());
+            
+                    System.out.println(cursos.stream().filter(curso -> !curso.getNombre().equalsIgnoreCase("Historia")).mapToInt(Curso::getTiempo).sum());
+            
+                }
+            }            
+        </code>
+
 
         <li>Métodos de la clase Collections</li>
         <p>
@@ -422,6 +575,75 @@
             
             Hacer un group by de una lista usando el método groupingBy de la clase Collectors.            
         </p>
+        <code>
+            clase 10
+
+            package com.alura;
+
+
+            import com.alura.model.Curso;
+            
+            import java.util.*;
+            import java.util.stream.Collector;
+            import java.util.stream.Collectors;
+            
+            public class Clase10 {
+            
+                public static final List< List< Integer>> listas = new ArrayList< List< Integer>>(){
+                    {
+                        add(new LinkedList<>());
+                        add(new ArrayList<>());
+                    }
+                };
+            
+                public static void main(String[] args) {
+                    Curso curso1 = new Curso("Historia",30) ;
+                    Curso curso2 = new Curso("Algebra",10) ;
+                    Curso curso3 = new Curso("Aritmetica",20) ;
+                    Curso curso4 = new Curso("Geometria",50) ;
+                    Curso curso5 = new Curso("Fisica",60) ;
+                    Curso curso6 = new Curso("Quimica",80) ;
+                    Curso curso7 = new Curso("Quimica",70) ;
+                    Curso curso8 = new Curso("Fisica",30) ;
+            
+            
+            
+                    ArrayList< Curso> cursos = new ArrayList<>();
+                    cursos.add(curso1);
+                    cursos.add(curso2);
+                    cursos.add(curso3);
+                    cursos.add(curso4);
+                    cursos.add(curso5);
+                    cursos.add(curso6);
+                    cursos.add(curso7);
+                    cursos.add(curso8);
+            
+            
+                    List< Curso> cursoList = cursos.stream().filter(curso -> !curso.getNombre().equalsIgnoreCase("Ruby")).sorted(Comparator.comparingInt(Curso::getTiempo)).collect(Collectors.toList());
+            
+                    System.out.println(cursos.stream().filter(curso -> !curso.getNombre().equalsIgnoreCase("Historia")).mapToInt(Curso::getTiempo).sum());
+            
+                    // Para obtener el promedio
+                    System.out.println(cursos.stream().mapToInt(Curso::getTiempo).average().getAsDouble());
+            
+                    // El max
+                    System.out.println(cursos.stream().mapToInt(Curso::getTiempo).max().getAsInt());
+            
+                    // El min
+                    System.out.println(cursos.stream().mapToInt(Curso::getTiempo).min().getAsInt());
+            
+                    // Creamos un mapa con una lista de curso, agrupamos
+                    Map< String, List<Curso>> groupCurso = cursos.stream().collect(Collectors.groupingBy(Curso::getNombre));
+            
+                    // Recorremos el key  el value sera los agrupados, los repetidos.
+                    groupCurso.forEach((key , value) -> System.out.println(key + " - " + value.size()));
+            
+                    // ParallelStream
+                    System.out.println(cursos.parallelStream().mapToInt(Curso::getTiempo).sum());
+            
+                }
+            }            
+        </code>
 
         <li>Lo que aprendimos</li>
 
@@ -458,6 +680,46 @@
             
             En Set, pertenece TreeSet, HashSet y LinkedHashSet            
         </p>
+        <code>
+            package com.alura;
+
+            import java.util.ArrayList;
+            import java.util.HashSet;
+            import java.util.Set;
+            
+            public class Clase11 {
+            
+                // TODO: https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html
+                // TODO: https://docs.oracle.com/javase/8/docs/api/index.html?java/util/Collection.html
+            
+                public static void main(String[] args) {
+            
+                    String alumno1 = "Luis Miguel";
+                    String alumno2 = "Pepito los palotes";
+                    String alumno3 = "Juan Carlos";
+                    String alumno4 = "Pedro Pedrito";
+                    String alumno5 = "Gustavo Sanchez";
+                    String alumno6 = "Marcia Maria";
+            
+                    // Usamos la interface set del grupo de las collecitons
+                    // HashSet equivale a un arrarlist
+                    Set< tring> listaAlumnos = new HashSet<>();
+            
+                    listaAlumnos.add(alumno1);
+                    listaAlumnos.add(alumno2);
+                    listaAlumnos.add(alumno3);
+                    listaAlumnos.add(alumno4);
+                    listaAlumnos.add(alumno5);
+                    listaAlumnos.add(alumno6);
+            
+                    // Recorremos el set
+                    for (String alumno: listaAlumnos) {
+                        System.out.println(alumno);
+                    }
+                }
+            }
+            
+        </code>
 
         <li>Implementaciones de la interfaz Set</li>
         <li>Uso de la inferface Set</li>
@@ -488,6 +750,51 @@
                                 -> Deque
                                 -> SortedSet            
         </p>
+        <code>
+            clase 12
+
+            package com.alura;
+
+            import java.util.*;
+            
+            public class Clase12 {
+            
+                // TODO: https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html
+                // TODO: https://docs.oracle.com/javase/8/docs/api/index.html?java/util/Collection.html
+            
+                public static void main(String[] args) {
+            
+                    String alumno1 = "Luis Miguel";
+                    String alumno2 = "Pepito los palotes";
+                    String alumno3 = "Juan Carlos";
+                    String alumno4 = "Pedro Pedrito";
+                    String alumno5 = "Gustavo Sanchez";
+                    String alumno6 = "Marcia Maria";
+                    String alumno7 = "Marcia Maria";
+                    String alumno8 = "Gustavo Sanchez";
+            
+                    // Podemos importar desde la clase Collection
+                    Collection< String> listaAlumnos = new HashSet<>();
+            
+                    listaAlumnos.add(alumno1);
+                    listaAlumnos.add(alumno2);
+                    listaAlumnos.add(alumno3);
+                    listaAlumnos.add(alumno4);
+                    listaAlumnos.add(alumno5);
+                    listaAlumnos.add(alumno6);
+                    listaAlumnos.add(alumno7);
+                    listaAlumnos.add(alumno8);
+            
+                    listaAlumnos.forEach(alumno -> {
+                        System.out.println(alumno);
+                    });
+            
+            
+            
+            
+                }
+            }            
+        </code>
         <li>Ventaja de usar un Set</li>
         <p>
             ¿Cuál es una afirmación correcta al hablar de la interfaz Set?
@@ -502,6 +809,62 @@
 
             Clase 13            
         </p>
+        <code>
+            package com.alura;
+
+            import java.util.Collection;
+            import java.util.Comparator;
+            import java.util.HashSet;
+            
+            public class Clase13 {
+            
+                // TODO: https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html
+                // TODO: https://docs.oracle.com/javase/8/docs/api/index.html?java/util/Collection.html
+            
+                public static void main(String[] args) {
+            
+                    String alumno1 = "Luis Miguel";
+                    String alumno2 = "Pepito los palotes";
+                    String alumno3 = "Juan Carlos";
+                    String alumno4 = "Pedro Pedrito";
+                    String alumno5 = "Gustavo Sanchez";
+                    String alumno6 = "Marcia Maria";
+                    String alumno7 = "Marcia Maria";
+                    String alumno8 = "Gustavo Sanchez";
+            
+                    Collection< String> listaAlumnos = new HashSet<>();
+            
+                    listaAlumnos.add(alumno1);
+                    listaAlumnos.add(alumno2);
+                    listaAlumnos.add(alumno3);
+                    listaAlumnos.add(alumno4);
+                    listaAlumnos.add(alumno5);
+                    listaAlumnos.add(alumno6);
+                    listaAlumnos.add(alumno7);
+                    listaAlumnos.add(alumno8);
+            
+                    //listaAlumnos.forEach(alumno -> {
+                    //    System.out.println(alumno);
+                    //});
+            
+                    // Buscamos si el alumno indicado existe.. El string debe ser tal cual
+                    boolean valida = listaAlumnos.contains("Pedro pedrito");
+                    System.out.println(valida);             // true
+            
+                    // Tamaño del String, cual tiene mayor cantidad de letras.
+                    String max = listaAlumnos.stream().max(Comparator.comparingInt(String::length)).get();
+                    System.out.println(max);                // Pepito los palotes
+                    System.out.println(max.length());       // 18
+            
+                    // Eliminamos si fuese necesario, si no lo encuentra, no lo elimina..
+                    listaAlumnos.removeIf(alumno -> "Pedro Pedrita".equalsIgnoreCase(alumno));
+                    listaAlumnos.forEach(alumno -> {        // Verificamos si se elimino
+                        System.out.println(alumno);
+                    });
+            
+                }
+            }            
+        </code>
         <li>Métodos de la interfaz Set</li>
         <p>
             Del siguiente código ¿Cuál sería el resultado al imprimir cada uno de ellos?
@@ -583,6 +946,52 @@
             Ahora sí desde nuestra clase instanciada.. 
             Collection<Alumno> listaAlumnos = new HashSet<>();            
         </code>
+        <code>
+            clase 14
+            package com.alura;
+
+            import com.alura.model.Alumno;
+            
+            import java.util.ArrayList;
+            import java.util.Collection;
+            import java.util.Comparator;
+            import java.util.HashSet;
+            
+            public class Clase14 {
+            
+                // TODO: https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html
+                // TODO: https://docs.oracle.com/javase/8/docs/api/index.html?java/util/Collection.html
+            
+                public static void main(String[] args) {
+            
+                    // Crear objetos a partir del Alumno
+                    Alumno alumno1 = new Alumno("Luis Miguel", "001");
+                    Alumno alumno2 = new Alumno("Pepito los palotes", "002");
+                    Alumno alumno3 = new Alumno("Juan Carlos", "003");
+                    Alumno alumno4 = new Alumno("Pedro Pedrito", "004");
+                    Alumno alumno5 = new Alumno("Gustavo Sanchez", "005");
+                    Alumno alumno6 = new Alumno("Marcia Maria", "006");
+                    Alumno alumno7 = new Alumno("Claudia Patricia", "007");
+            
+                    Collection< Alumno> listaAlumnos = new HashSet<>();
+            
+                    listaAlumnos.add(alumno1);
+                    listaAlumnos.add(alumno2);
+                    listaAlumnos.add(alumno3);
+                    listaAlumnos.add(alumno4);
+                    listaAlumnos.add(alumno5);
+                    listaAlumnos.add(alumno6);
+                    listaAlumnos.add(alumno7);
+            
+                    Alumno alumnoNuevo = new Alumno("Luis Miguel", "001");
+            
+                    System.out.println(alumno1.equals(alumnoNuevo));
+                    System.out.println(listaAlumnos.contains(alumnoNuevo));
+                }
+            }
+            
+        </code>
+
 
         <li>Métodos equals y hashCode</li>
         <code>
@@ -602,6 +1011,48 @@
             Como el set no tiene un orden específico.. 
             Con el hashCode subagrupamos en pequeños contenedores.            
         </p>
+        <code>
+            package com.alura;
+
+            import com.alura.model.Alumno;
+            import com.alura.model.Curso;
+            
+            import java.util.Collection;
+            import java.util.HashSet;
+            
+            public class Clase15 {
+            
+                // TODO: https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html
+                // TODO: https://docs.oracle.com/javase/8/docs/api/index.html?java/util/Collection.html
+            
+                public static void main(String[] args) {
+            
+                    Curso curso1 = new Curso("Historia",30) ;
+            
+                    Alumno alumno1 = new Alumno("Luis Miguel", "001");
+                    Alumno alumno2 = new Alumno("Pepito los palotes", "002");
+                    Alumno alumno3 = new Alumno("Juan Carlos", "003");
+                    Alumno alumno4 = new Alumno("Pedro Pedrito", "004");
+                    Alumno alumno5 = new Alumno("Gustavo Sanchez", "005");
+                    Alumno alumno6 = new Alumno("Marcia Maria", "006");
+                    Alumno alumno7 = new Alumno("Claudia Patricia", "007");
+            
+                    curso1.addAlumno(alumno1);
+                    curso1.addAlumno(alumno2);
+                    curso1.addAlumno(alumno3);
+                    curso1.addAlumno(alumno4);
+                    curso1.addAlumno(alumno5);
+                    curso1.addAlumno(alumno6);
+                    curso1.addAlumno(alumno7);
+            
+                    Alumno alumnoNuevo = new Alumno("Luis Miguel", "001");
+            
+                    System.out.println(alumno1.equals(alumnoNuevo));
+                    System.out.println(curso1.verificaAlumno(alumnoNuevo));
+                }
+            }
+            
+        </code>
 
         <li>Métodos de la interfaz Set</li>
         <p>
@@ -645,6 +1096,56 @@
         <p>
             Clase 16
         </p>
+        <code>
+            package com.alura;
+
+            import com.alura.model.Alumno;
+            import com.alura.model.Curso;
+            
+            import java.util.Iterator;
+            
+            public class Clase16 {
+            
+                // TODO: https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html
+                // TODO: https://docs.oracle.com/javase/8/docs/api/index.html?java/util/Collection.html
+            
+                public static void main(String[] args) {
+            
+                    Curso curso1 = new Curso("Historia",30) ;
+            
+                    Alumno alumno1 = new Alumno("Luis Miguel", "001");
+                    Alumno alumno2 = new Alumno("Pepito los palotes", "002");
+                    Alumno alumno3 = new Alumno("Juan Carlos", "003");
+                    Alumno alumno4 = new Alumno("Pedro Pedrito", "004");
+                    Alumno alumno5 = new Alumno("Gustavo Sanchez", "005");
+                    Alumno alumno6 = new Alumno("Marcia Maria", "006");
+                    Alumno alumno7 = new Alumno("Claudia Patricia", "007");
+            
+                    curso1.addAlumno(alumno1);
+                    curso1.addAlumno(alumno2);
+                    curso1.addAlumno(alumno3);
+                    curso1.addAlumno(alumno4);
+                    curso1.addAlumno(alumno5);
+                    curso1.addAlumno(alumno6);
+                    curso1.addAlumno(alumno7);
+            
+                    // Recorremos con un lambda
+                    //curso1.getAlumnos().forEach(alumno -> System.out.println(alumno));
+            
+                    // Iterator para recorrer la lista
+                    Iterator< Alumno> alumnoIterator = curso1.getAlumnos().iterator();
+            
+                    // Con el hasNext () vamos uno por uno..
+                    while (alumnoIterator.hasNext()){
+                        // Con el next() avanzamos
+                        System.out.println(alumnoIterator.next());
+                    }
+            
+                    // alumnoIterator.next(); error..
+                }
+            }
+            
+        </code>
         <li>Conociendo de Iterator</li>
         <p>
             ¿Cuál método es usado para recorrer los valores de un Iterator?
@@ -663,6 +1164,54 @@
             
             Clase 8, comparamos para saber que elegir.            
         </p>
+        <code>
+            package com.alura;
+
+            import com.alura.model.Alumno;
+            import com.alura.model.Curso;
+            
+            import java.util.Iterator;
+            
+            public class Clase17 {
+            
+                // TODO: https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html
+                // TODO: https://docs.oracle.com/javase/8/docs/api/index.html?java/util/Collection.html
+            
+                public static void main(String[] args) {
+            
+                    Curso curso1 = new Curso("Historia",30) ;
+            
+                    Alumno alumno1 = new Alumno("Luis Miguel", "001");
+                    Alumno alumno2 = new Alumno("Pepito los palotes", "002");
+                    Alumno alumno3 = new Alumno("Juan Carlos", "003");
+                    Alumno alumno4 = new Alumno("Pedro Pedrito", "004");
+                    Alumno alumno5 = new Alumno("Gustavo Sanchez", "005");
+                    Alumno alumno6 = new Alumno("Marcia Maria", "006");
+                    Alumno alumno7 = new Alumno("Claudia Patricia", "007");
+            
+                    curso1.addAlumno(alumno1);
+                    curso1.addAlumno(alumno2);
+                    curso1.addAlumno(alumno3);
+                    curso1.addAlumno(alumno4);
+                    curso1.addAlumno(alumno5);
+                    curso1.addAlumno(alumno6);
+                    curso1.addAlumno(alumno7);
+            
+                    // Direrentes formar de recorrer.. 
+                
+                    curso1.getAlumnos().forEach(alumno -> System.out.println(alumno));
+            
+                    Iterator< Alumno> alumnoIterator = curso1.getAlumnos().iterator();
+            
+                    while (alumnoIterator.hasNext()){
+                        System.out.println(alumnoIterator.next());
+                    }
+            
+                    alumnoIterator.next();
+                }
+            }
+            
+        </code>
         <li>Conociendo de Iterator</li>
         <p>
             ¿Cuál método puede usar una lista para trabajar con Iterator?
@@ -725,6 +1274,59 @@
             
             Para agregar al Map, usamos HashSet o bien put            
         </p>
+        <code>
+            package com.alura;
+
+            import com.alura.model.Alumno;
+            import com.alura.model.Curso;
+            
+            import java.util.Iterator;
+            import java.util.Optional;
+            
+            public class Clase18 {
+            
+                // TODO: https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html
+                // TODO: https://docs.oracle.com/javase/8/docs/api/index.html?java/util/Collection.html
+            
+                public static void main(String[] args) {
+            
+                    Curso curso1 = new Curso("Historia",30) ;
+            
+                    Alumno alumno1 = new Alumno("Luis Miguel", "001");
+                    Alumno alumno2 = new Alumno("Pepito los palotes", "002");
+                    Alumno alumno3 = new Alumno("Juan Carlos", "003");
+                    Alumno alumno4 = new Alumno("Pedro Pedrito", "004");
+                    Alumno alumno5 = new Alumno("Gustavo Sanchez", "005");
+                    Alumno alumno6 = new Alumno("Marcia Maria", "006");
+                    Alumno alumno7 = new Alumno("Claudia Patricia", "007");
+            
+                    curso1.addAlumno(alumno1);
+                    curso1.addAlumno(alumno2);
+                    curso1.addAlumno(alumno3);
+                    curso1.addAlumno(alumno4);
+                    curso1.addAlumno(alumno5);
+                    curso1.addAlumno(alumno6);
+                    curso1.addAlumno(alumno7);
+            
+                    //curso1.getAlumnos().forEach(alumno -> System.out.println(alumno));
+            
+                    // Buscamos en función del código del alumno.
+                    // Recibimos un Optional, porque puede tener o no.
+                    Optional< Alumno> alumno = curso1.getAlumnos().stream().filter(a -> "003".equalsIgnoreCase(a.getCodigo())).findFirst();
+            
+                    // Con isPresent funciona con el Optional
+                    if(alumno.isPresent()){
+                        System.out.println(alumno.get());
+                    }
+            
+                    // Nos devuelve el alumno en sí. 
+                    Alumno alumnoMap = curso1.getAlumnoMap().get("003");
+                    System.out.println(alumnoMap);
+            
+                }
+            }
+            
+        </code>
 
         <li>Conociendo de Mapas</li>
         <p>
@@ -753,6 +1355,56 @@
             Si tuviesemos que recorrer una lista de millones de registros con un for es poco útil, en ese caso usar mejor un map.            
         </p>
 
+        <code>
+            package com.alura;
+
+            import com.alura.model.Alumno;
+            import com.alura.model.Curso;
+            
+            import java.util.Optional;
+            
+            public class Clase19 {
+            
+                // TODO: https://docs.oracle.com/javase/tutorial/collections/interfaces/index.html
+                // TODO: https://docs.oracle.com/javase/8/docs/api/index.html?java/util/Collection.html
+            
+                public static void main(String[] args) {
+            
+                    Curso curso1 = new Curso("Historia",30) ;
+            
+                    Alumno alumno1 = new Alumno("Luis Miguel", "001");
+                    Alumno alumno2 = new Alumno("Pepito los palotes", "002");
+                    Alumno alumno3 = new Alumno("Juan Carlos", "003");
+                    Alumno alumno4 = new Alumno("Pedro Pedrito", "004");
+                    Alumno alumno5 = new Alumno("Gustavo Sanchez", "005");
+                    Alumno alumno6 = new Alumno("Marcia Maria", "006");
+                    Alumno alumno7 = new Alumno("Claudia Patricia", "007");
+            
+                    curso1.addAlumno(alumno1);
+                    curso1.addAlumno(alumno2);
+                    curso1.addAlumno(alumno3);
+                    curso1.addAlumno(alumno4);
+                    curso1.addAlumno(alumno5);
+                    curso1.addAlumno(alumno6);
+                    curso1.addAlumno(alumno7);
+            
+                    //curso1.getAlumnos().forEach(alumno -> System.out.println(alumno));
+            
+                    // Más sencillo de usar.. Haciendo un get sobre el map
+                    Alumno alumnoMap = curso1.getAlumnoMap().get("003");
+            
+                    curso1.getAlumnoMap().forEach((codigo, alumno) -> {
+                        System.out.println(alumno);
+                    });
+            
+                    //System.out.println(alumnoMap);
+            
+            
+            
+                }
+            }            
+        </code>
+        
         <li>Conociendo de Mapas</li>
         <p>
             ¿Por qué usar un mapa?

@@ -21,7 +21,8 @@ pre{
     line-height: 1.2rem;
     color: white;
     background-color: #b75f4b;
-    padding: 1rem 4rem 1rem 4rem;
+    padding: 0rem 2rem 0rem 2rem;
+
 }
 
 pre h2{
@@ -48,8 +49,8 @@ pre div{
     justify-content: flex-start;
     align-content: space-around;
 }
-pre li {
-    margin: 1rem auto 1rem 1rem;
+pre li, li {
+    margin: 0.5rem auto 0.5rem 1rem;
 }
 
 .contenido {
@@ -79,7 +80,7 @@ a {
     font-size: 1.4rem;
 }
 p{
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-family: 'Roboto', sans-serif;
     line-height: 1.2;
     margin-left: 2rem;

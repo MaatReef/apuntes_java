@@ -124,7 +124,7 @@
         
     </ol>
     <br>
-    <h1>Java y JDBC</h1>
+    <h1>Java y JDBC: Trabajando con una Base de Datos:</h1>
     <br>
     <br>
     <br>
@@ -1494,7 +1494,7 @@
             Para garantizar el cierre de los recursos abiertos en el código, Java provee un recurso llamado try-with-resources para ayudarnos;
             Para utilizar este recurso es necesario que la clase utilizada (como la Connection) implemente la interfaz Autocloseable.            
         </p>
-        
+
     </pre>
 
     <br>
@@ -1509,13 +1509,218 @@
     <pre>
         <li>Proyecto del aula anterior</li>
         <li>¿Qué es un pool y un datasource?</li>
+        <p>
+            Nosotros tenemos una interfaz llamada JDBC
+            - Con esta nos conectamos a la base de datos que deseemos.. Nosotros usamos mysql.
+        
+        App Java    ->  JDBC        -> Driver Mysql     -> Mysql
+        
+        - Con la ConnectionFactory, aplicamos la lógica para conectar.
+        
+        App Java    -> ConnectionFactory    ->  JDBC        -> Driver Mysql     -> Mysql
+        
+        No podemos dejar que la aplicación siga abriendo conexiones sin límite, entonces debemos poder configurar una cantidad mínima, una cantidad máxima de conexiones.
+            - Pool de Conexiones, se conecta con la JDBC
+        App Java    -> ConnectionFactory    -> Pool de Conexiones    ->  JDBC        -> Driver Mysql     -> Mysql
+        C3P0
+        Es decir..
+        tenemos un pool de conexiones que va a comunicarse con el JDBC..
+        para mantener una cantidad mínima y una cantidad máxima de conexiones abiertas en la aplicación para que pueda atender a las requisiciones sin que tenga una cola muy grande y que no ahogue la aplicación.
+        
+        El C3P0.
+        Para utilizarlo bien vamos a aprovechar las ventajas del JDBC para utilizar una nueva interfaz llamada datasource.
+        Esta interfaz va abstraer la implementación del pool de conexiones para nosotros y con esta nueva estructura.
+        Mientras que, la connectionFactory que tenemos no va más a tener la responsabilidad de crear una conexión para nosotros.
+        Lo que ella va a hacer ahora es solicitar una conexión abierta para el data source
+        
+                                                DataSoource:
+        App Java    -> ConnectionFactory    -> - Pool de Conexiones    ->  JDBC        -> Driver Mysql     -> Mysql
+                                               - C3P0
+        
+        De esta forma, nosotros no tenemos nuestra aplicación con una configuración sostenible de conexiones abiertas, así no tenemos ningún problema de performance ni de agotamiento de recursos, tal como las aplicaciones reales del mercado, y por ahora es eso.        
+        </p>
         <li>Aplicación con cliente único</li>
+        <p>
+            Imagina una aplicación que tiene un único cliente y él puede ejecutar una sola tarea por turno. Mientras una tarea termina no es posible ejecutar la siguiente. ¿Qué harías en esta aplicación para atender este escenario?
+
+            Selecciona 2 alternativas
+            Abrir una nueva conexión siempre que haya una nueva tarea para hacer.
+            ¡Alternativa correcta! Con la forma que funciona la aplicación este abordaje es válido ya que solamente necesitaríamos una sola conexión.
+            
+            Abrir una sola conexión y mantenerla siempre abierta.
+            ¡Alternativa correcta! Es un abordaje válido ya que la aplicación tiene un único cliente.            
+        </p>
+
         <li>Creando un pool de conexiones</li>
+        <code>
+            Modificamos el Pom.. Para el c3p0 y com.change
+            - C3P0: os va a dar la posibilidad de configurar un pool de conexiones
+            - mchange-commons-java: nos va a dar la posibilidad de agregar más detalles del datasource vía el log de la aplicación en la consola.
+        
+        
+        <dependencies>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>8.0.26</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mchange</groupId>
+                <artifactId>c3p0</artifactId>
+                <version>0.9.5.5</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mchange</groupId>
+                <artifactId>mchange-commons-java</artifactId>
+                <version>0.2.20</version>
+            </dependency>
+        </dependencies>
+        
+        Y ahora el connectionFactory lo modificamos.. Para evitar la conexion pura y..
+        La idea acá es que la connectionFactory utilice las conexiones desde el pool de conexiones.
+        
+        package com.alura.jdbc.factory;
+        
+        import java.sql.Connection;
+        import java.sql.SQLException;
+        
+        import javax.sql.DataSource;
+        
+        import com.mchange.v2.c3p0.ComboPooledDataSource;
+        
+        public class ConnectionFactory {
+            
+            private DataSource dataSource;
+            
+            public ConnectionFactory() {                // Creamos un constructor
+                var comboPooledDataSource = new ComboPooledDataSource();            // Creamos el ComboPooledDataSource
+                comboPooledDataSource.setJdbcUrl("jdbc:mysql://localhost/control_de_stock?useTimeZone=true&serverTimeZone=UTC");
+                comboPooledDataSource.setUser("root");
+                comboPooledDataSource.setPassword("root1234");
+                comboPooledDataSource.setMaxPoolSize(10);
+                
+                this.dataSource = comboPooledDataSource; // Le asignamos el dataSource
+            }
+        
+            public Connection recuperaConexion() throws SQLException {
+                return this.dataSource.getConnection();
+            }
+        
+        }
+        
+        Entonces ahora, la única diferencia es que en lugar de estar creando una conexión por el driver manager.. 
+        Nosotros estamos tomando la conexión desde el pool para realizar las operaciones en la base de datos.         
+        </code>
+
         <li>Aplicación con múltiples clientes</li>
+        <p>
+            En un escenario donde múltiples clientes pueden acceder a una misma aplicación simultáneamente. 
+            ¿Cuál sería el mejor abordaje?
+            
+            Seleccione una alternativa
+            Reutilizar un conjunto de conexiones de tamaño fijo o dinámico.
+            ¡Alternativa correcta! 
+            Esta es la estratégia de mantener un pool de conexiones. 
+            Vamos a abrir una cantidad específica de conexiones y reutilizarlas.            
+        </p>
+
         <li>Probando el pool de conexiones</li>
+        <code>
+            Ahora seteamos la máxima cantidad de conexiones..
+
+            package com.alura.jdbc.factory;
+            
+            import java.sql.Connection;
+            import java.sql.SQLException;
+            
+            import javax.sql.DataSource;
+            
+            import com.mchange.v2.c3p0.ComboPooledDataSource;
+            
+            public class ConnectionFactory {
+                
+                private DataSource dataSource;
+                
+                public ConnectionFactory() {                
+                    var comboPooledDataSource = new ComboPooledDataSource();            
+                    comboPooledDataSource.setJdbcUrl("jdbc:mysql://localhost/control_de_stock?useTimeZone=true&serverTimeZone=UTC");
+                    comboPooledDataSource.setUser("root");
+                    comboPooledDataSource.setPassword("root1234");
+                    comboPooledDataSource.setMaxPoolSize(10);                   // Un máximo de 10 conexiones abiertas..
+                    
+                    this.dataSource = comboPooledDataSource; 
+                }
+            
+                public Connection recuperaConexion() throws SQLException {
+                    return this.dataSource.getConnection();
+                }
+            
+            }
+            
+            
+            Ahora creamos la clase PruebaPoolDeConexiones.. Para testear el máximo.
+            
+            package com.alura.jdbc.pruebas;
+            
+            import java.sql.SQLException;
+            
+            import com.alura.jdbc.factory.ConnectionFactory;
+            
+            public class PruebaPoolDeConexiones {
+            
+                public static void main(String[] args) throws SQLException {
+                    // Instanciamos una conexión..
+                    ConnectionFactory factory = new ConnectionFactory();
+                    
+                    for (int i = 0; i < 20; i++) {          // Realizamos un 20 de conexiones..
+                        factory.recuperaConexion();         // 
+                        
+                        System.out.println("Abriendo conexiÃ³n #" + i);
+                    }
+                }
+                
+            }
+            
+            Qué pasó con eso? 
+            Nosotros solicitamos 20 conexiones, pero fueron abiertas las 10 conexiones del pool. 
+            Está bien, el loop está parado, esperando que una conexión se quede disponible para utilizarla.
+            ¿Eso también es así en el mundo real?
+            Sí, es así que funciona.
+            Si llegamos al tope de conexiones de pool, el próximo cliente va a tener que esperar un ratito hasta que el procesamiento de un cliente termine y él va a poder utilizar la próxima conexión libre.
+            
+            De esta forma, nosotros limitamos la apertura descontrolada de conexiones y no saturamos la base de datos.
+            Y esta cola de espera para una próxima conexión es muy rara de suceder en el mundo real, porque los procesamientos son muy rápidos.
+            
+            
+            Desde consola luego de ejecutar podemos pasar el comando:
+                    mysql> show processlist;
+            Para observar el listado de los procesos realizados..            
+        </code>
+
         <li>Pool con conexiones ocupadas</li>
+        <p>
+            En un pool de conexiones con 9 conexiones disponibles. 
+            Si todas las 9 conexiones están ocupadas y entra una décima requisición, ¿el usuario logra conectarse?
+            
+            Seleccione una alternativa
+            El décimo usuario va a esperar que una de las 9 conexiones se libere.
+            ¡Alternativa correcta! 
+            En el momento que una conexión quede disponible, el décimo cliente va a tener su requisición procesada.            
+        </p>
+
         <li>Haga lo que hicimos en aula</li>
+
         <li>Lo que aprendimos</li>
+        <p>
+            Lo que aprendimos en esta aula:
+
+            Utilizar el pool de conexiones es una buena práctica;
+            El pool de conexiones controla la cantidad de conexiones abiertas entre la aplicación y la base de datos;
+            Es normal que haya un mínimo y un máximo de conexiones.
+            De la misma forma que hay, en JDBC, una interfaz para representar la conexión (java.sql.Connection), también hay una interfaz que representa el pool de conexiones (javax.sql.DataSource);
+            C3P0 es una implementación Java de un pool de conexiones.            
+        </p>
+
     </pre>
 
     <br>
@@ -1530,14 +1735,623 @@
     <pre>
         <li>Proyecto del aula anterior</li>
         <li>Creando el modelo producto</li>
+        <code>
+            Hasta ahora venimos tratando los atributos de las tablas como variables sueltas, sin ninguna representatividad del producto en el código, tal como tenemos en la tabla de la base de datos.
+            La idea ahora es, en lugar de estar asignando variables sueltas, como estamos haciendo acá, recibidas como parámetros, vamos a crear una forma de representar el producto directamente en el proyecto en Java.
+            O sea, vamos a crear un modelo y para eso, nosotros vamos a crear una clase en un nuevo paquete y esta clase va a ser llamada de producto, para representar justamente la tabla de producto.
+            
+            Creamos el paquete.. com.alura.jdbc.modelo
+            Y creamos la clase para el Producto, debe tener los mismos campos de la tabla.
+            
+            package com.alura.jdbc.modelo;
+            
+            public class Producto {
+            
+                private Integer id;
+            
+                private String nombre;
+            
+                private String descripcion;
+            
+                private Integer cantidad;
+            
+                public Producto(String nombre, String descripcion, Integer cantidad) {
+                    this.nombre = nombre;
+                    this.descripcion = descripcion;
+                    this.cantidad = cantidad;
+                }
+                
+                public Producto(Integer id, String nombre, String descripcion, Integer cantidad) {
+                    this.id = id;
+                    this.nombre = nombre;
+                    this.descripcion = descripcion;
+                    this.cantidad = cantidad;
+                }
+                
+                public Integer getId() {
+                    return id;
+                }
+            
+                public String getNombre() {
+                    return nombre;
+                }
+            
+                public String getDescripcion() {
+                    return descripcion;
+                }
+            
+                public Integer getCantidad() {
+                    return cantidad;
+                }
+            
+                public void setId(Integer id) {
+                    this.id = id;
+                }
+            
+                @Override                   // Sobreescribimos el método para el toString
+                public String toString() {
+                    return String.format(
+                            "{ id: %d, nombre: %s, descripcion: %s, cantidad: %d }",
+                            this.id, this.nombre, this.descripcion, this.cantidad);
+                }
+            
+            }
+            
+            
+            Ahora en el ProductoController
+            package com.alura.jdbc.controller;
+            
+            import java.util.List;
+            
+            import com.alura.jdbc.dao.ProductoDAO;
+            import com.alura.jdbc.factory.ConnectionFactory;
+            import com.alura.jdbc.modelo.Producto;
+            
+            public class ProductoController {
+            
+                private ProductoDAO productoDao;
+                
+                public ProductoController() {
+                    var factory = new ConnectionFactory();
+                    this.productoDao = new ProductoDAO(factory.recuperaConexion());
+                }
+            
+                public int modificar(String nombre, String descripcion, Integer cantidad, Integer id) {
+                    return productoDao.modificar(nombre, descripcion, cantidad, id);
+                }
+            
+                public int eliminar(Integer id) {
+                    return productoDao.eliminar(id);
+                }
+            
+                public List<Producto> listar() {
+                    return productoDao.listar();
+                }
+            
+                public void guardar(Producto producto) {
+                    productoDao.guardar(producto);
+                }
+            
+            }
+            
+            Creamos del método de arriba..
+            public void guardar(Producto producto) {
+                productoDao.guardar(producto);
+            }            
+        </code>
+
         <li>DAO con INSERT del producto</li>
+        <code>
+            Nosotros podríamos crear una clase que mantenga todos lo que es necesario, como la conexión de la base de datos para persistir el producto y solamente tengamos que basar el objeto como parámetro.
+            - Evitando código repetido.
+        Sería una clase más específica para realizar operaciones en la tabla de productos.
+        
+        DAO = Data Access Object
+        
+        Entonces creamos un package como ProductoDAO..
+        En este archivo tendremos todas las operaciones centralizadas que se refieren al acceso de la tabla de producto.
+        
+        package com.alura.jdbc.persistencia;
+        
+        import java.sql.Connection;
+        import java.sql.PreparedStatement;
+        import java.sql.ResultSet;
+        import java.sql.SQLException;
+        import java.sql.Statement;
+        import java.util.ArrayList;
+        import java.util.List;
+        
+        import com.alura.jdbc.modelo.Producto;
+        
+        public class ProductoDAO {
+        
+            private Connection con;
+        
+            public ProductoDAO(Connection con) {
+                this.con = con;
+            }
+            
+            public void guardar(Producto producto) {
+                try {
+                    PreparedStatement statement;
+                        statement = con.prepareStatement(
+                                "INSERT INTO PRODUCTO "
+                                + "(nombre, descripcion, cantidad)"
+                                + " VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            
+                    try (statement) {
+                        statement.setString(1, producto.getNombre());
+                        statement.setString(2, producto.getDescripcion());
+                        statement.setInt(3, producto.getCantidad());
+            
+                        statement.execute();
+            
+                        final ResultSet resultSet = statement.getGeneratedKeys();
+            
+                        try (resultSet) {
+                            while (resultSet.next()) {
+                                producto.setId(resultSet.getInt(1));
+                                
+                                System.out.println(String.format("Fue insertado el producto: %s", producto));
+                            }
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        
+            public List<Producto> listar() {
+                List<Producto> resultado = new ArrayList<>();
+        
+                try {
+                    final PreparedStatement statement = con
+                            .prepareStatement("SELECT ID, NOMBRE, DESCRIPCION, CANTIDAD FROM PRODUCTO");
+            
+                    try (statement) {
+                        statement.execute();
+            
+                        final ResultSet resultSet = statement.getResultSet();
+            
+                        try (resultSet) {
+                            while (resultSet.next()) {
+                                resultado.add(new Producto(
+                                        resultSet.getInt("ID"),
+                                        resultSet.getString("NOMBRE"),
+                                        resultSet.getString("DESCRIPCION"),
+                                        resultSet.getInt("CANTIDAD")));
+                            }
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+        
+                return resultado;
+            }
+        
+            public int eliminar(Integer id) {
+                try {
+                    final PreparedStatement statement = con.prepareStatement("DELETE FROM PRODUCTO WHERE ID = ?");
+        
+                    try (statement) {
+                        statement.setInt(1, id);
+                        statement.execute();
+        
+                        int updateCount = statement.getUpdateCount();
+        
+                        return updateCount;
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        
+            public int modificar(String nombre, String descripcion, Integer cantidad, Integer id) {
+                try {
+                    final PreparedStatement statement = con.prepareStatement(
+                            "UPDATE PRODUCTO SET "
+                            + " NOMBRE = ?, "
+                            + " DESCRIPCION = ?,"
+                            + " CANTIDAD = ?"
+                            + " WHERE ID = ?");
+        
+                    try (statement) {
+                        statement.setString(1, nombre);
+                        statement.setString(2, descripcion);
+                        statement.setInt(3, cantidad);
+                        statement.setInt(4, id);
+                        statement.execute();
+        
+                        int updateCount = statement.getUpdateCount();
+        
+                        return updateCount;
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        
+        } 
+        
+        
+        Aprendimos un nuevo patrón de diseño que es el DAO.
+        La finalidad de este patrón de diseño es tener un objeto que tiene como responsabilidad acceder a la base de datos y realizar las operaciones necesarias sobre la entidad.
+        ¿Entonces este patrón sirve solamente para acceder a bases de datos?
+        No necesariamente. 
+        Podemos acceder a cualquier fuente de datos con este patrón.
+        La idea es justamente centralizar las operaciones en él para evitar la replicación de código. 
+        Agregamos una capa de persistencia a nuestra aplicación y ella va quedando cada momento más ordenada y completa, muy similar a las operaciones del mundo real.        
+        </code>
+
         <li>Ventajas del estándar DAO</li>
+        <p>
+            ¿Cuáles son las ventajas de utilizar clases con el estándar DAO?
+
+            Seleccione una alternativa
+            Tiene que ver con la capacidad de aislar en un lugar centralizado, toda la lógica de acceso al repositorio de datos de la entidad.
+            ¡Alternativa correcta! 
+            Así estaremos evitando duplicación de código y centralización de la lógica.                        
+        </p>
+
         <li>Operación de listado en el ProductoDAO</li>
+        <code>
+            * No es una buena práctica el hacer eso, delegar las excepciones de una capa para otras. Lo ideal es que las tratemos en el mismo lugar en donde el error ocurre.
+
+            Ahora en el mismo archivo de ConnectionFactory.. Tratamos la excepción.
+            package com.alura.jdbc.factory;
+            
+            import java.sql.Connection;
+            import java.sql.SQLException;
+            
+            import javax.sql.DataSource;
+            
+            import com.mchange.v2.c3p0.ComboPooledDataSource;
+            
+            public class ConnectionFactory {
+                
+                private DataSource dataSource;
+                
+                public ConnectionFactory() {
+                    var comboPooledDataSource = new ComboPooledDataSource();
+                    comboPooledDataSource.setJdbcUrl("jdbc:mysql://localhost/control_de_stock?useTimeZone=true&serverTimeZone=UTC");
+                    comboPooledDataSource.setUser("root");
+                    comboPooledDataSource.setPassword("root1234");
+                    comboPooledDataSource.setMaxPoolSize(10);
+                    
+                    this.dataSource = comboPooledDataSource;
+                }
+            
+                public Connection recuperaConexion() {
+                    try {                                           // Acá tratamos la excepción general.
+                        return this.dataSource.getConnection();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            
+            }
+            
+            La idea es que con eso, de a poco vayamos sacando el throws SQLException de los otros métodos también.
+            De esta manera no tenemos que estar propagando esa declaración de que este método lanza una excepción y eso va subiendo hasta el primer lugar que lo llama.
+            
+            package com.alura.jdbc.dao;
+            
+            import java.sql.Connection;
+            import java.sql.PreparedStatement;
+            import java.sql.ResultSet;
+            import java.sql.SQLException;
+            import java.sql.Statement;
+            import java.util.ArrayList;
+            import java.util.List;
+            
+            import com.alura.jdbc.modelo.Producto;
+            
+            public class ProductoDAO {
+            
+                private Connection con;
+            
+                public ProductoDAO(Connection con) {
+                    this.con = con;
+                }
+                
+                public void guardar(Producto producto) {
+                    try {
+                        PreparedStatement statement;
+                            statement = con.prepareStatement(
+                                    "INSERT INTO PRODUCTO "
+                                    + "(nombre, descripcion, cantidad)"
+                                    + " VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                
+                        try (statement) {
+                            statement.setString(1, producto.getNombre());
+                            statement.setString(2, producto.getDescripcion());
+                            statement.setInt(3, producto.getCantidad());
+                
+                            statement.execute();
+                
+                            final ResultSet resultSet = statement.getGeneratedKeys();
+                
+                            try (resultSet) {
+                                while (resultSet.next()) {
+                                    producto.setId(resultSet.getInt(1));
+                                    
+                                    System.out.println(String.format("Fue insertado el producto: %s", producto));
+                                }
+                            }
+                        }
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            
+                public List<Producto> listar() {
+                    List<Producto> resultado = new ArrayList<>();           // Trtamos el objeto como tal
+            
+                    try {
+                        final PreparedStatement statement = con
+                                .prepareStatement("SELECT ID, NOMBRE, DESCRIPCION, CANTIDAD FROM PRODUCTO");
+                
+                        try (statement) {
+                            statement.execute();
+                
+                            final ResultSet resultSet = statement.getResultSet();
+                
+                            try (resultSet) {
+                                while (resultSet.next()) {
+                                    resultado.add(new Producto(
+                                            resultSet.getInt("ID"),
+                                            resultSet.getString("NOMBRE"),
+                                            resultSet.getString("DESCRIPCION"),
+                                            resultSet.getInt("CANTIDAD")));
+                                }
+                            }
+                        }
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+            
+                    return resultado;
+                }
+            
+                public int eliminar(Integer id) {
+                    try {
+                        final PreparedStatement statement = con.prepareStatement("DELETE FROM PRODUCTO WHERE ID = ?");
+            
+                        try (statement) {
+                            statement.setInt(1, id);
+                            statement.execute();
+            
+                            int updateCount = statement.getUpdateCount();
+            
+                            return updateCount;
+                        }
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            
+                public int modificar(String nombre, String descripcion, Integer cantidad, Integer id) {
+                    try {
+                        final PreparedStatement statement = con.prepareStatement(
+                                "UPDATE PRODUCTO SET "
+                                + " NOMBRE = ?, "
+                                + " DESCRIPCION = ?,"
+                                + " CANTIDAD = ?"
+                                + " WHERE ID = ?");
+            
+                        try (statement) {
+                            statement.setString(1, nombre);
+                            statement.setString(2, descripcion);
+                            statement.setInt(3, cantidad);
+                            statement.setInt(4, id);
+                            statement.execute();
+            
+                            int updateCount = statement.getUpdateCount();
+            
+                            return updateCount;
+                        }
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            
+            }
+            
+            Y creamos el constructor de la clase Producto..
+            public Producto(Integer id, String nombre, String descripcion, Integer cantidad) {
+                this.id = id;
+                this.nombre = nombre;
+                this.descripcion = descripcion;
+                this.cantidad = cantidad;
+            }
+            
+            Ahora cada capa de aplicación tiene su responsabilidad bien definida. 
+            La capa DAO acá se encarga de mantener toda la lógica de acceso a la base de datos, las queries y traducción de result set para la clase de producto que es nuestro model, y la capa de controller se encarga de llamar las demás clases para completar la operación solicitada por la view.
+            
+            Y por último, la view, que es la que hace las requisiciones para el controller, para hacer todo esto que acá es nuestra pantallita del listado de productos y con el formulario que es la representación de nuestra clase ControlDeStockFrame.
+            Todo esto que acabo de comentar es un patrón de diseño conocido como MVC, Model View Controller.            
+        </code>
+
         <li>DAOs y los constructores</li>
+        <p>
+            Las clases DAO que creamos reciben la conexión en el constructor. Imaginemos que, en lugar de hacer así, tomemos una nueva conexión automáticamente en un constructor sin argumentos, como en el ejemplo:
+            public class ProductoDAO {
+                private final Connection con;
+                ProductoDAO() {
+                    con = Database.getConnection();
+                }
+                // restante de la lógica del DAO aquí
+            }
+            
+            ¿Qué pasa si una tarea necesita acceder dos datos, como el ProductoDAO y el CategoriaDAO? ¿Cuál desventaja tenemos en este abordaje?
+            
+            Seleccione una alternativa
+            No será posible utilizar la transacción.
+            ¡Alternativa correcta! Como cada uno de los DAOs tiene una conexión distinta, ellos van a estar en distintas transacciones. Y por eso no será posible utilizar este recurso.
+            
+            
+            Tendríamos que abrir una conexión únicamente para ejecutar esta tarea.
+            ¡Alternativa incorrecta! Sería abierta una gran cantidad de conexiones ya que si tenemos dos DAOs van a ser dos conexiones.
+            
+            No hay ninguna desventaja ya que el resultado sería el mismo que pasar la conexión como un parámetro del constructor.
+            ¡Alternativa incorrecta! Con esta estratégia perdemos el poder de utilizar transacciones y serían abiertas muchas conexiones sin necesidad.            
+        </p>
+
         <li>Desafío: Operaciones de modificación y exclusión en el ProductoDAO</li>
+        <code>
+            Utilizando todo lo que aprendimos en la refactorización de la lógica de acceso a la capa de datos del ProductoController para la clase ProductoDAO es el momento de poner en práctica lo que aprendimos para refactorizar las operaciones de modificación y exclusión de productos siguiendo las buenas prácticas que aprendimos.
+
+            Empecemos por el método de eliminar de la clase ProductoController. Lo que vamos hacer primero es crear una llamada a productoDao.eliminar(id);. Este método aún no existe, entonces vamos a crearlo en el ProductoDAO y mover la lógica de exclusión del producto para allá. Vamos a dejarla más sencilla también, removiendo pedazos de código que ya no son más necesarios, como la de tomar una conexión.
+            
+            Recordemos que no debemos más estar lanzando la SQLException para las demás capas. Los errores que una clase puede lanzar deben ser tratados en ella de forma que podamos lanzar, como máximo, una excepción del tipo unchecked.
+            
+            Por último vamos a ajustar el código referente a la exclusión de un producto en la clase ControlDeStockFrame y listo. Podemos hacer lo mismo con el método de modificación.
+            
+            Así va a quedar el resultado:
+            
+            // ControlDeStockFrame
+            private void modificar() {
+                if (tieneFilaElegida()) {
+                    JOptionPane.showMessageDialog(this, "Por favor, elije un item");
+                    return;
+                }
+            
+                Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
+                        .ifPresentOrElse(fila -> {
+                            Integer id = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 0).toString());
+                            String nombre = (String) modelo.getValueAt(tabla.getSelectedRow(), 1);
+                            String descripcion = (String) modelo.getValueAt(tabla.getSelectedRow(), 2);
+                            Integer cantidad = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 3).toString());
+                            var filasModificadas = this.productoController.modificar(nombre, descripcion, cantidad, id);
+            
+                            JOptionPane.showMessageDialog(this, String.format("%d item modificado con éxito!", filasModificadas));
+                        }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+            }
+            
+            private void eliminar() {
+                if (tieneFilaElegida()) {
+                    JOptionPane.showMessageDialog(this, "Por favor, elije un item");
+                    return;
+                }
+            
+                Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
+                        .ifPresentOrElse(fila -> {
+                            Integer id = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 0).toString());
+                            var filasModificadas = this.productoController.eliminar(id);
+            
+                            modelo.removeRow(tabla.getSelectedRow());
+                            JOptionPane.showMessageDialog(this,
+                                    String.format("%d item eliminado con éxito!", filasModificadas));
+                        }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+            }
+            
+            // ProductoController
+            public int modificar(String nombre, String descripcion, Integer cantidad, Integer id) {
+                return productoDao.modificar(nombre, descripcion, cantidad, id);
+            }
+            
+            public int eliminar(Integer id) {
+                return productoDao.eliminar(id);
+            }
+            
+            // ProductoDAO
+            public int eliminar(Integer id) {
+                try {
+                    final PreparedStatement statement = con.prepareStatement("DELETE FROM PRODUCTO WHERE ID = ?");
+            
+                    try (statement) {
+                        statement.setInt(1, id);
+                        statement.execute();
+            
+                        int updateCount = statement.getUpdateCount();
+            
+                        return updateCount;
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            
+            public int modificar(String nombre, String descripcion, Integer cantidad, Integer id) {
+                try {
+                    final PreparedStatement statement = con.prepareStatement(
+                            "UPDATE PRODUCTO SET "
+                            + " NOMBRE = ?, "
+                            + " DESCRIPCION = ?,"
+                            + " CANTIDAD = ?"
+                            + " WHERE ID = ?");
+            
+                    try (statement) {
+                        statement.setString(1, nombre);
+                        statement.setString(2, descripcion);
+                        statement.setInt(3, cantidad);
+                        statement.setInt(4, id);
+                        statement.execute();
+            
+                        int updateCount = statement.getUpdateCount();
+            
+                        return updateCount;
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }            
+        </code>
+
         <li>El estándar MVC</li>
+        <p>
+
+            Este es un proyecto desarrollado en Java Swing, es la forma de desarrollar vistas de aplicación, así como el HTML para aplicaciones web. 
+            Pero la diferencia aquí es que ella no corre en un servidor de aplicaciones, sino en nuestra propia máquina, un ejecutable.
+            Es una aplicación embebida.
+            
+            Esa pantalla acá tiene el formulario y el listado de productos que es construida por el ControlDeStockFrame, es responsable por presentar al usuario las informaciones buscadas en la base de datos de una forma ordenada. Esto aquí compone nuestra capa de view, que es la vista de la aplicación.
+            
+            El productoController pertenece a la capa de controller..
+            que es la capa que hace la conexión de la vista con la capa de datos y contiene las lógicas de negocio para manipular los datos antes de guardar en la base de datos o para devolver a la pantalla.
+            
+            Por último tenemos aquí la clase de productoDAO.. 
+            que es la que contiene toda la lógica relacionada a operaciones de la base de datos con la conexión, con la creación de queries, con la conversión de un objeto para hacer la query para insert, para update o delete o también para tomar el resultado y convertir en result set en un objeto del tipo producto para devolver a la pantalla.
+            
+            La clase productoDAO tiene la finalidad de realizar las operaciones directas en la tabla de producto. 
+            Entonces ella tiene una conexión directa con el modelo de producto.
+            Si nosotros llegamos a tener nuevas tablas en la aplicación, nosotros vamos a crear nuevas clases DAO y nuevas clases de modelo también para representar a estas tablas en la aplicación y para realizar las operaciones sobre ellas.
+            El conjunto de clases de modelo, producto y de la clase productoDAO, forman nuestra capa de modelo, la model, que representa las entidades del negocio y realiza las operaciones sobre sus informaciones.
+            
+            Para este conjunto de capas que revisamos ahora, le damos en nombre de modelo MVC, de Model View Controller.
+            
+            Este modelo es un estándar de arquitectura de aplicación que ayuda a dividir las responsabilidades de una aplicación. 
+            Este modelo tiene como ventajas, más allá de la división de las responsabilidades, la facilidad de mantenimiento, claridad y reutilización del código.
+            
+            
+            El modelo MVC es sencillo y aún sigue siendo muy adoptado por empresas para desarrollar aplicaciones del mundo real.
+            Hay otros modelos de arquitectura y variaciones de cada uno que pueden ser utilizados. Cada uno con sus ventajas y objetivos.             
+        </p>
+
         <li>Haga lo que hicimos en aula</li>
         <li>Lo que aprendimos</li>
+        <p>
+            Para cada tabla del modelo tenemos una clase de dominio;
+            Para la tabla de producto tenemos una clase Producto asociada.
+            Los objetos del tipo Producto representan un registro de la tabla.
+        
+        Para acceder a la tabla vamos a utilizar el estándar llamado Data Access Object (DAO);
+            Para cada clase de dominio hay un DAO asociado. Por ejemplo, la clase Producto posee la clase ProductoDAO.
+            Todos los métodos JDBC relacionados al producto deben estar encapsulados en ProductoDAO.
+        
+        Una aplicación es escrita en capas;
+            Las capas más conocidas son las de view, controller, modelo y persistencia, que componen el estándar MVC.
+        
+        El flujo de una requisición entre las capas es el siguiente;
+            view <--> controller <--> persistencia
+        
+        
+        En este curso utilizamos una aplicación con las views y los controllers ya creados y enfocamos en la capa de persistencia y modelo;
+        No es una buena práctica dejar los detalles de implementación de una capa en otras que no tienen esta responsabilidad (por ejemplo la capa de controller lanzar una SQLException);
+        Aquí estamos aprendiendo con una aplicación desktop embebida, pero hay otros tipos de aplicaciones con otros tipos de view, como html para aplicaciones web.        
+        </p>
+
     </pre>
 
     <br>
@@ -1552,14 +2366,783 @@
     <pre>
         <li>Proyecto del aula anterior</li>
         <li>Relación entre tablas</li>
+        <p>
+            Tenemos que hacer una mejora en el modelo de producto para que cada uno pertenezca a una categoría y además será necesario abrir un reporte con el listado de todos los productos por categoría.
+            Desde Consola:
+            
+            C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -p
+            Ingresamos la contraseña: Solocuestavida1!
+            
+            create database control_de_stock;
+                use control_de_stock;
+                
+                select * from producto;
+            
+            Como podemos toparnos con palabras ambiguas.. 
+            Un campo de texto libre no es una buena solución para elegir la categoria.
+            
+            Podríamos crear una nueva tabla solo para registrar las categorías disponibles en la aplicación..
+            Así los usuarios tiene opciones precargadas para elegir, y evitamos posibles confusiones para referirnos a una misma categoría de productos.
+            
+            Ahora desde consola.. Creamos la tabal Categoria..
+            Mysql> CREATE TABLE CATEGORIA(
+                -> id INT AUTO_INCREMENT,
+                -> nombre VARCHAR(50) NOT NULL,
+                -> PRIMARY KEY(id)
+                -> )Engine=InnoDB;
+            
+            Agregamos las categorías..
+            mysql> INSERT INTO CATEGORIA(nombre) VALUES(
+                -> 'Muebles'), ('Tecnología'), ('Cocina'), ('Zapatillas');
+            
+            Para ver las categorías..    
+            mysql> select * from categoria;
+            
+            Ahora nosotros podemos asignar las para cada producto que está en la tabla del producto..
+            Entonces para eso podremos decir que acá en la tabla producto, el producto mesa puede referirse al id de la categoría mueble.
+            Pero para eso, para que tengamos esta referencia, nosotros tenemos que crear una columna nueva en la tabla de productos.
+            
+            mysql> ALTER TABLE PRODUCTO
+            -> ADD COLUMN categoria_id INT;
+            
+            mysql> select * from producto;         // Vemos la columna agregada.
+            
+            Ahora lo que tenemos que hacer es vincular las categorías a los productos que tenemos acá registrados.
+            
+            Clave Foránea: sta clave es la que va a vincular las dos tablas de forma que sea creada una relación entre ellas y para agregar esta clave foránea acá, nosotros tenemos que hacer un nuevo cambio en la estructura de la tabla de producto, para decir que la categoría id es referencia a la columna id de la tabla de categoría.
+            VENTAJA DE LA LLAVE FORANEA, SETEADA
+            ** Ahí está la ventaja de tener la clave foránea configurada porque evitamos de asignar valores inválidos de nuestras referencias.** 
+            mysql> ALTER TABLE PRODUCTO ADD FOREIGN KEY (CATEGORIA_ID) REFERENCES CATEGORIA(ID);
+            
+            Ahora sí podremos asignar el valor de las categorías a los productos..
+            mysql> UPDATE PRODUCTO SET CATEGORIA_ID = 1 WHERE ID = 1;
+            
+            SELECT * from producto;  // Vemoa ahora sí, la mesa con la categoría asignada.
+            
+            El celular tendrá ahora la categoría de tecnología..
+            mysql> UPDATE PRODUCTO SET CATEGORIA_ID = 2 WHERE ID = 2;
+            
+            
+            Por lo tanto:
+            mysql>   SELECT * from producto;
+            +----+-----------------------+----------------------+----------+--------------+
+            | id | nombre                | descripcion          | cantidad | categoria_id |
+            +----+-----------------------+----------------------+----------+--------------+
+            |  1 | Mesa                  | Mesa de 2 Lugares    |       10 |            4 |
+            |  2 | Celular SmarthPhone   | Samsung AirForce     |       40 |            2 |
+            |  3 | Vaso                  | Vaso de Cristal      |        2 |            3 |
+            |  4 | Sillon de 4 cuerpos   | Sillon de Terciopelo |       10 |            1 |
+            |  6 | Linternas Recargables | Tipo Leds            |       50 |            2 |
+            +----+-----------------------+----------------------+----------+--------------+
+            5 rows in set (0.00 sec)
+            
+            Con...
+            mysql>   SELECT * from CATEGORIA;
+            +----+------------+
+            | id | nombre     |
+            +----+------------+
+            |  1 | Muebles    |
+            |  2 | Tecnología |
+            |  3 | Cocina     |
+            |  4 | Zapatillas |
+            +----+------------+
+            4 rows in set (0.00 sec)            
+        </p>
+
         <li>Ventajas de la clave foránea</li>
+        <p>
+            José quería agregar una categoría a los productos y resolvió crear en la tabla una nueva columna del tipo string, llamada categoria. Con eso fue posible informar la categoría del producto en el momento de su creación. ¿Por qué esta estratégia no es la mejor?
+
+            Seleccione una alternativa
+            Puede haber un problema para estandarizar la inserción de la categoría porque el campo sería libre para que los usuarios puedan escribir como quieran, generando muchas variaciones para una misma categoría. Eso perjudica la utilización de filtros por categoría.
+            ¡Alternativa correcta! 
+            Como cada usuario iba a poder escribir libremente podrían haber diferentes formas en el nombre de las categorías. Podrían haber errores de tipeo o caracteres adicionales. Y eso dificulta el filtrado de los productos por ser casi imposible cubrir todos los escenarios.            
+        </p>
+
         <li>El modelo, el controller y el DAO de categorías</li>
+        <code>
+            Ahora modificamos el ControlDeStockFrame..
+            package com.alura.jdbc.view;
+            
+            import java.awt.Color;
+            import java.awt.Container;
+            import java.awt.event.ActionEvent;
+            import java.awt.event.ActionListener;
+            import java.util.Optional;
+            
+            import javax.swing.JButton;
+            import javax.swing.JComboBox;
+            import javax.swing.JFrame;
+            import javax.swing.JLabel;
+            import javax.swing.JOptionPane;
+            import javax.swing.JTable;
+            import javax.swing.JTextField;
+            import javax.swing.table.DefaultTableModel;
+            
+            import com.alura.jdbc.controller.CategoriaController;
+            import com.alura.jdbc.controller.ProductoController;
+            import com.alura.jdbc.modelo.Categoria;
+            import com.alura.jdbc.modelo.Producto;
+            
+            public class ControlDeStockFrame extends JFrame {
+            
+                private static final long serialVersionUID = 1L;
+            
+                private JLabel labelNombre, labelDescripcion, labelCantidad, labelCategoria;
+                private JTextField textoNombre, textoDescripcion, textoCantidad;
+                private JComboBox<Categoria> comboCategoria;                                                    // Instaciamos una categoria, que ahora crearemos.
+                private JButton botonGuardar, botonModificar, botonLimpiar, botonEliminar, botonReporte;
+                private JTable tabla;
+                private DefaultTableModel modelo;
+                private ProductoController productoController;
+                private CategoriaController categoriaController;
+            
+                public ControlDeStockFrame() {
+                    super("Productos");
+            
+                    this.categoriaController = new CategoriaController();
+                    this.productoController = new ProductoController();
+            
+                    Container container = getContentPane();
+                    setLayout(null);
+            
+                    configurarCamposDelFormulario(container);
+            
+                    configurarTablaDeContenido(container);
+            
+                    configurarAccionesDelFormulario();
+                }
+            
+                private void configurarTablaDeContenido(Container container) {
+                    tabla = new JTable();
+            
+                    modelo = (DefaultTableModel) tabla.getModel();
+                    modelo.addColumn("Identificador del Producto");
+                    modelo.addColumn("Nombre del Producto");
+                    modelo.addColumn("Descripción del Producto");
+                    modelo.addColumn("Cantidad");
+            
+                    cargarTabla();
+            
+                    tabla.setBounds(10, 205, 760, 280);
+            
+                    botonEliminar = new JButton("Eliminar");
+                    botonModificar = new JButton("Modificar");
+                    botonReporte = new JButton("Ver Reporte");
+                    botonEliminar.setBounds(10, 500, 80, 20);
+                    botonModificar.setBounds(100, 500, 80, 20);
+                    botonReporte.setBounds(190, 500, 80, 20);
+            
+                    container.add(tabla);
+                    container.add(botonEliminar);
+                    container.add(botonModificar);
+                    container.add(botonReporte);
+            
+                    setSize(800, 600);
+                    setVisible(true);
+                    setLocationRelativeTo(null);
+                }
+            
+                private void configurarCamposDelFormulario(Container container) {
+                    labelNombre = new JLabel("Nombre del Producto");
+                    labelDescripcion = new JLabel("Descripción del Producto");
+                    labelCantidad = new JLabel("Cantidad");
+                    labelCategoria = new JLabel("Categoría del Producto");
+            
+                    labelNombre.setBounds(10, 10, 240, 15);
+                    labelDescripcion.setBounds(10, 50, 240, 15);
+                    labelCantidad.setBounds(10, 90, 240, 15);
+                    labelCategoria.setBounds(10, 130, 240, 15);
+            
+                    labelNombre.setForeground(Color.BLACK);
+                    labelDescripcion.setForeground(Color.BLACK);
+                    labelCategoria.setForeground(Color.BLACK);
+            
+                    textoNombre = new JTextField();
+                    textoDescripcion = new JTextField();
+                    textoCantidad = new JTextField();
+                    comboCategoria = new JComboBox<>();
+                    comboCategoria.addItem(new Categoria(0, "Elige una Categoría"));        // Ahora creamos en la categoría el constructor..
+            
+                    var categorias = this.categoriaController.listar();
+                    categorias.forEach(categoria -> comboCategoria.addItem(categoria));             // Reccoremos las categorias
+            
+                    textoNombre.setBounds(10, 25, 265, 20);
+                    textoDescripcion.setBounds(10, 65, 265, 20);
+                    textoCantidad.setBounds(10, 105, 265, 20);
+                    comboCategoria.setBounds(10, 145, 265, 20);
+            
+                    botonGuardar = new JButton("Guardar");
+                    botonLimpiar = new JButton("Limpiar");
+                    botonGuardar.setBounds(10, 175, 80, 20);
+                    botonLimpiar.setBounds(100, 175, 80, 20);
+            
+                    container.add(labelNombre);
+                    container.add(labelDescripcion);
+                    container.add(labelCantidad);
+                    container.add(labelCategoria);
+                    container.add(textoNombre);
+                    container.add(textoDescripcion);
+                    container.add(textoCantidad);
+                    container.add(comboCategoria);
+                    container.add(botonGuardar);
+                    container.add(botonLimpiar);
+                }
+            
+                private void configurarAccionesDelFormulario() {
+                    botonGuardar.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            guardar();
+                            limpiarTabla();
+                            cargarTabla();
+                        }
+                    });
+            
+                    botonLimpiar.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            limpiarFormulario();
+                        }
+                    });
+            
+                    botonEliminar.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            eliminar();
+                            limpiarTabla();
+                            cargarTabla();
+                        }
+                    });
+            
+                    botonModificar.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            modificar();
+                            limpiarTabla();
+                            cargarTabla();
+                        }
+                    });
+            
+                    botonReporte.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            abrirReporte();
+                        }
+                    });
+                }
+            
+                private void abrirReporte() {
+                    new ReporteFrame(this);
+                }
+            
+                private void limpiarTabla() {
+                    modelo.getDataVector().clear();
+                }
+            
+                private boolean tieneFilaElegida() {
+                    return tabla.getSelectedRowCount() == 0 || tabla.getSelectedColumnCount() == 0;
+                }
+            
+                private void modificar() {
+                    if (tieneFilaElegida()) {
+                        JOptionPane.showMessageDialog(this, "Por favor, elije un item");
+                        return;
+                    }
+            
+                    Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
+                            .ifPresentOrElse(fila -> {
+                                Integer id = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 0).toString());
+                                String nombre = (String) modelo.getValueAt(tabla.getSelectedRow(), 1);
+                                String descripcion = (String) modelo.getValueAt(tabla.getSelectedRow(), 2);
+                                Integer cantidad = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 3).toString());
+                                
+                                var filasModificadas = this.productoController.modificar(nombre, descripcion, cantidad, id);
+                                
+                                JOptionPane.showMessageDialog(this, String.format("%d item modificado con éxito!", filasModificadas));
+                            }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+                }
+            
+                private void eliminar() {
+                    if (tieneFilaElegida()) {
+                        JOptionPane.showMessageDialog(this, "Por favor, elije un item");
+                        return;
+                    }
+            
+                    Optional.ofNullable(modelo.getValueAt(tabla.getSelectedRow(), tabla.getSelectedColumn()))
+                            .ifPresentOrElse(fila -> {
+                                Integer id = Integer.valueOf(modelo.getValueAt(tabla.getSelectedRow(), 0).toString());
+            
+                                var filasModificadas = this.productoController.eliminar(id);
+            
+                                modelo.removeRow(tabla.getSelectedRow());
+            
+                                JOptionPane.showMessageDialog(this,
+                                        String.format("%d item eliminado con éxito!", filasModificadas));
+                            }, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+                }
+            
+                private void cargarTabla() {
+                    var productos = this.productoController.listar();
+            
+                    productos.forEach(producto -> modelo.addRow(
+                            new Object[] {
+                                    producto.getId(),
+                                    producto.getNombre(),
+                                    producto.getDescripcion(),
+                                    producto.getCantidad() }));
+                }
+            
+                private void guardar() {
+                    if (textoNombre.getText().isBlank() || textoDescripcion.getText().isBlank()) {
+                        JOptionPane.showMessageDialog(this, "Los campos Nombre y Descripción son requeridos.");
+                        return;
+                    }
+            
+                    Integer cantidadInt;
+            
+                    try {
+                        cantidadInt = Integer.parseInt(textoCantidad.getText());
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this, String
+                                .format("El campo cantidad debe ser numérico dentro del rango %d y %d.", 0, Integer.MAX_VALUE));
+                        return;
+                    }
+            
+                    var producto = new Producto(
+                                        textoNombre.getText(),
+                                        textoDescripcion.getText(),
+                                        cantidadInt);
+                    
+                    var categoria = (Categoria) comboCategoria.getSelectedItem();
+            
+                    this.productoController.guardar(producto, categoria.getId());
+            
+                    JOptionPane.showMessageDialog(this, "Registrado con éxito!");
+            
+                    this.limpiarFormulario();
+                }
+            
+                private void limpiarFormulario() {
+                    this.textoNombre.setText("");
+                    this.textoDescripcion.setText("");
+                    this.textoCantidad.setText("");
+                    this.comboCategoria.setSelectedIndex(0);
+                }
+            
+            }
+            
+            Ahora desde el modelo creamos la categoría en relación a ella..
+            package com.alura.jdbc.modelo;
+            
+            import java.util.ArrayList;
+            import java.util.List;
+            
+            public class Categoria {
+            
+                private Integer id;         // Los campos de la tabla de la base de datos
+            
+                private String nombre;      // Los campos de la tabla de la base de datos
+            
+                private List<Producto> productos = new ArrayList<>();
+            
+                public Categoria(Integer id, String nombre) {               // Definimos el constructor.
+                    this.id = id;
+                    this.nombre = nombre;
+                }
+            
+                public Integer getId() {
+                    return this.id;
+                }
+            
+                @Override
+                public String toString() {
+                    return this.nombre;
+                }
+            
+                public void agregar(Producto producto) {
+                    this.productos.add(producto);
+                }
+            
+                public List<Producto> getProductos() {
+                    return this.productos;
+                }
+            
+            }
+            
+            
+            Ahora en el categoriaController..
+            package com.alura.jdbc.controller;
+            
+            import java.util.List;
+            
+            import com.alura.jdbc.dao.CategoriaDAO;
+            import com.alura.jdbc.factory.ConnectionFactory;
+            import com.alura.jdbc.modelo.Categoria;
+            
+            public class CategoriaController {
+            
+                private CategoriaDAO categoriaDAO;
+            
+                public CategoriaController() {
+                    var factory = new ConnectionFactory();
+                    this.categoriaDAO = new CategoriaDAO(factory.recuperaConexion());
+                }
+            
+                public List<Categoria> listar() {                   // Tendremos la lista de categoria..
+                    return this.categoriaDAO.listar();
+                }
+            
+                public List<Categoria> cargaReporte() {
+                    return this.categoriaDAO.listarConProductos();
+                }
+            
+            }
+            
+            Y creamos el CategoriaDAO..
+            package com.alura.jdbc.dao;
+            
+            import java.sql.Connection;
+            import java.sql.PreparedStatement;
+            import java.sql.ResultSet;
+            import java.sql.SQLException;
+            import java.util.ArrayList;
+            import java.util.List;
+            
+            import com.alura.jdbc.modelo.Categoria;
+            import com.alura.jdbc.modelo.Producto;
+            
+            public class CategoriaDAO {
+            
+                private Connection con;         // Nos traemos el paquete de sql, para hacer la conexión..
+            
+                public CategoriaDAO(Connection con) {
+                    this.con = con;
+                }
+            
+                public List<Categoria> listar() {                       // Para listar
+                    List<Categoria> resultado = new ArrayList<>();
+            
+                    try {
+                        String sql = "SELECT ID, NOMBRE FROM CATEGORIA";
+                        
+                        System.out.println(sql);
+                        
+                        final PreparedStatement statement = con             // Hacemos el prepareStatement
+                                .prepareStatement(sql);
+            
+                        try (statement) {
+                            final ResultSet resultSet = statement.executeQuery();   // Es más directo el executeQuery()
+            
+                            try (resultSet) {
+                                while (resultSet.next()) {
+                                    resultado.add(new Categoria(
+                                            resultSet.getInt("ID"),
+                                            resultSet.getString("NOMBRE")));
+                                }
+                            }
+                        }
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+            
+                    return resultado;
+                }
+            
+                public List<Categoria> listarConProductos() {
+                    List<Categoria> resultado = new ArrayList<>();
+            
+                    try {
+                        String sql = "SELECT C.ID, C.NOMBRE, P.ID, P.NOMBRE, P.CANTIDAD "
+                                + " FROM CATEGORIA C INNER JOIN PRODUCTO P "
+                                + " ON C.ID = P.CATEGORIA_ID";
+                        
+                        System.out.println(sql);
+                        
+                        final PreparedStatement statement = con
+                                .prepareStatement(sql);
+            
+                        try (statement) {
+                            final ResultSet resultSet = statement.executeQuery();
+            
+                            try (resultSet) {
+                                while (resultSet.next()) {
+                                    int categoriaId = resultSet.getInt("C.ID");
+                                    String categoriaNombre = resultSet.getString("C.NOMBRE");
+                                    
+                                    Categoria categoria = resultado
+                                        .stream()
+                                        .filter(cat -> cat.getId().equals(categoriaId))
+                                        .findAny().orElseGet(() -> {
+                                            Categoria cat = new Categoria(
+                                                    categoriaId, categoriaNombre);
+                                            resultado.add(cat);
+                                            
+                                            return cat;
+                                        });
+                                    
+                                    Producto producto = new Producto(
+                                            resultSet.getInt("P.ID"),
+                                            resultSet.getString("P.NOMBRE"),
+                                            resultSet.getInt("P.CANTIDAD"));
+                                    
+                                    categoria.agregar(producto);
+                                }
+                            }
+                        }
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+            
+                    return resultado;
+                }
+            
+            }            
+        </code>
+
         <li>Relacionando el producto con la categoría en el registro</li>
+        <p>
+            Soluciones - Para corroboar porque no me levantaba el jar..
+            Ir a la carpeta del proyecto, click derecho, properties, y buscar la opcion de java build path.. 
+            En esa pestaña nos indica las rutas de los archivos necesario para compilar.
+            Buscamos la ruta y guardamos el archivo jar.,            
+        </p>
+
         <li>Queries N + 1</li>
+        <code>
+            Ahora nos encargaremos de la lógica para generar el Reporte..
+
+            Ahora en el productoController..
+            package com.alura.jdbc.controller;
+            
+            import java.util.List;
+            
+            import com.alura.jdbc.dao.ProductoDAO;
+            import com.alura.jdbc.factory.ConnectionFactory;
+            import com.alura.jdbc.modelo.Categoria;
+            import com.alura.jdbc.modelo.Producto;
+            
+            public class ProductoController {
+            
+                private ProductoDAO productoDao;
+                
+                public ProductoController() {
+                    var factory = new ConnectionFactory();
+                    this.productoDao = new ProductoDAO(factory.recuperaConexion());
+                }
+            
+                public int modificar(String nombre, String descripcion, Integer cantidad, Integer id) {
+                    return productoDao.modificar(nombre, descripcion, cantidad, id);
+                }
+            
+                public int eliminar(Integer id) {
+                    return productoDao.eliminar(id);
+                }
+            
+                public List<Producto> listar() {
+                    return productoDao.listar();
+                }
+            
+                public void guardar(Producto producto, Integer categoriaId) {
+                    producto.setCategoriaId(categoriaId);
+                    productoDao.guardar(producto);
+                }
+            
+                public List<Producto> listar(Categoria categoria) {         // Armamos este método para listar la categoría
+                    return productoDao.listar(categoria);
+                }
+            
+            }
+            
+            
+            Ahora desde el ProductoDao..
+            public List<Producto> listar(Categoria categoria) {
+                List<Producto> resultado = new ArrayList<>();
+            
+                try {
+                    String sql = "SELECT ID, NOMBRE, DESCRIPCION, CANTIDAD "
+                    + " FROM PRODUCTO WHERE CATEGORIA_ID = ?";
+                    System.out.println(sql);
+                    
+                    final PreparedStatement statement = con.prepareStatement(
+                            sql);
+            
+                    try (statement) {
+                        statement.setInt(1, categoria.getId());
+                        statement.execute();
+            
+                        final ResultSet resultSet = statement.getResultSet();
+            
+                        try (resultSet) {
+                            while (resultSet.next()) {
+                                resultado.add(new Producto(
+                                        resultSet.getInt("ID"),
+                                        resultSet.getString("NOMBRE"),
+                                        resultSet.getString("DESCRIPCION"),
+                                        resultSet.getInt("CANTIDAD")));
+                            }
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            
+                return resultado;
+            }
+            
+            
+            Ahora en el ReporteFrame..
+            package com.alura.jdbc.view;
+            
+            import java.awt.Container;
+            
+            import javax.swing.JFrame;
+            import javax.swing.JTable;
+            import javax.swing.table.DefaultTableModel;
+            
+            import com.alura.jdbc.controller.CategoriaController;
+            
+            public class ReporteFrame extends JFrame {
+            
+                private void cargaReporte() {                                           // Armamos este méotodo    
+                    var categorias = categoriaController.cargaReporte();
+            
+                    categorias.forEach(categoria -> {
+                        modelo.addRow(new Object[] { categoria });
+                        
+                        var productos = categoria.getProductos();
+                        
+                        productos.forEach(producto -> modelo.addRow(new Object[] {
+                                "",                 // Columna vacía..
+                                producto.getNombre(),
+                                producto.getCantidad()
+                        }));
+                    });
+                }
+            
+            }
+            
+            Esta solución que desarrollamos no está siguiendo las buenas prácticas de programación porque resolvimos un problema, pero creamos otros.
+            Esta situación es conocida como queries N + 1..
+            que es cuando para ejecutar una cierta funcionalidad, estamos yendo a la base de datos más de lo que es necesario cuando hay la posibilidad de ir una sola vez.            
+        </code>
+
         <li>¿Por qué evitar queries N + 1?</li>
+        <p>
+            ¿Cuál es el problema de la aplicación tener queries N + 1?
+
+            Seleccione una alternativa
+            Porque son utilizadas múltiples queries, aumentando la cantidad de acceso a la base de datos y, por consecuencia, empeorando la performance de la aplicación y del propio sistema de base de datos.
+            ¡Alternativa correcta! 
+            Cuando las consultas son sencillas no hay problemas. Pero cuanto más complejidad van teniendo nuestras consultas hay la necesidad de buscar más informaciones de múltiples tablas, aumentando el acceso exponencialmente. Eso impacta gravemente la performance de la aplicación y del sistema de base de datos.            
+        </p>
+
         <li>Utilizando INNER JOIN #1</li>
+        <code>
+            Para crear el reporte, nosotros utilizamos una solución que no es muy buena..
+            Ya que genera n queries en la base de datos, porque nosotros aquí en el cargaReporte para cada categoría estamos yendo a la base de datos para listar a los productos de esta categoría, eso genera muchas conexiones con la base de datos.
+            Y con el aumento del volumen de información y de utilización de la base de datos en la aplicación, eso puede generar problemas de performance más adelante. 
+            
+            
+            package com.alura.jdbc.controller;
+            
+            import java.util.List;
+            
+            import com.alura.jdbc.dao.CategoriaDAO;
+            import com.alura.jdbc.factory.ConnectionFactory;
+            import com.alura.jdbc.modelo.Categoria;
+            
+            public class CategoriaController {
+            
+                private CategoriaDAO categoriaDAO;
+            
+                public CategoriaController() {
+                    var factory = new ConnectionFactory();
+                    this.categoriaDAO = new CategoriaDAO(factory.recuperaConexion());
+                }
+            
+                public List<Categoria> listar() {
+                    return this.categoriaDAO.listar();
+                }
+            
+                public List<Categoria> cargaReporte() {
+                    return this.categoriaDAO.listarConProductos();                  // Creamos este método..
+                }
+            
+            }
+            
+            Y ahora dentro del..  CategoriaController
+            public List<Categoria> listarConProductos() {
+                List<Categoria> resultado = new ArrayList<>();
+            
+                try {
+                    String sql = "SELECT C.ID, C.NOMBRE, P.ID, P.NOMBRE, P.CANTIDAD "
+                            + " FROM CATEGORIA C INNER JOIN PRODUCTO P "                    // El objetivo aquí ahora es cargar las informaciones de productos y las categorías punto en la misma query.
+                            + " ON C.ID = P.CATEGORIA_ID";                                  // INNER JOIN posibilita unificar dos tablas que tienen columnas en común y para nuestro caso la tabla producto tiene la columna categoría id, que hace referencia a la columna de id, a la de la tabla categoría.
+                                // ON es la condición.. el id y la categoria_id, de acuerdo a la llave foránea.
+                    System.out.println(sql);
+                    
+                    final PreparedStatement statement = con
+                            .prepareStatement(sql);
+            
+                    try (statement) {
+                        final ResultSet resultSet = statement.executeQuery();
+            
+                        try (resultSet) {
+                            while (resultSet.next()) {
+                                int categoriaId = resultSet.getInt("C.ID");
+                                String categoriaNombre = resultSet.getString("C.NOMBRE");
+                                
+                                Categoria categoria = resultado
+                                    .stream()                                               // Ahora filtramos en funcion del id..
+                                    .filter(cat -> cat.getId().equals(categoriaId))
+                                    .findAny().orElseGet(() -> {
+                                        Categoria cat = new Categoria(
+                                                categoriaId, categoriaNombre);
+                                        resultado.add(cat);
+                                        
+                                        return cat;
+                                    });
+                                
+                                Producto producto = new Producto(               // Armamos el producto.
+                                        resultSet.getInt("P.ID"),
+                                        resultSet.getString("P.NOMBRE"),
+                                        resultSet.getInt("P.CANTIDAD"));
+                                
+                                categoria.agregar(producto);
+                            }
+                        }
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            
+                return resultado;
+            }            
+        </code>
+
         <li>Utilizando INNER JOIN #2</li>
+        <p>
+            Ahora creamos el constructor de Producto..
+
+            public Producto(String nombre, String descripcion, Integer cantidad) {
+                this.nombre = nombre;
+                this.descripcion = descripcion;
+                this.cantidad = cantidad;
+            }            
+        </p>
+
         <li>Informaciones relacionadas</li>
+        <p>
+            José creó una relación entre dos tablas utilizando la clave foránea. Pero ahora tiene una duda de como hacer para buscar las informaciones relacionadas de las dos tablas en su aplicación. ¿Qué podemos decir a José que haga para relacionar las dos tablas en una sola búsqueda?
+
+            Seleccione una alternativa
+            José debe utilizar el INNER JOIN.
+            ¡Alternativa correcta! Con el INNER JOIN José va a lograr buscar las informaciones que están relacionadas entre las dos tablas.
+            
+            
+            
+            Cuando tenemos una relación entre tables debemos tener cuidado para no crear el problema de queries N + 1;
+            N + 1 quiere decir que, para buscar los datos de una relación, es ejecutada una query y luego una más por cada relación.
+            Este tipo de problema puede generar problemas de performance en la aplicación y en la base de datos.
+            Este tipo de problema puede ser evitado utilizando join en la query SQL.            
+        </p>
+        
         <li>Haga lo que hicimos en aula</li>
         <li>Proyecto final</li>
         <li>Lo que aprendimos</li>

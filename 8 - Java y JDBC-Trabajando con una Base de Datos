@@ -2096,7 +2096,7 @@ public int modificar(String nombre, String descripcion, Integer cantidad, Intege
 
 ----------- 08 El estándar MVC
 
-ste es un proyecto desarrollado en Java Swing, es la forma de desarrollar vistas de aplicación, así como el HTML para aplicaciones web. 
+Este es un proyecto desarrollado en Java Swing, es la forma de desarrollar vistas de aplicación, así como el HTML para aplicaciones web. 
 Pero la diferencia aquí es que ella no corre en un servidor de aplicaciones, sino en nuestra propia máquina, un ejecutable.
 Es una aplicación embebida.
 
